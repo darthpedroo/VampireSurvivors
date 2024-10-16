@@ -8,7 +8,7 @@ import pygame
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer):
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, display: "Display"):
         # Initialize the player and lists for monsters, bullets and gems
         self.__player: IPlayer = player
         self.__monsters: list[IMonster] = []
@@ -16,12 +16,15 @@ class GameWorld(IGameWorld):
         self.__experience_gems: list[IExperienceGem] = []
         self.tile_map: ITileMap = tile_map
         self.__monster_spawner: IMonsterSpawner = spawner
+        self.__display = display
         
 
     def get_mouse_position(self):
         mouse_pos = pygame.mouse.get_pos()
         return mouse_pos
-        
+    
+    def get_camera(self):
+        return self.__display.camera        
 
     def update(self):
         self.player.update(self)

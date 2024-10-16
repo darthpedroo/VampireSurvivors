@@ -12,17 +12,14 @@ from presentation.display import Display
 class BulletGuided(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, src_x, src_y, speed, world):
-        
-        
+    def __init__(self, src_x, src_y, speed, world):            
         super().__init__(src_x, src_y, speed, BulletGuidedSprite(src_x, src_y))
         self._player_pos = (src_x, src_y)
-        self._camera = Camera()
         self.__mouse_pos = self.__get_mouse_position(world)
-        self.__dir_x, self.__dir_y = self.__calculate_direction((self.__mouse_pos[0] + self._camera.camera_rect[0]) - src_x, (self.__mouse_pos[1] + self._camera.camera_rect[1]) - src_y)
+        self.__dir_x, self.__dir_y = self.__calculate_direction((self.__mouse_pos[0] + world.get_camera().camera_rect[0]) - src_x, (self.__mouse_pos[1] + world.get_camera().camera_rect[1]) - src_y)
         self._logger.debug("Created %s", self)
         self._health = 500
-        print("self._camera.camera_rect[0]", self._camera.camera_rect[0])
+        print("self._camera.camera_rect[0]", world.get_camera().camera_rect[0])
         
     def __get_mouse_position(self, world: IGameWorld) -> tuple[int,int] :
         return world.get_mouse_position()

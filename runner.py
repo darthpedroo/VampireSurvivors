@@ -21,12 +21,12 @@ def initialize_player():
     return Player(x, y, PlayerSprite(x, y))
 
 
-def initialize_game_world():
+def initialize_game_world(display):
     """Initializes the game world"""
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    return GameWorld(monster_spawner, tile_map, player)
+    return GameWorld(monster_spawner, tile_map, player, display)
 
 
 def main():
@@ -42,7 +42,7 @@ def main():
 
     # Initialize the game objects
     display = Display()
-    world = initialize_game_world()
+    world = initialize_game_world(display)
     display.load_world(world)
     input_handler = InputHandler(world)
 
