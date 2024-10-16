@@ -32,7 +32,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__experience = 0
         self.__level = 1
         self._logger.debug("Created %s", self)
-        self._list_of_items_to_attack = ["Bullet_Guided"]
+        self._list_of_items_to_attack = ["Bullet_Guided", "Bullet"]
         
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
