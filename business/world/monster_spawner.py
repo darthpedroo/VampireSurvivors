@@ -16,13 +16,14 @@ class MonsterSpawner(IMonsterSpawner):
 
     def __init__(self):
         self.__logger = logging.getLogger(__name__)
-        self._max_monsters = 10
-        self._current_monsters = 0
+        self._max_monsters = 50
+        
 
     def update(self, world: IGameWorld):
-        if self._current_monsters < self._max_monsters:
+        
+        if len(world.monsters) < self._max_monsters:
             self.spawn_monster(world)
-            self._current_monsters +=1
+        
         
     def spawn_monster(self, world: IGameWorld):
         pos_x = random.randint(0, settings.WORLD_WIDTH)

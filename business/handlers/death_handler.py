@@ -27,3 +27,17 @@ class DeathHandler:
                 world.remove_bullet(bullet)
             if not DeathHandler.__is_entity_within_world_boundaries(bullet):
                 world.remove_bullet(bullet)
+        
+
+        for monster in world.monsters:
+            if monster.health <=0:
+                world.remove_monster(monster)
+            if not DeathHandler.__is_entity_within_world_boundaries(monster):
+                world.remove_bullet(monster)
+        
+        player = world.player
+
+        if player.health <= 0:
+            raise DeadPlayerException
+        
+            

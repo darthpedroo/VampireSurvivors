@@ -17,7 +17,7 @@ from presentation.sprite import PlayerSprite
 
 def initialize_player():
     """Initializes the player object"""
-    x, y = 0, 0
+    x, y = 500, 500
     return Player(x, y, PlayerSprite(x, y))
 
 

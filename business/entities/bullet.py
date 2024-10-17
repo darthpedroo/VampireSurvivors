@@ -51,7 +51,7 @@ class Bullet(MovableEntity, IBullet):
 
     @property
     def damage_amount(self):
-        return 0.10
+        return 100
 
     def __str__(self):
         return f"Bullet(pos=({self._pos_x, self._pos_y}), dir=({self.__dir_x, self.__dir_y}))"
