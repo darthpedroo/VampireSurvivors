@@ -133,7 +133,6 @@ class IAttack(IMove):
 class IBullet(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for bullet entities."""
 
-
 class IExperienceGem(IUpdatable, IHasPosition):
     """Interface for experience gem entities."""
 

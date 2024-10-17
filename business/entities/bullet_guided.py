@@ -1,7 +1,7 @@
 """Module for a bullet entity that moves towards a target direction."""
 
 import math
-
+import pygame
 from business.entities.entity import MovableEntity
 from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
@@ -19,8 +19,8 @@ class BulletGuided(MovableEntity, IBullet):
         self.__dir_x, self.__dir_y = self.__calculate_direction((self.__mouse_pos[0] + world.get_camera().camera_rect[0]) - src_x, (self.__mouse_pos[1] + world.get_camera().camera_rect[1]) - src_y)
         self._logger.debug("Created %s", self)
         self._health = 500
-        print("self._camera.camera_rect[0]", world.get_camera().camera_rect[0])
-        
+
+
     def __get_mouse_position(self, world: IGameWorld) -> tuple[int,int] :
         return world.get_mouse_position()
 

@@ -1,6 +1,7 @@
 """Module for a bullet entity that moves towards a target direction."""
 
 import math
+import pygame
 
 from business.entities.entity import MovableEntity
 from business.entities.interfaces import IBullet
@@ -17,7 +18,7 @@ class Bullet(MovableEntity, IBullet):
         self.__dir_x, self.__dir_y = self.__calculate_direction(self.__nearest_enemy.pos_x - src_x, self.__nearest_enemy.pos_y - src_y)
         self._logger.debug("Created %s", self)
         self._health = 500
-        
+    
     def __get_nearest_enemy(self, world: IGameWorld):
         if not world.monsters:
             return

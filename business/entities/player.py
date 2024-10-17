@@ -7,13 +7,8 @@ from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
-from business.entities.item_factory import ProjectileFactory
+from business.entities.weapon_handler import WeaponHandler, GunWithBullets
 from presentation.sprite import Sprite
-
-
-
-
-
 
 class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """Player entity.
@@ -22,7 +17,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """
 
     BASE_DAMAGE = 5
-    BASE_SHOOT_COOLDOWN = 2000
 
     def __init__(self, pos_x: int, pos_y: int, sprite: Sprite):
         super().__init__(pos_x, pos_y, 5, sprite)
@@ -32,7 +26,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__experience = 0
         self.__level = 1
         self._logger.debug("Created %s", self)
-        self._list_of_items_to_attack = ["Bullet_Guided", "Bullet"]
+        self.__weapon_handler = WeaponHandler([GunWithBullets("Bullet_Guided",500,10), GunWithBullets("Bullet",7000,10)]) #Tratar de usar dependency Injection
         
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
@@ -70,20 +64,11 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             self.__experience -= self.experience_to_next_level
             self.__level += 1
     
-            
-    def shoot_all_projectiles(self, world: IGameWorld):
-        for item in self._list_of_items_to_attack:
-            projectile_factory = ProjectileFactory()
-            item = projectile_factory.create_item(item,self.pos_x, self.pos_y, 10,world)
-            world.add_bullet(item)
-        
-    @property
-    def __shoot_cooldown(self):
-        return Player.BASE_SHOOT_COOLDOWN
-
     def update(self, world: IGameWorld):
         super().update(world)
+        
         current_time = pygame.time.get_ticks()
-        if current_time - self.__last_shot_time >= self.__shoot_cooldown:
-            self.shoot_all_projectiles(world)
-            self.__last_shot_time = current_time
+        try:
+            self.__weapon_handler.use_every_weapon(self.pos_x, self.pos_y, world, current_time)
+        except AttributeError as error:
+            print("Loading...", error)
