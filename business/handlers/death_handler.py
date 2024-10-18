@@ -17,6 +17,7 @@ class DeathHandler:
 
     @staticmethod
     def check_deaths(world: IGameWorld):
+        player = world.player
         """Check if any entities have died and remove them from the game world.
 
         Args:
@@ -29,15 +30,19 @@ class DeathHandler:
                 world.remove_bullet(bullet)
         
 
+
         for monster in world.monsters:
             if monster.health <=0:
                 world.remove_monster(monster)
-            if not DeathHandler.__is_entity_within_world_boundaries(monster):
-                world.remove_bullet(monster)
-        
-        player = world.player
+                
+                gem = monster.drop_loot(player.luck)
+                if gem is not None:
+                    world.add_experience_gem(gem)
+            
 
         if player.health <= 0:
             raise DeadPlayerException
-        
+
+        if not DeathHandler.__is_entity_within_world_boundaries(player):
+            player.set_position(500,500)         # Cambiar esto a la posicion 
             

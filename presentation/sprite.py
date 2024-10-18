@@ -99,14 +99,19 @@ class MonsterSprite(Sprite):
 
 class BulletSprite(Sprite):
     """A class representing the bullet sprite."""
-
-    def __init__(self, pos_x: float, pos_y: float, size: int = 100):  # Default size is now 100 (10x bigger)
-        # Create a surface for the bullet sprite with the new size
-        image = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)  # Double the size for width and height
-        pygame.draw.circle(image, (255, 255, 0), (size, size), size // 2)  # Draw circle with 10x the size
-        rect = image.get_rect(center=(int(pos_x), int(pos_y)))  # Position the bullet at the given coordinates
+    ASSET = "./assets/joker-dc.png"
+    
+    def __init__(self, pos_x: float, pos_y: float, size: int = 100):  # Default size is now 100
+        # Create a surface for the bullet sprite with the specified size
+        image: pygame.Surface = pygame.image.load(BulletSprite.ASSET).convert_alpha()
+        
+        # Scale the image to the desired size
+        image = pygame.transform.scale(image, (size, size))  # Scale to size x size
+        
+        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))  # Position the bullet at the given coordinates
 
         super().__init__(image, rect)
+
 
 class BulletGuidedSprite(Sprite):
     def __init__(self, pos_x: float, pos_y: float, size: int = 20):  # Default size is now 100 (10x bigger)
@@ -127,7 +132,7 @@ class ExperienceGemSprite(Sprite):
 
     def __init__(self, pos_x: float, pos_y: float):
         tileset = Tileset(
-            ExperienceGemSprite.ASSET, settings.TILE_HEIGHT, settings.TILE_HEIGHT, 2, 2
+            self.ASSET, settings.TILE_HEIGHT, settings.TILE_HEIGHT, 2, 2
         )
         image: pygame.Surface = tileset.get_tile(0)
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))

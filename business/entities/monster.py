@@ -1,9 +1,11 @@
 """This module contains the Monster class, which represents a monster entity in the game."""
 
+import random
 from typing import List
 
 from business.entities.entity import MovableEntity
 from business.entities.interfaces import IDamageable, IHasPosition, IHasSprite, IMonster
+from business.entities.experience_gem import ExperienceGem
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.interfaces import IGameWorld
 from presentation.sprite import Sprite
@@ -74,3 +76,13 @@ class Monster(MovableEntity, IMonster):
     def take_damage(self, amount):
         self.__health = max(0, self.__health - amount)
         self.sprite.take_damage()
+
+    def drop_loot(self, luck:int):
+        starting_number = 1
+        true_luck = 100 - luck
+        drop_rate = random.randint(starting_number, true_luck)
+        if drop_rate <= 40:
+            amount_of_experience = 2 #Esto habría que sacarlo de un json con los datos de cada Gema.
+            gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
+            return gem
+        return None

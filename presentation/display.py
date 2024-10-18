@@ -120,6 +120,20 @@ class Display(IDisplay):
 
         # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (10, 50))
+
+    def draw_experience(self):
+        experience = self.__world.player.experience
+        level = self.__world.player.level
+        
+        # Define the font and size
+        font = pygame.font.SysFont(None, 36)
+
+        # Render the text for mouse position
+        position_text = f"Experience: ({experience} , Level: {level})"
+        text_surface = font.render(position_text, True, (255, 255, 255))
+
+        # Draw the text on the screen at a fixed position
+        self.__screen.blit(text_surface, (500, 500))
         
     def render_frame(self):
         # Update the camera to follow the player
@@ -149,6 +163,7 @@ class Display(IDisplay):
         # Draw the player
         self.__draw_player()
         self.__draw_mouse_position()
+        self.draw_experience()
 
         # Update the display
         pygame.display.flip()

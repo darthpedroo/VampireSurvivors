@@ -1,6 +1,6 @@
 # Display
 GAME_TITLE = "Generic Game"
-FPS = 60
+FPS = 30
 
 # Tile dimensions
 TILE_HEIGHT = 48  # 32

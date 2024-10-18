@@ -25,11 +25,33 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__last_shot_time = pygame.time.get_ticks()
         self.__experience = 0
         self.__level = 1
+        self.__luck = 1
         self._logger.debug("Created %s", self)
         self.__weapon_handler = WeaponHandler([GunWithBullets("Bullet_Guided",1000,20), GunWithBullets("Bullet",7000,10)]) #Tratar de usar dependency Injection
         
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
+
+    def set_position(self, pos_x:int, pos_y:int):
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+    
+    @property
+    def pos_x(self) -> float:
+        return self._pos_x
+
+    @pos_x.setter
+    def pos_x(self, value: float) -> None:
+        self._pos_x = value
+
+    @property
+    def pos_y(self) -> float:
+        return self._pos_y
+
+    @pos_y.setter
+    def pos_y(self, value: float) -> None:
+        self._pos_y = value
+
 
     @property
     def experience(self):
@@ -37,7 +59,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        return 1
+        return self.__level * 30
 
     @property
     def level(self):
@@ -50,6 +72,10 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     @property
     def health(self) -> int:
         return self.__health
+
+    @property
+    def luck(self) -> int:
+        return self.__luck
 
     def take_damage(self, amount):
         self.__health = max(0, self.__health - amount)

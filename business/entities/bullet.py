@@ -17,7 +17,7 @@ class Bullet(MovableEntity, IBullet):
         self.__nearest_enemy = self.__get_nearest_enemy(world)
         self.__dir_x, self.__dir_y = self.__calculate_direction(self.__nearest_enemy.pos_x - src_x, self.__nearest_enemy.pos_y - src_y)
         self._logger.debug("Created %s", self)
-        self._health = 500
+        self._health = 5000
     
     def __get_nearest_enemy(self, world: IGameWorld):
         if not world.monsters:
@@ -51,7 +51,9 @@ class Bullet(MovableEntity, IBullet):
 
     @property
     def damage_amount(self):
-        return 100
+        return 500
 
     def __str__(self):
         return f"Bullet(pos=({self._pos_x, self._pos_y}), dir=({self.__dir_x, self.__dir_y}))"
+
+    

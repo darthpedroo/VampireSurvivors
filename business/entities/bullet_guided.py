@@ -32,7 +32,7 @@ class BulletGuided(MovableEntity, IBullet):
 
 
     @property
-    def health(self) -> int: #Why does it have health ? :v
+    def health(self) -> int: 
         return self._health
 
     def take_damage(self, amount):

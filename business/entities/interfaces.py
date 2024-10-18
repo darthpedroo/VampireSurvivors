@@ -71,6 +71,17 @@ class IHasPosition(IHasSprite):
         Returns:
             float: The x-coordinate of the entity.
         """
+        pass
+
+    @pos_x.setter
+    @abstractmethod
+    def pos_x(self, value: float) -> None:
+        """Set the x-coordinate of the entity.
+
+        Args:
+            value (float): The new x-coordinate of the entity.
+        """
+        pass
 
     @property
     @abstractmethod
@@ -80,7 +91,17 @@ class IHasPosition(IHasSprite):
         Returns:
             float: The y-coordinate of the entity.
         """
+        pass
 
+    @pos_y.setter
+    @abstractmethod
+    def pos_y(self, value: float) -> None:
+        """Set the y-coordinate of the entity.
+
+        Args:
+            value (float): The new y-coordinate of the entity.
+        """
+        pass
 
 class ICanMove(IHasPosition):
     """Interface for entities that can move."""
@@ -108,6 +129,10 @@ class ICanMove(IHasPosition):
 
 class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for monster entities."""
+
+    def drop_loot(self):
+        pass
+
 
 class IMove(ABC):
     """Interface for the different moves/actions a player can perform. Attack / Heal / Ulti
