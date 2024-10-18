@@ -12,7 +12,7 @@ class DeathHandler:
     @staticmethod
     def __is_entity_within_world_boundaries(entity):
         return (
-            0 <= entity.pos_x <= settings.WORLD_WIDTH and 0 <= entity.pos_y <= settings.WORLD_HEIGHT
+            30 <= entity.pos_x <= (settings.WORLD_WIDTH - 30) and 30 <= entity.pos_y <= (settings.WORLD_HEIGHT - 30)
         )
 
     @staticmethod
@@ -44,5 +44,6 @@ class DeathHandler:
             raise DeadPlayerException
 
         if not DeathHandler.__is_entity_within_world_boundaries(player):
-            player.set_position(500,500)         # Cambiar esto a la posicion 
+            player.pos_x = max(30, min(player.pos_x, settings.WORLD_WIDTH - 30))
+            player.pos_y = max(30, min(player.pos_y, settings.WORLD_HEIGHT - 30))
             
