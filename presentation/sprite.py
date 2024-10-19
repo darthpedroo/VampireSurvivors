@@ -129,6 +129,7 @@ class PlayerSprite(Sprite):
         self.__frame_delay = 10
         self.pos_x = pos_x
         self.pos_y = pos_y
+        self.direction = None
         
         self._image = pygame.image.load(PlayerSprite.ASSET_IDLE_UP[0]).convert_alpha()
         self._image = pygame.transform.scale(self._image, settings.TILE_DIMENSION)
@@ -145,36 +146,20 @@ class PlayerSprite(Sprite):
         self._image = image
         super().__init__(self._image, self._rect)
 
-    def change_to_idle_up_sprite(self):
+    def change_to_idle_sprite(self, direction: str):
         self.__frame_count += 1
+        self.direction = direction
 
         if self.__frame_count >= self.__frame_delay:
             self.__current_idle_index = (self.__current_idle_index + 1) % 2
-            self.__load_idle_image(PlayerSprite.ASSET_IDLE_UP)
-            self.__frame_count = 0 
-
-    def change_to_idle_down_sprite(self):
-        self.__frame_count += 1
-
-        if self.__frame_count >= self.__frame_delay:
-            self.__current_idle_index = (self.__current_idle_index + 1) % 2
-            self.__load_idle_image(PlayerSprite.ASSET_IDLE_DOWN)
-            self.__frame_count = 0 
-
-    def change_to_idle_right_sprite(self):
-        self.__frame_count += 1
-
-        if self.__frame_count >= self.__frame_delay:
-            self.__current_idle_index = (self.__current_idle_index + 1) % 2
-            self.__load_idle_image(PlayerSprite.ASSET_IDLE_RIGHT)
-            self.__frame_count = 0 
-
-    def change_to_idle_left_sprite(self):
-        self.__frame_count += 1
-
-        if self.__frame_count >= self.__frame_delay:
-            self.__current_idle_index = (self.__current_idle_index + 1) % 2
-            self.__load_idle_image(PlayerSprite.ASSET_IDLE_LEFT)
+            if direction == "up":
+                self.__load_idle_image(PlayerSprite.ASSET_IDLE_UP)
+            if direction == "down":
+                self.__load_idle_image(PlayerSprite.ASSET_IDLE_DOWN)
+            if direction == "left":
+                self.__load_idle_image(PlayerSprite.ASSET_IDLE_LEFT)
+            if direction == "right":
+                self.__load_idle_image(PlayerSprite.ASSET_IDLE_RIGHT)            
             self.__frame_count = 0 
 
     def __load_walk_image(self, direction_assets: list):
@@ -186,33 +171,20 @@ class PlayerSprite(Sprite):
         super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 4
 
-    def change_to_walk_up_sprite(self):
+    def change_to_walk_sprite(self, direction: str):
         self.__frame_count += 1
+        self.direction = direction
 
         if self.__frame_count >= self.__frame_delay:
-            self.__load_walk_image(PlayerSprite.ASSET_WALK_UP)
+            if direction == "up":
+                self.__load_walk_image(PlayerSprite.ASSET_WALK_UP)
+            if direction == "down":
+                self.__load_walk_image(PlayerSprite.ASSET_WALK_DOWN)
+            if direction == "left":
+                self.__load_walk_image(PlayerSprite.ASSET_WALK_LEFT)
+            if direction == "right":
+                self.__load_walk_image(PlayerSprite.ASSET_WALK_RIGHT)
             self.__frame_count = 0 
-
-    def change_to_walk_down_sprite(self):
-        self.__frame_count += 1
-
-        if self.__frame_count >= self.__frame_delay:
-            self.__load_walk_image(PlayerSprite.ASSET_WALK_DOWN)
-            self.__frame_count = 0
-
-    def change_to_walk_right_sprite(self):
-        self.__frame_count += 1
-
-        if self.__frame_count >= self.__frame_delay:
-            self.__load_walk_image(PlayerSprite.ASSET_WALK_RIGHT)
-            self.__frame_count = 0
-
-    def change_to_walk_left_sprite(self):
-        self.__frame_count += 1
-
-        if self.__frame_count >= self.__frame_delay:
-            self.__load_walk_image(PlayerSprite.ASSET_WALK_LEFT)
-            self.__frame_count = 0
 
     @property
     def image(self):

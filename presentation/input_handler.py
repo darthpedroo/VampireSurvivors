@@ -17,34 +17,34 @@ class InputHandler(IInputHandler):
         is_moving = False
         if keys[pygame.K_w]:
             self.__direction = "up"
-            self.__world.player.sprite.change_to_walk_up_sprite()
+            self.__world.player.sprite.change_to_walk_sprite("up")
             self.__world.player.move(0, -1)
             is_moving = True
         if keys[pygame.K_s]:
             self.__direction = "down"
-            self.__world.player.sprite.change_to_walk_down_sprite()
+            self.__world.player.sprite.change_to_walk_sprite("down")
             self.__world.player.move(0, 1)
             is_moving = True
         if keys[pygame.K_a]:
             self.__direction = "left"
-            self.__world.player.sprite.change_to_walk_left_sprite()
+            self.__world.player.sprite.change_to_walk_sprite("left")
             self.__world.player.move(-1, 0)
             is_moving = True
         if keys[pygame.K_d]:
             self.__direction = "right"
-            self.__world.player.sprite.change_to_walk_right_sprite()
+            self.__world.player.sprite.change_to_walk_sprite("right")
             self.__world.player.move(1, 0)
             is_moving = True
 
         if is_moving == False:
             if self.__direction == "up":
-                self.__world.player.sprite.change_to_idle_up_sprite()
+                self.__world.player.sprite.change_to_idle_sprite("up")
             if self.__direction == "down":
-                self.__world.player.sprite.change_to_idle_down_sprite()
+                self.__world.player.sprite.change_to_idle_sprite("down")
             if self.__direction == "left":
-                self.__world.player.sprite.change_to_idle_left_sprite()
+                self.__world.player.sprite.change_to_idle_sprite("left")
             if self.__direction == "right":
-                self.__world.player.sprite.change_to_idle_right_sprite()
+                self.__world.player.sprite.change_to_idle_sprite("right")
         
 
     def process_input(self):
