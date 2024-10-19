@@ -129,16 +129,21 @@ class PlayerSprite(Sprite):
         self.__frame_delay = 10
         self.pos_x = pos_x
         self.pos_y = pos_y
-        self.__load_idle_image(PlayerSprite.ASSET_IDLE_UP)
+        
+        self._image = pygame.image.load(PlayerSprite.ASSET_IDLE_UP[0]).convert_alpha()
+        self._image = pygame.transform.scale(self._image, settings.TILE_DIMENSION)
+        
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
+        
         super().__init__(self._image, self._rect)
+
 
     def __load_idle_image(self, direction_assets: list):
         image_path = direction_assets[self.__current_idle_index]
         image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
         self._image = image
-
+        super().__init__(self._image, self._rect)
 
     def change_to_idle_up_sprite(self):
         self.__frame_count += 1
@@ -178,7 +183,7 @@ class PlayerSprite(Sprite):
         image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
         self._image = image
-
+        super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 4
 
     def change_to_walk_up_sprite(self):
@@ -208,6 +213,10 @@ class PlayerSprite(Sprite):
         if self.__frame_count >= self.__frame_delay:
             self.__load_walk_image(PlayerSprite.ASSET_WALK_LEFT)
             self.__frame_count = 0
+
+    @property
+    def image(self):
+        return self._image
 
 class MonsterSprite(Sprite):
     """A class representing the monster sprite."""
