@@ -60,7 +60,6 @@ class ManualGun(Weapon):
         projectile = projectile_factory.create_item(self.__bullet_name, player_pos_x, player_pos_y, bullet_direction_x, bullet_direction_y, self.__speed, world)
         if self.is_cooldown_over(current_time):
             world.add_bullet(projectile)
-            print("ADDING BULELT. " ,projectile._pos_x, projectile._pos_y)
             self.__last_shot_time = current_time
     
     def upgrade_next_level(self):

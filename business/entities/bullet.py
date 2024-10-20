@@ -6,14 +6,14 @@ import pygame
 from business.entities.entity import MovableEntity
 from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
-from presentation.sprite import BulletSprite
+from presentation.sprite import BulletGuidedSprite
 
 
 class Bullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
     def __init__(self, pos_x, pos_y , dir_x, dir_y, speed, world):
-        super().__init__(pos_x, pos_y, speed, BulletSprite(src_x, src_y))
+        super().__init__(pos_x, pos_y, speed, BulletGuidedSprite(pos_x, pos_y))
         self.__dir_x = dir_x 
         self.__dir_y = dir_y
         self._logger.debug("Created %s", self)

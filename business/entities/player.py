@@ -27,7 +27,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__level = 1
         self.__luck = 1
         self._logger.debug("Created %s", self)
-        self.__weapon_handler = WeaponHandler([AutoAimGun("Bullet_Guided",1000,10)]) #Tratar de usar dependency Injection
+        self.__weapon_handler = WeaponHandler([AutoAimGun("Bullet_Guided",5000,10), ManualGun("Bullet", 500, 10)]) #Tratar de usar dependency Injection
         
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
