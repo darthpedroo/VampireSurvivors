@@ -36,7 +36,7 @@ def main():
 
     # Logging configuration
     logging.basicConfig(
-        level=logging.DEBUG,  # Change between INFO, WARNING or DEBUG as needed
+        level=logging.INFO,  # Change between INFO, WARNING or DEBUG as needed
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 

@@ -7,7 +7,7 @@ from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
-from business.entities.weapon_handler import WeaponHandler, GunWithBullets
+from business.entities.weapon_handler import WeaponHandler, ManualGun, AutoAimGun
 from presentation.sprite import Sprite
 
 class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
@@ -27,7 +27,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__level = 1
         self.__luck = 1
         self._logger.debug("Created %s", self)
-        self.__weapon_handler = WeaponHandler([GunWithBullets("Bullet_Guided",1000,20), GunWithBullets("Bullet",7000,10)]) #Tratar de usar dependency Injection
+        self.__weapon_handler = WeaponHandler([AutoAimGun("Bullet_Guided",1000,10)]) #Tratar de usar dependency Injection
         
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"

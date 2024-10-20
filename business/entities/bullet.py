@@ -12,32 +12,13 @@ from presentation.sprite import BulletSprite
 class Bullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, src_x, src_y, speed, world):
-        super().__init__(src_x, src_y, speed, BulletSprite(src_x, src_y))
-        self.__nearest_enemy = self.__get_nearest_enemy(world)
-        self.__dir_x, self.__dir_y = self.__calculate_direction(self.__nearest_enemy.pos_x - src_x, self.__nearest_enemy.pos_y - src_y)
+    def __init__(self, pos_x, pos_y , dir_x, dir_y, speed, world):
+        super().__init__(pos_x, pos_y, speed, BulletSprite(src_x, src_y))
+        self.__dir_x = dir_x 
+        self.__dir_y = dir_y
         self._logger.debug("Created %s", self)
         self._health = 5000
     
-    def __get_nearest_enemy(self, world: IGameWorld):
-        if not world.monsters:
-            return
-        
-        monster = min(
-            world.monsters,
-            key=lambda monster: (
-                (monster.pos_x - self.pos_x) ** 2 + (monster.pos_y - self.pos_y) ** 2
-            ),
-        )
-        
-        return monster
-
-    def __calculate_direction(self, dx, dy):
-        distance = math.hypot(dx, dy)
-        if distance != 0:
-            return dx / distance, dy / distance
-        return 0, 0
-
     @property
     def health(self) -> int: #Why does it have health ? :v
         return self._health
@@ -46,7 +27,6 @@ class Bullet(MovableEntity, IBullet):
         self._health -= amount
 
     def update(self, _: IGameWorld):
-        # Move bullet towards the target direction
         self.move(self.__dir_x, self.__dir_y)
 
     @property
