@@ -132,7 +132,7 @@ class PlayerSprite(Sprite):
         self.direction = None
         
         self._image = pygame.image.load(PlayerSprite.ASSET_IDLE_UP[0]).convert_alpha()
-        self._image = pygame.transform.scale(self._image, settings.TILE_DIMENSION)
+        self._image = pygame.transform.scale(self._image, (40, 50))
         
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         
@@ -142,7 +142,7 @@ class PlayerSprite(Sprite):
     def __load_idle_image(self, direction_assets: list):
         image_path = direction_assets[self.__current_idle_index]
         image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
+        image = pygame.transform.scale(image, (40, 50))
         self._image = image
         super().__init__(self._image, self._rect)
 
@@ -166,7 +166,7 @@ class PlayerSprite(Sprite):
         image_path = direction_assets[self.__current_walk_index]
         
         image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
+        image = pygame.transform.scale(image, (40, 50))
         self._image = image
         super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 4
