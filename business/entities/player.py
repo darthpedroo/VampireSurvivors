@@ -89,7 +89,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         while self.__experience >= self.experience_to_next_level:
             self.__experience -= self.experience_to_next_level
             self.__level += 1
-    
+
     def update(self, world: IGameWorld):
         super().update(world)
         
