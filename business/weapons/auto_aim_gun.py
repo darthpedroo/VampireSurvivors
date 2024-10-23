@@ -3,12 +3,14 @@ from business.weapons.weapon import Weapon
 from business.world.interfaces import IGameWorld
 from business.entities.item_factory import ProjectileFactory
 
+
 class AutoAimGun(Weapon):
     def __init__(self, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
         self.__last_shot_time = 0
         self.__base_shoot_cooldown = bullet_cooldown
         self.__bullet_name = bullet_name
         self.__speed = bullet_speed
+        self.__level = 1
 
     def set_last_shot_time(self, new_time):
         self.__last_shot_time = new_time
@@ -50,4 +52,5 @@ class AutoAimGun(Weapon):
             print("There are no monsters yet...")
 
     def upgrade_next_level(self):
+
         pass

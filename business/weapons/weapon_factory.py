@@ -15,3 +15,8 @@ class WeaponFactory:
             bullet_cooldown = 50
             bullet_speed = 10
             return ManualGun(bullet_name, bullet_cooldown, bullet_speed)
+        if weapon_type == "Manual_Joker":
+            bullet_name = "Joker_Bullet"
+            bullet_cooldown = 100
+            bullet_speed = 10
+            return ManualGun(bullet_name, bullet_cooldown, bullet_speed)
