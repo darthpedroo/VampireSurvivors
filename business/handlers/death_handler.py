@@ -12,7 +12,8 @@ class DeathHandler:
     @staticmethod
     def __is_entity_within_world_boundaries(entity):
         return (
-            30 <= entity.pos_x <= (settings.WORLD_WIDTH - 30) and 30 <= entity.pos_y <= (settings.WORLD_HEIGHT - 30)
+            30 <= entity.pos_x <= (
+                settings.WORLD_WIDTH - 30) and 30 <= entity.pos_y <= (settings.WORLD_HEIGHT - 30)
         )
 
     @staticmethod
@@ -28,22 +29,19 @@ class DeathHandler:
                 world.remove_bullet(bullet)
             if not DeathHandler.__is_entity_within_world_boundaries(bullet):
                 world.remove_bullet(bullet)
-        
-
 
         for monster in world.monsters:
-            if monster.health <=0:
+            if monster.health <= 0:
                 world.remove_monster(monster)
-                
                 gem = monster.drop_loot(player.luck)
                 if gem is not None:
                     world.add_experience_gem(gem)
-            
 
         if player.health <= 0:
             raise DeadPlayerException
 
         if not DeathHandler.__is_entity_within_world_boundaries(player):
-            player.pos_x = max(30, min(player.pos_x, settings.WORLD_WIDTH - 30))
-            player.pos_y = max(30, min(player.pos_y, settings.WORLD_HEIGHT - 30))
-            
+            player.pos_x = max(
+                30, min(player.pos_x, settings.WORLD_WIDTH - 30))
+            player.pos_y = max(
+                30, min(player.pos_y, settings.WORLD_HEIGHT - 30))

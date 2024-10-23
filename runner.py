@@ -26,6 +26,7 @@ def initialize_game_world(display):
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
+    player._weapon_handler.add_weapon("Manual_Gun")
     return GameWorld(monster_spawner, tile_map, player, display)
 
 
