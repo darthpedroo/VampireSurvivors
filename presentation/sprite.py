@@ -190,18 +190,29 @@ class PlayerSprite(Sprite):
     def image(self):
         return self._image
 
-class MonsterSprite(Sprite):
+class ZombieSprite(Sprite):
     """A class representing the monster sprite."""
 
-    ASSET = "./assets/monster.png"
+    ASSET = "./assets/zombie.png"
 
     def __init__(self, pos_x: float, pos_y: float):
-        image: pygame.Surface = pygame.image.load(MonsterSprite.ASSET).convert_alpha()
+        image: pygame.Surface = pygame.image.load(ZombieSprite.ASSET).convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
         rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
 
+class SpiderSprite(Sprite):
+    """A class representing the monster sprite."""
+
+    ASSET = "./assets/spider.png"
+
+    def __init__(self, pos_x: float, pos_y: float):
+        image: pygame.Surface = pygame.image.load(SpiderSprite.ASSET).convert_alpha()
+        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
+        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+
+        super().__init__(image, rect)
 
 class BulletSprite(Sprite):
     """A class representing the bullet sprite."""

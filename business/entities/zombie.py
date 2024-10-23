@@ -11,7 +11,7 @@ from business.world.interfaces import IGameWorld
 from presentation.sprite import Sprite
 
 
-class Monster(MovableEntity, IMonster):
+class Zombie(MovableEntity, IMonster):
     """A monster entity in the game."""
 
     def __init__(self, src_x: int, src_y: int, sprite: Sprite):
@@ -67,7 +67,7 @@ class Monster(MovableEntity, IMonster):
         super().update(world)
 
     def __str__(self):
-        return f"Monster(hp={self.health}, pos={self.pos_x, self.pos_y})"
+        return f"Zombie(hp={self.health}, pos={self.pos_x, self.pos_y})"
 
     @property
     def health(self) -> int:
