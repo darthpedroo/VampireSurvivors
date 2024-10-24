@@ -7,15 +7,43 @@ from business.entities.item_factory import ProjectileFactory
 class ManualGun(Weapon):
     def __init__(self, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
         self.__last_shot_time = 0
-        self.__base_shoot_cooldown = bullet_cooldown
+        self._base_shoot_cooldown = bullet_cooldown
         self.__bullet_name = bullet_name
         self.__speed = bullet_speed
+        self.__level = 2
+        self._damage_multiplier = 1
+        self.__upgrades = [{"NAME":"Level 1",
+            "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
+            "ATTRIBUTE": "_base_shoot_cooldown",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 0.1  
+            },
+            {"NAME":"Level 2",
+            "DESCRIPTION": "INCREASES DAMAGE",
+            "ATTRIBUTE": "_damage_multiplier",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 2       
+            }]
+        
+        self.__load_upgrades()
+    
+    def __load_upgrades(self):
+        for level in range(self.__level):
+            self.upgrade_level(level)
+            
+    def upgrade_level(self, level:int):
+        current_upgrade = self.__upgrades[level]
+        attribute_to_modify = current_upgrade.get('ATTRIBUTE')
+        new_value = current_upgrade.get('VALUE')
+        if current_upgrade.get('OPERATION') == 'MULTIPLICATION':
+            new_value = getattr(self, attribute_to_modify) * new_value
+            setattr(self,attribute_to_modify, new_value)
 
     def set_last_shot_time(self, new_time):
         self.__last_shot_time = new_time
 
     def is_cooldown_over(self, current_time):
-        return current_time - self.__last_shot_time >= self.__base_shoot_cooldown
+        return current_time - self.__last_shot_time >= self._base_shoot_cooldown
 
     def aim(self, world: IGameWorld, player_pos_x: int, player_pos_y: int):
         mouse_pos_x, mouse_pos_y = world.get_mouse_position()
