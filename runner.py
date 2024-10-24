@@ -26,6 +26,9 @@ def initialize_game_world(display):
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
+    player._weapon_handler.add_weapon("Manual_Joker")
+    # player._weapon_handler.add_weapon("Manual_Gun")
+    # player._weapon_handler.add_weapon("Auto_Joker")
     return GameWorld(monster_spawner, tile_map, player, display)
 
 
@@ -36,7 +39,7 @@ def main():
 
     # Logging configuration
     logging.basicConfig(
-        level=logging.DEBUG,  # Change between INFO, WARNING or DEBUG as needed
+        level=logging.INFO,  # Change between INFO, WARNING or DEBUG as needed
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 

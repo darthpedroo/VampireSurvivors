@@ -8,7 +8,13 @@
             "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
             "ATTRIBUTE": "__base_shoot_cooldown",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": -0.1             
+            "VALUE": 0.9  
+            },
+            {"NAME":"Level 2",
+            "DESCRIPTION": "INCREASES DAMAGE",
+            "ATTRIBUTE": "damage",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 2       
             }
         ]
     },
