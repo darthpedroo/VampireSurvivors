@@ -85,12 +85,16 @@ class Spider(MovableEntity, IMonster):
 
         monsters = [m for m in world.monsters if m != self]
         dx, dy = direction_x * self.speed, direction_y * self.speed
-        if self.__movement_collides_with_entities(dx, dy, monsters) == None:
+        if self.__movement_collides_with_entities(dx, dy, monsters) == None and self.__can_move == True:
             self.move(direction_x, direction_y)
-        else:
-            e1, e2 = self.__movement_collides_with_entities(dx, dy, monsters)
-            nearest_enemy = self.__get_nearest_enemy(e1, e2,)
-            nearest_enemy.move(direction_x, direction_y)
+        if self.__movement_collides_with_entities(dx, dy, monsters) != None:
+            collision = self.__movement_collides_with_entities(dx, dy, monsters)
+            if collision != None:
+                e1, e2 = self.__movement_collides_with_entities(dx, dy, monsters)
+                nearest_enemy = self.__get_nearest_enemy(e1, e2,)
+                if nearest_enemy == True:
+                    nearest_enemy.move(direction_x, direction_y)
+
         self.attack(world.player)
 
         super().update(world)
