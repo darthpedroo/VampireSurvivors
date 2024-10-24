@@ -12,12 +12,13 @@ from presentation.display import Display
 class BulletGuided(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self,pos_x, pos_y, dir_x, dir_y, speed, world):            
+    def __init__(self,pos_x, pos_y, dir_x, dir_y, speed, health, damage, world):            
         super().__init__(pos_x, pos_y, speed, BulletSprite(dir_x, dir_y))
         self.__dir_x  = dir_x
         self.__dir_y = dir_y
         self._logger.debug("Created %s", self)
-        self._health = 500
+        self._health = health
+        self._damage_amount = damage
 
     @property
     def health(self) -> int: 
@@ -32,7 +33,7 @@ class BulletGuided(MovableEntity, IBullet):
 
     @property
     def damage_amount(self):
-        return 2
+        return self._damage_amount
 
     def __str__(self):
         return f"Bullet(pos=({self._pos_x, self._pos_y}), dir=({self.__dir_x, self.__dir_y}))"

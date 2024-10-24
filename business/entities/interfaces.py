@@ -146,6 +146,26 @@ class IMove(ABC):
             entity (Entity): La entidad que realiza el movimiento
         """
 
+class IUpgradable(ABC):
+    """Interface for the items that can be upgraded"""
+
+    @abstractmethod
+    def upgrade_level(self, level:int):
+        """Adds the modification for the Upgradable"""
+        pass
+        
+    @abstractmethod
+    def upgrade_next_level(self):
+        """Increases level by one"""
+        pass
+    
+    @abstractmethod
+    def load_upgrades(self):
+        pass
+    
+    
+    
+
 class IAttack(IMove):
     def is_attack_critical(self):
         """Checks if the current attack is a critical one 

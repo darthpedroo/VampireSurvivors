@@ -12,7 +12,7 @@ class WeaponFactory:
             return AutoAimGun(bullet_name, bullet_cooldown, bullet_speed)
         if weapon_type == "Manual_Gun":
             bullet_name = "Bullet"
-            bullet_cooldown = 50
+            bullet_cooldown = 500
             bullet_speed = 10
             return ManualGun(bullet_name, bullet_cooldown, bullet_speed)
         if weapon_type == "Manual_Joker":
