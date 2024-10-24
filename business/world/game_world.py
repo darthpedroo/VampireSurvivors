@@ -29,6 +29,10 @@ class GameWorld(IGameWorld):
             self._paused = False
         else:
             self._paused = True
+
+    @property
+    def paused(self):
+        return self._paused
     
     def get_mouse_position(self):
         mouse_pos = pygame.mouse.get_pos()
