@@ -2,12 +2,12 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from business.entities.interfaces import IDamageable
-from business.entities.monster import Monster
+from business.entities.zombie import Zombie
 
 
 class TestMonster(unittest.TestCase):
     def setUp(self):
-        self.monster = Monster(5, 5, MagicMock())
+        self.monster = Zombie(5, 5, MagicMock())
 
     def test_attack(self):
         target_mock = MagicMock(spec=IDamageable)
