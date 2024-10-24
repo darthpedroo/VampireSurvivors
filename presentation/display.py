@@ -121,8 +121,6 @@ class Display(IDisplay):
         # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (10, 50))
 
-
-        
     def render_frame(self):
         # Update the camera to follow the player
         self.camera.update(self.__world.player.sprite.rect)
@@ -154,3 +152,6 @@ class Display(IDisplay):
 
         # Update the display
         pygame.display.flip()
+
+    def render_gui(self):
+        pass

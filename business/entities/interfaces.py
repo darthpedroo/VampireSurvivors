@@ -130,6 +130,7 @@ class ICanMove(IHasPosition):
 class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for monster entities."""
 
+    @abstractmethod
     def drop_loot(self):
         pass
 

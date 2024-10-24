@@ -17,8 +17,19 @@ class GameWorld(IGameWorld):
         self.tile_map: ITileMap = tile_map
         self.__monster_spawner: IMonsterSpawner = spawner
         self.__display = display
-        
-
+        self._paused = False
+    
+    def update_player(self,sprite_direction:str, x_mov:int, y_mov:int):
+        if not self._paused:
+            self.__player.sprite.change_to_walk_sprite(sprite_direction)
+            self.__player.move(x_mov, y_mov)
+    
+    def change_paused_state(self):
+        if self._paused:
+            self._paused = False
+        else:
+            self._paused = True
+    
     def get_mouse_position(self):
         mouse_pos = pygame.mouse.get_pos()
         return mouse_pos
@@ -27,15 +38,13 @@ class GameWorld(IGameWorld):
         return self.__display.camera        
 
     def update(self):
-        self.player.update(self)
-        
-        for monster in self.monsters:
-            monster.update(self)
-            
-        for bullet in self.__bullets:
-            bullet.update(self)
-
-        self.__monster_spawner.update(self)
+        if not self._paused:
+            self.player.update(self)
+            for monster in self.monsters:
+                monster.update(self)
+            for bullet in self.__bullets:
+                bullet.update(self)
+            self.__monster_spawner.update(self)
 
     def add_monster(self, monster: IMonster):
         self.__monsters.append(monster)

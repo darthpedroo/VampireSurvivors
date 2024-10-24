@@ -17,26 +17,30 @@ class InputHandler(IInputHandler):
         is_moving = False
         if keys[pygame.K_w]:
             self.__direction = "up"
-            self.__world.player.sprite.change_to_walk_sprite("up")
-            self.__world.player.move(0, -1)
+            x_dir = 0
+            y_dir = -1
+            self.__world.update_player(self.__direction, x_dir,y_dir)
             is_moving = True
         if keys[pygame.K_s]:
             self.__direction = "down"
-            self.__world.player.sprite.change_to_walk_sprite("down")
-            self.__world.player.move(0, 1)
+            x_dir = 0
+            y_dir = 1
+            self.__world.update_player(self.__direction, x_dir,y_dir)
             is_moving = True
         if keys[pygame.K_a]:
             self.__direction = "left"
-            self.__world.player.sprite.change_to_walk_sprite("left")
-            self.__world.player.move(-1, 0)
+            x_dir = -1
+            y_dir = 0
+            self.__world.update_player(self.__direction, x_dir,y_dir)
             is_moving = True
         if keys[pygame.K_d]:
             self.__direction = "right"
-            self.__world.player.sprite.change_to_walk_sprite("right")
-            self.__world.player.move(1, 0)
+            x_dir = 1
+            y_dir = 0
+            self.__world.update_player(self.__direction, x_dir,y_dir)
             is_moving = True
-
-        if is_moving == False:
+            
+        if is_moving == False: #Ojo con esto. En el modo de pausa se mueve esto...|
             if self.__direction == "up":
                 self.__world.player.sprite.change_to_idle_sprite("up")
             if self.__direction == "down":
@@ -45,7 +49,6 @@ class InputHandler(IInputHandler):
                 self.__world.player.sprite.change_to_idle_sprite("left")
             if self.__direction == "right":
                 self.__world.player.sprite.change_to_idle_sprite("right")
-        
 
     def process_input(self):
         keys = pygame.key.get_pressed()

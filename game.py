@@ -33,7 +33,10 @@ class Game:
             if event.type == pygame.QUIT:  # pylint: disable=E1101
                 self.__logger.debug("QUIT event detected")
                 self.__running = False
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.__world.change_paused_state()
+    
     def run(self):
         """Starts the game loop."""
         self.__logger.debug("Starting the game loop.")
