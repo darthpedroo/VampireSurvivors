@@ -20,14 +20,16 @@ class Zombie(MovableEntity, IMonster):
         self.__damage = 10
         self.__attack_range = 50
         self.__attack_cooldown = CooldownHandler(1000)
+        self.__can_attack = False
         self._logger.debug("Created %s", self)
 
-    def attack(self, target: IDamageable):
+    def attack(self, target: IDamageable, direction_x: int, direction_y: int):
         """Attacks the target."""
         if not self.__attack_cooldown.is_action_ready():
             return
 
         if self._get_distance_to(target) < self.__attack_range:
+            self.__can_attack = True
             target.take_damage(self.damage_amount)
             self.__attack_cooldown.put_on_cooldown()
 
@@ -81,13 +83,31 @@ class Zombie(MovableEntity, IMonster):
 
         monsters = [m for m in world.monsters if m != self]
         dx, dy = direction_x * self.speed, direction_y * self.speed
-        if self.__movement_collides_with_entities(dx, dy, monsters) == None:
-            self.move(direction_x, direction_y)
+        if self.__can_attack == True:
+            if direction_x > 0:
+                self.sprite.change_to_attack_sprite("right")
+            if direction_y > 0:
+                self.sprite.change_to_attack_sprite("down")
+            elif direction_y < 0:
+                self.sprite.change_to_attack_sprite("up")
+            elif direction_x < 0:
+                self.sprite.change_to_attack_sprite("left")
         else:
-            e1, e2 = self.__movement_collides_with_entities(dx, dy, monsters)
-            nearest_enemy = self.__get_nearest_enemy(e1, e2,)
-            nearest_enemy.move(direction_x, direction_y)
-        self.attack(world.player)
+            if self.__movement_collides_with_entities(dx, dy, monsters) == None:
+                self.move(direction_x, direction_y)
+                if direction_x > 0:
+                    self.sprite.change_to_walk_sprite("right")
+                if direction_y > 0:
+                    self.sprite.change_to_walk_sprite("down")
+                elif direction_y < 0:
+                    self.sprite.change_to_walk_sprite("up")
+                elif direction_x < 0:
+                    self.sprite.change_to_walk_sprite("left")
+            else:
+                e1, e2 = self.__movement_collides_with_entities(dx, dy, monsters)
+                nearest_enemy = self.__get_nearest_enemy(e1, e2,)
+                nearest_enemy.move(direction_x, direction_y)
+        self.attack(world.player, direction_x, direction_y)
 
         super().update(world)
 

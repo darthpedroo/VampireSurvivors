@@ -75,52 +75,53 @@ class PlayerSprite(Sprite):
     """A class representing the player sprite."""
 
     ASSET_IDLE_UP = [
-        "./assets/Idle_Up_1.png",
-        "./assets/Idle_Up_2.png"
+        "./assets/player/Idle_Up_1.png",
+        "./assets/player/Idle_Up_2.png"
     ]
-    
+
     ASSET_IDLE_DOWN = [
-        "./assets/Idle_Down_1.png",
-        "./assets/Idle_Down_2.png"
+        "./assets/player/Idle_Down_1.png",
+        "./assets/player/Idle_Down_2.png"
     ]
-    
+
     ASSET_IDLE_RIGHT = [
-        "./assets/Idle_Right_1.png",
-        "./assets/Idle_Right_2.png"
+        "./assets/player/Idle_Right_1.png",
+        "./assets/player/Idle_Right_2.png"
     ]
-    
+
     ASSET_IDLE_LEFT = [
-        "./assets/Idle_Left_1.png",
-        "./assets/Idle_Left_2.png"
+        "./assets/player/Idle_Left_1.png",
+        "./assets/player/Idle_Left_2.png"
     ]
-    
+
     ASSET_WALK_UP = [
-        "./assets/Walk_Up_1.png",
-        "./assets/Walk_Up_2.png",
-        "./assets/Walk_Up_3.png",
-        "./assets/Walk_Up_4.png"
+        "./assets/player/Walk_Up_1.png",
+        "./assets/player/Walk_Up_2.png",
+        "./assets/player/Walk_Up_3.png",
+        "./assets/player/Walk_Up_4.png"
     ]
-    
+
     ASSET_WALK_DOWN = [
-        "./assets/Walk_Down_1.png",
-        "./assets/Walk_Down_2.png",
-        "./assets/Walk_Down_3.png",
-        "./assets/Walk_Down_4.png"
+        "./assets/player/Walk_Down_1.png",
+        "./assets/player/Walk_Down_2.png",
+        "./assets/player/Walk_Down_3.png",
+        "./assets/player/Walk_Down_4.png"
     ]
 
     ASSET_WALK_RIGHT = [
-        "./assets/Walk_Right_1.png",
-        "./assets/Walk_Right_2.png",
-        "./assets/Walk_Right_3.png",
-        "./assets/Walk_Right_4.png"
+        "./assets/player/Walk_Right_1.png",
+        "./assets/player/Walk_Right_2.png",
+        "./assets/player/Walk_Right_3.png",
+        "./assets/player/Walk_Right_4.png"
     ]
-    
+
     ASSET_WALK_LEFT = [
-        "./assets/Walk_Left_1.png",
-        "./assets/Walk_Left_2.png",
-        "./assets/Walk_Left_3.png",
-        "./assets/Walk_Left_4.png"
+        "./assets/player/Walk_Left_1.png",
+        "./assets/player/Walk_Left_2.png",
+        "./assets/player/Walk_Left_3.png",
+        "./assets/player/Walk_Left_4.png"
     ]
+
 
     def __init__(self, pos_x: float, pos_y: float):
         self.__current_idle_index = 0
@@ -191,16 +192,127 @@ class PlayerSprite(Sprite):
         return self._image
 
 class ZombieSprite(Sprite):
-    """A class representing the monster sprite."""
+    """A class representing the zombie sprite."""
 
-    ASSET = "./assets/zombie.png"
+    ASSET_WALK_UP = [
+        "./assets/zombie/Zombie_Walk_Up_1.png",
+        "./assets/zombie/Zombie_Walk_Up_2.png",
+        "./assets/zombie/Zombie_Walk_Up_3.png",
+        "./assets/zombie/Zombie_Walk_Up_4.png"
+    ]
+    
+    ASSET_WALK_DOWN = [
+        "./assets/zombie/Zombie_Walk_Down_1.png",
+        "./assets/zombie/Zombie_Walk_Down_2.png",
+        "./assets/zombie/Zombie_Walk_Down_3.png",
+        "./assets/zombie/Zombie_Walk_Down_4.png"
+    ]
+
+    ASSET_WALK_RIGHT = [
+        "./assets/zombie/Zombie_Walk_Right_1.png",
+        "./assets/zombie/Zombie_Walk_Right_2.png",
+        "./assets/zombie/Zombie_Walk_Right_3.png",
+        "./assets/zombie/Zombie_Walk_Right_4.png"
+    ]
+    
+    ASSET_WALK_LEFT = [
+        "./assets/zombie/Zombie_Walk_Left_1.png",
+        "./assets/zombie/Zombie_Walk_Left_2.png",
+        "./assets/zombie/Zombie_Walk_Left_3.png",
+        "./assets/zombie/Zombie_Walk_Left_4.png"
+    ]
+
+    ASSET_ATTACK_UP = [
+        "./assets/zombie/Zombie_Attack_Up_1.png",
+        "./assets/zombie/Zombie_Attack_Up_2.png",
+        "./assets/zombie/Zombie_Attack_Up_3.png",
+        "./assets/zombie/Zombie_Attack_Up_4.png"
+    ]
+
+    ASSET_ATTACK_DOWN = [
+        "./assets/zombie/Zombie_Attack_Down_1.png",
+        "./assets/zombie/Zombie_Attack_Down_2.png",
+        "./assets/zombie/Zombie_Attack_Down_3.png",
+        "./assets/zombie/Zombie_Attack_Down_4.png"
+    ]
+
+    ASSET_ATTACK_RIGHT = [
+        "./assets/zombie/Zombie_Attack_Right_1.png",
+        "./assets/zombie/Zombie_Attack_Right_2.png",
+        "./assets/zombie/Zombie_Attack_Right_3.png",
+        "./assets/zombie/Zombie_Attack_Right_4.png"
+    ]
+
+    ASSET_ATTACK_LEFT = [
+        "./assets/zombie/Zombie_Attack_Left_1.png",
+        "./assets/zombie/Zombie_Attack_Left_2.png",
+        "./assets/zombie/Zombie_Attack_Left_3.png",
+        "./assets/zombie/Zombie_Attack_Left_4.png"
+    ]
 
     def __init__(self, pos_x: float, pos_y: float):
-        image: pygame.Surface = pygame.image.load(ZombieSprite.ASSET).convert_alpha()
-        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
-        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+        self.__current_walk_index = 0
+        self.__current_attack_index = 0
+        self.__frame_count = 0
+        self.__frame_delay = 10
+        self.__attack_frame_delay = 8
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.direction = None
+        
+        self._image = pygame.image.load(ZombieSprite.ASSET_WALK_UP[0]).convert_alpha()
+        self._image = pygame.transform.scale(self._image, (60, 75))
+        
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
+        
+        super().__init__(self._image, self._rect)
 
-        super().__init__(image, rect)
+    def __load_walk_image(self, direction_assets: list):
+        image_path = direction_assets[self.__current_walk_index]
+        image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
+        image = pygame.transform.scale(image, (60, 75))
+        self._image = image
+        super().__init__(self._image, self._rect)
+        self.__current_walk_index = (self.__current_walk_index + 1) % 4
+
+    def __load_attack_image(self, direction_assets: list):
+        image_path = direction_assets[self.__current_attack_index]
+        image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
+        image = pygame.transform.scale(image, (60, 75))
+        self._image = image
+        super().__init__(self._image, self._rect)
+        self.__current_attack_index = (self.__current_attack_index + 1) % 4
+
+    def change_to_walk_sprite(self, direction: str):
+        self.__frame_count += 1
+        self.direction = direction
+
+        if self.__frame_count >= self.__frame_delay:
+            if direction == "up":
+                self.__load_walk_image(ZombieSprite.ASSET_WALK_UP)
+            if direction == "down":
+                self.__load_walk_image(ZombieSprite.ASSET_WALK_DOWN)
+            if direction == "left":
+                self.__load_walk_image(ZombieSprite.ASSET_WALK_LEFT)
+            if direction == "right":
+                self.__load_walk_image(ZombieSprite.ASSET_WALK_RIGHT)
+            self.__frame_count = 0
+
+    def change_to_attack_sprite(self, direction: str):
+        self.__frame_count += 1
+        self.direction = direction
+
+        if self.__frame_count >= self.__attack_frame_delay:
+            if direction == "up":
+                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_UP)
+            if direction == "down":
+                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_DOWN)
+            if direction == "left":
+                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_LEFT)
+            if direction == "right":
+                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_RIGHT)
+            self.__frame_count = 0
+
 
 class SpiderSprite(Sprite):
     """A class representing the monster sprite."""
