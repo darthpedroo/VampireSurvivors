@@ -45,6 +45,10 @@ class GameWorld(IGameWorld):
             self._paused = False
         else:
             self._paused = True
+
+    @property
+    def paused(self):
+        return self._paused
     
     def set_upgrading_state(self, state: bool):
         self._upgrading = state

@@ -40,7 +40,7 @@ class InputHandler(IInputHandler):
             self.__world.update_player(self.__direction, x_dir,y_dir)
             is_moving = True
             
-        if is_moving == False: #Ojo con esto. En el modo de pausa se mueve esto...|
+        if is_moving == False and self.__world.paused == False:
             if self.__direction == "up":
                 self.__world.player.sprite.change_to_idle_sprite("up")
             if self.__direction == "down":
