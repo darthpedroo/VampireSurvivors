@@ -26,3 +26,5 @@ BG_COLOR = (0, 0, 0)  # Black
 GRID_COLOR = (150, 150, 150)  # Grey
 PLAYER_BG_COLOR = (0, 255, 0)  # Green
 MONSTER_BG_COLOR = (255, 0, 0)  # Red
+WHITE_COLOUR = (255,255,255)
+

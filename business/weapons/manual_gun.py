@@ -6,7 +6,8 @@ from business.weapons.upgradable_weapon import UpgradableWeapon
 
 
 class ManualGun(Weapon, UpgradableWeapon):
-    def __init__(self, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
+    def __init__(self, weapon_name:str, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
+        self.weapon_name = weapon_name
         self.__last_shot_time = 0
         self._base_shoot_cooldown = bullet_cooldown
         self.__bullet_name = bullet_name
@@ -58,4 +59,7 @@ class ManualGun(Weapon, UpgradableWeapon):
             world.add_bullet(projectile)
             self.__last_shot_time = current_time
 
+    @property
+    def bullet_name(self):
+        return self.__bullet_name
     

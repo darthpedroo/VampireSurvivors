@@ -2,16 +2,13 @@ import math
 from business.weapons.weapon import Weapon
 from business.world.interfaces import IGameWorld
 from business.entities.item_factory import ProjectileFactory
-# The line `from business.weapons.upgradable_weapon import UpgradableWeapon` is importing the
-# `UpgradableWeapon` class from the `upgradable_weapon` module within the `business.weapons` package.
-# This allows the `ManualGun` class to inherit from the `UpgradableWeapon` class, meaning that
-# `ManualGun` will have access to the attributes and methods defined in `UpgradableWeapon`.
 from business.weapons.upgradable_weapon import UpgradableWeapon
 
 
 
 class AutoAimGun(Weapon, UpgradableWeapon):
-    def __init__(self, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
+    def __init__(self, weapon_name:str, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
+        self.weapon_name = weapon_name
         self.__last_shot_time = 0
         self._base_shoot_cooldown = bullet_cooldown
         self.__bullet_name = bullet_name
@@ -71,4 +68,7 @@ class AutoAimGun(Weapon, UpgradableWeapon):
         except TypeError:
             print("There are no monsters yet...")
 
+    @property
+    def bullet_name(self):
+        return self.__bullet_name
 

@@ -2,7 +2,6 @@
 
 import pygame
 
-from business.entities.bullet import Bullet
 from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
@@ -29,6 +28,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__luck = 1
         self._logger.debug("Created %s", self)
         self._weapon_handler = WeaponHandler()
+        self.__upgrading = False
 
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
@@ -59,7 +59,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        return self.__level * 30
+        return self.__level * 2
 
     @property
     def level(self):
@@ -89,9 +89,17 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         while self.__experience >= self.experience_to_next_level:
             self.__experience -= self.experience_to_next_level
             self.__level += 1
+            self.__upgrading = True
+            
+            
 
     def update(self, world: IGameWorld):
         super().update(world)
+        
+        if self.__upgrading:
+            world.set_upgrading_state(True)
+            world.set_paused_state(True)
+            
 
         current_time = pygame.time.get_ticks()
         try:

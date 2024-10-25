@@ -7,6 +7,10 @@ from business.world.game_world import GameWorld
 from presentation.camera import Camera
 from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
+from presentation.gui.menu_screen import MenuScreen
+from presentation.gui.button import Button
+
+
 
 
 class Display(IDisplay):
@@ -127,7 +131,7 @@ class Display(IDisplay):
 
         # Render the ground tiles
         self.__render_ground_tiles()
-
+        
         # Draw all the experience gems
         for gem in self.__world.experience_gems:
             if self.camera.camera_rect.colliderect(gem.sprite.rect):
@@ -149,9 +153,80 @@ class Display(IDisplay):
         # Draw the player
         self.__draw_player()
         self.__draw_mouse_position()
+        
+        if self.__world.paused and not self.__world.upgrading:
+            
+            self.render_pause_menu()
 
-        # Update the display
+        if self.__world.upgrading:
+            if len(self.__world._random_weapons_to_choose) == 0:
+                self.__world.add_random_weapons()
+                
+            
+            self.render_upgrade_menu(self.__world._random_weapons_to_choose)
+            
+
         pygame.display.flip()
 
-    def render_gui(self):
-        pass
+    
+        
+        
+    def render_pause_menu(self):
+        menu_width = settings.SCREEN_WIDTH
+        menu_height = settings.SCREEN_HEIGHT
+        menu_alpha_value = 128
+        menu_colour = settings.BG_COLOR
+        menu_screen = MenuScreen(menu_width,menu_height, menu_alpha_value, menu_colour, self.__screen)
+        title = "Menu de Pausa"
+        screen_offset = 10
+        start_x, start_y = 0,0
+        menu_screen.draw(start_x,start_y)
+        menu_screen.add_text(title,screen_offset)
+        
+        quit_button_width = settings.SCREEN_WIDTH
+        quit_button_height = 100
+        quit_button_colour = settings.BG_COLOR
+        
+        text_colour = settings.WHITE_COLOUR
+        quit_button = Button(quit_button_width, quit_button_height, quit_button_colour, self.__screen)
+        quit_button.add_text("SALIR DEL JUEGO!", 50,text_colour)
+        quit_button.draw(0,100)
+        
+        resume_button_width = settings.SCREEN_WIDTH
+        resume_button_height = 100
+        resume_button_colour = settings.BG_COLOR
+        text_colour = settings.WHITE_COLOUR
+        
+        resume_button = Button(resume_button_width, resume_button_height, resume_button_colour, self.__screen)
+        resume_button.add_text("DESPAUSAR JUEGO (o apretar tecla p)!", 50,text_colour)
+        resume_button.draw(0,300)
+
+        if quit_button.is_clicked():
+            quit()
+            
+        if resume_button.is_clicked():
+            self.__world.change_paused_state()
+
+    def render_upgrade_menu(self, weapons:["Weapon"]):
+        
+        menu_width = settings.SCREEN_WIDTH
+        menu_height = settings.SCREEN_HEIGHT
+        menu_alpha_value = 128
+        menu_colour = settings.BG_COLOR
+        menu_screen = MenuScreen(menu_width,menu_height, menu_alpha_value, menu_colour, self.__screen)
+        title = "Elegí tu mejora amigo!"
+        screen_offset = 10
+        start_x, start_y = 0,0
+        menu_screen.draw(start_x,start_y)
+        menu_screen.add_text(title,screen_offset)
+        
+        i = 0
+        for weapon in weapons:
+            i +=150
+            quit_button_width = settings.SCREEN_WIDTH
+            quit_button_height = 100
+            quit_button_colour = settings.BG_COLOR
+            text_colour = settings.WHITE_COLOUR
+            quit_button = Button(quit_button_width, quit_button_height, quit_button_colour, self.__screen)
+            quit_button.add_text(weapon.weapon_name, 50,text_colour)
+            quit_button.draw(0,100+i)

@@ -2,7 +2,10 @@
 
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
+from business.weapons.weapon_factory import WeaponFactory
+
 import pygame
+import random
 
 
 class GameWorld(IGameWorld):
@@ -18,6 +21,19 @@ class GameWorld(IGameWorld):
         self.__monster_spawner: IMonsterSpawner = spawner
         self.__display = display
         self._paused = False
+        self._upgrading = False
+        self._random_weapons_to_choose = []
+        self.__list_of_weapons = ["Auto_Joker", "Manual_Gun", "Manual_Joker"]
+    
+    def add_random_weapons(self):
+        weapons = self.__list_of_weapons
+        
+        for _ in range(3):
+            rnd_weapon = random.choice(weapons)
+            weapons.remove(rnd_weapon)
+            weapon_instance = WeaponFactory().create_weapon(rnd_weapon)
+            self._random_weapons_to_choose.append(weapon_instance)
+        
     
     def update_player(self,sprite_direction:str, x_mov:int, y_mov:int):
         if not self._paused:
@@ -29,6 +45,12 @@ class GameWorld(IGameWorld):
             self._paused = False
         else:
             self._paused = True
+    
+    def set_upgrading_state(self, state: bool):
+        self._upgrading = state
+        
+    def set_paused_state(self,state: bool):
+        self._paused = state
     
     def get_mouse_position(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -79,3 +101,13 @@ class GameWorld(IGameWorld):
     @property
     def experience_gems(self) -> list[IExperienceGem]:
         return self.__experience_gems[:]
+    
+    @property
+    def paused(self):
+        return self._paused
+
+    @property
+    def upgrading(self):
+        return self._upgrading
+    
+    

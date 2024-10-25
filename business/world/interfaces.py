@@ -10,6 +10,17 @@ class IGameWorld(ABC):
 
     The game world is the environment in which the game entities exist.
     """
+    @abstractmethod
+    def set_upgrading_state(self, state: bool):
+        pass
+        
+    @abstractmethod
+    def set_paused_state(self,state: bool):
+        pass
+    
+    @abstractmethod
+    def change_paused_state(self):
+        pass
     
     @abstractmethod
     def get_mouse_position(self): #Quizas no deberia estar acá sino en display

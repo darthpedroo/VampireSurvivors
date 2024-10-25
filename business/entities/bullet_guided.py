@@ -6,7 +6,7 @@ from business.entities.entity import MovableEntity
 from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
 from presentation.sprite import BulletSprite
-from presentation.display import Display
+
 
 
 class BulletGuided(MovableEntity, IBullet):
