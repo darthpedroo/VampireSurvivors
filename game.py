@@ -35,7 +35,8 @@ class Game:
                 self.__running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
-                    self.__world.change_paused_state()
+                    if not self.__world.upgrading:
+                        self.__world.change_paused_state()
     
     def run(self):
         """Starts the game loop."""
