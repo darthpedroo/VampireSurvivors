@@ -2,19 +2,25 @@ import math
 from business.weapons.weapon import Weapon
 from business.world.interfaces import IGameWorld
 from business.entities.item_factory import ProjectileFactory
-from business.weapons.upgradable_weapon import UpgradableWeapon
+#from business.weapons.upgradable_weapon import UpgradableWeapon
 
 
-class ManualGun(Weapon, UpgradableWeapon):
+class ManualGun(Weapon):
+    MAX_LEVEL = 5
     def __init__(self, weapon_name:str, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
         self.weapon_name = weapon_name
         self.__last_shot_time = 0
         self._base_shoot_cooldown = bullet_cooldown
         self.__bullet_name = bullet_name
         self.__speed = bullet_speed
-        self._level = 2
+        self._level = 1
         self._damage_multiplier = 1
-        self._upgrades = [{"NAME":"Level 1",
+        self._upgrades = [{"NAME":"Level 0",
+            "DESCRIPTION": "UNLOCKS THE WEAPON!",
+            "ATTRIBUTE": "_level",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 1  
+            },{"NAME":"Level 1",
             "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
             "ATTRIBUTE": "_base_shoot_cooldown",
             "OPERATION":"MULTIPLICATION",
@@ -25,6 +31,21 @@ class ManualGun(Weapon, UpgradableWeapon):
             "ATTRIBUTE": "_damage_multiplier",
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1.1   
+            },{"NAME":"Level 3",
+            "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
+            "ATTRIBUTE": "_base_shoot_cooldown",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 0.9  
+            },{"NAME":"Level 4",
+            "DESCRIPTION": "INCREASES 5% OF GUN BASE_DAMAGE",
+            "ATTRIBUTE": "_damage_multiplier",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 1.05   
+            },{"NAME":"Level 5",
+            "DESCRIPTION": "INCREASES 20 % OF GUN BASE_DAMAGE",
+            "ATTRIBUTE": "_damage_multiplier",
+            "OPERATION":"MULTIPLICATION",
+            "VALUE": 1.2   
             }]
         
         self.load_upgrades()
@@ -63,3 +84,37 @@ class ManualGun(Weapon, UpgradableWeapon):
     def bullet_name(self):
         return self.__bullet_name
     
+    @property
+    def level(self):
+        return self._level
+
+    def get_upgrade_info_by_level(self, level:int):
+        try:
+            level_info = self._upgrades[level]["DESCRIPTION"]
+        except IndexError:
+            print("ERROR CON EL INDEX!")
+            level_info = "DOP"
+        return level_info
+    
+    def load_upgrades(self):
+        for level in range(self._level):
+            self.upgrade_level(level)
+
+    def upgrade_level(self, level: int):
+        
+        current_upgrade = self._upgrades[level-1] #ojo
+        attribute_to_modify = current_upgrade.get('ATTRIBUTE')
+        new_value = current_upgrade.get('VALUE')
+        if current_upgrade.get('OPERATION') == 'MULTIPLICATION':
+            new_value = getattr(self, attribute_to_modify) * new_value
+            setattr(self, attribute_to_modify, new_value)
+        
+    def upgrade_next_level(self):
+        if self._level < self.MAX_LEVEL:
+            self._level += 1
+            self.upgrade_level(self._level)
+        else:
+            print("Max level acquired")
+    
+    def has_reached_max_level(self):
+        return self._level == self.MAX_LEVEL

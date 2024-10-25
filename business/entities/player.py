@@ -30,6 +30,24 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self._weapon_handler = WeaponHandler()
         self.__upgrading = False
 
+    def add_weapon(self, weapon_name:str, world: IGameWorld):
+        self.__upgrading = False
+        self._weapon_handler.add_weapon(weapon_name)
+        world.set_upgrading_state(False)
+        world.set_paused_state(False)
+    
+    def has_weapon(self, weapon_name:str):
+        return self._weapon_handler.has_weapon(weapon_name)
+    
+    def get_weapon_level(self, weapon_name:str):
+        return self._weapon_handler.get_weapon_level(weapon_name)
+    
+    def upgrade_weapon_next_level(self, weapon_name:str):
+        self._weapon_handler.upgrade_weapon_next_level(weapon_name)
+    
+    def weapon_reached_max_level(self, weapon_name: str):
+        return self._weapon_handler.has_reached_max_level(weapon_name)
+    
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
 
@@ -37,6 +55,9 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.pos_x = pos_x
         self.pos_y = pos_y
 
+    def set_upgrading(self, new_state:bool):
+        self.__upgrading = new_state
+    
     @property
     def pos_x(self) -> float:
         return self._pos_x
@@ -59,7 +80,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        return self.__level * 2
+        return self.__level * 30
 
     @property
     def level(self):
@@ -99,7 +120,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         if self.__upgrading:
             world.set_upgrading_state(True)
             world.set_paused_state(True)
-            
 
         current_time = pygame.time.get_ticks()
         try:

@@ -7,6 +7,7 @@ class Weapon(ABC):
         self.__base_shoot_cooldown = 100
         self.__level = 1
         self.__upgrades = []
+        self.weapon_name = "DEFAULT_NAME"
 
     @abstractmethod
     def is_cooldown_over(self, current_time):

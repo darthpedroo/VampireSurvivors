@@ -161,10 +161,11 @@ class Display(IDisplay):
         if self.__world.upgrading:
             if len(self.__world._random_weapons_to_choose) == 0:
                 self.__world.add_random_weapons()
-                
-            
+
             self.render_upgrade_menu(self.__world._random_weapons_to_choose)
-            
+        
+        else:
+            self.__world.restore_random_weapons()
 
         pygame.display.flip()
 
@@ -207,8 +208,9 @@ class Display(IDisplay):
         if resume_button.is_clicked():
             self.__world.change_paused_state()
 
+    
     def render_upgrade_menu(self, weapons:["Weapon"]):
-        
+        click_counter = 0
         menu_width = settings.SCREEN_WIDTH
         menu_height = settings.SCREEN_HEIGHT
         menu_alpha_value = 128
@@ -220,13 +222,43 @@ class Display(IDisplay):
         menu_screen.draw(start_x,start_y)
         menu_screen.add_text(title,screen_offset)
         
-        i = 0
+        list_of_buttons = []
+        button_offset = 0
         for weapon in weapons:
-            i +=150
-            quit_button_width = settings.SCREEN_WIDTH
-            quit_button_height = 100
-            quit_button_colour = settings.BG_COLOR
-            text_colour = settings.WHITE_COLOUR
-            quit_button = Button(quit_button_width, quit_button_height, quit_button_colour, self.__screen)
-            quit_button.add_text(weapon.weapon_name, 50,text_colour)
-            quit_button.draw(0,100+i)
+            
+            weapon_level = 0
+            if self.__world.player.has_weapon(weapon.weapon_name):
+                weapon_level = self.__world.player.get_weapon_level(weapon.weapon_name)            
+            
+            weapon_upgrade_detail = weapon.get_upgrade_info_by_level(weapon_level)
+            button_offset +=150
+            weapon_button_width = settings.SCREEN_WIDTH
+            weapon_button_height = 100
+            weapon_button_colour = settings.BG_COLOR
+            weapon_colour = settings.WHITE_COLOUR
+            weapon_button = Button(weapon_button_width, weapon_button_height, weapon_button_colour, self.__screen)
+            weapon_button.add_text(weapon.weapon_name, 20,weapon_colour)
+            
+            text_weapon_level = str(f"Level: {weapon_level}")
+            weapon_button.add_text(text_weapon_level , 70,weapon_colour)
+            
+            text_weapon_upgrade_detail = str(f"DESCRIPCIÓN:{weapon_upgrade_detail}")
+            
+            weapon_button.add_text(text_weapon_upgrade_detail , 90,weapon_colour)
+            
+            weapon_button.draw(0,100 + button_offset)
+            weapon_button.set_name(weapon.weapon_name)
+            list_of_buttons.append(weapon_button)
+        
+        for button in list_of_buttons:
+            if button.is_clicked() and click_counter == 0:
+                click_counter += 1
+                if self.__world.player.has_weapon(button.text):
+                    self.__world.set_paused_state(False)
+                    self.__world.set_upgrading_state(False)
+                    self.__world.player.set_upgrading(False)                
+                    self.__world.player.upgrade_weapon_next_level(button.text)
+                    break
+                else:
+                    self.__world.player.add_weapon(button.text, self.__world)
+                

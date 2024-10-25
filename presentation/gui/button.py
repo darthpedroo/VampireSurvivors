@@ -12,6 +12,7 @@ class Button(Drawable, Clickable):
         self.__surface.set_alpha(self.__alpha_value)
         self.__surface.fill(self.__colour)
         self.__rect = self.__surface.get_rect()
+        self.text = ""
 
     def draw(self, start_x:int, start_y:int):
         self.__rect.topleft = (start_x,start_y)
@@ -35,7 +36,8 @@ class Button(Drawable, Clickable):
         self.__surface.blit(rendered_text, text_rect)
 
         
-    
+    def set_name(self, new_name:str):
+        self.text = new_name
     
     
 

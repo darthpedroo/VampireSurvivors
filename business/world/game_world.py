@@ -26,14 +26,22 @@ class GameWorld(IGameWorld):
         self.__list_of_weapons = ["Auto_Joker", "Manual_Gun", "Manual_Joker"]
     
     def add_random_weapons(self):
-        weapons = self.__list_of_weapons
-        
+        weapons = self.__list_of_weapons.copy()  
         for _ in range(3):
+            if not weapons:
+                print("No more ammo for you, little vater")
+                break
+
             rnd_weapon = random.choice(weapons)
+            if not self.__player.weapon_reached_max_level(rnd_weapon):
+                weapon_instance = WeaponFactory().create_weapon(rnd_weapon)
+                self._random_weapons_to_choose.append(weapon_instance)
+
             weapons.remove(rnd_weapon)
-            weapon_instance = WeaponFactory().create_weapon(rnd_weapon)
-            self._random_weapons_to_choose.append(weapon_instance)
         
+    
+    def restore_random_weapons(self):
+        self._random_weapons_to_choose = []
     
     def update_player(self,sprite_direction:str, x_mov:int, y_mov:int):
         if not self._paused:

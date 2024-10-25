@@ -28,7 +28,7 @@ def initialize_game_world(display):
     player = initialize_player()
     #player._weapon_handler.add_weapon("Manual_Joker")
     player._weapon_handler.add_weapon("Manual_Gun")
-    player._weapon_handler.add_weapon("Auto_Joker")
+    #player._weapon_handler.add_weapon("Auto_Joker")
     return GameWorld(monster_spawner, tile_map, player, display)
 
 

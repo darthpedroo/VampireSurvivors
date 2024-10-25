@@ -28,3 +28,24 @@ class WeaponHandler():
     def use_every_weapon(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time):
         for weapon in self.__list_of_weapons:
             weapon.use(player_pos_x, player_pos_y, world, current_time)
+
+    def has_weapon(self, weapon_name:str):
+        for weapon in self.__list_of_weapons:
+            if weapon.weapon_name == weapon_name:
+                return True
+        return False
+    
+    def get_weapon_level(self, weapon_name:str):
+        for weapon in self.__list_of_weapons:
+            if weapon.weapon_name == weapon_name:
+                return weapon.level
+    
+    def upgrade_weapon_next_level(self, weapon_name:str):
+        for weapon in self.__list_of_weapons:
+            if weapon.weapon_name == weapon_name:
+                weapon.upgrade_next_level()
+    
+    def has_reached_max_level(self, weapon_name:str):
+        for weapon in self.__list_of_weapons:
+            if weapon.weapon_name == weapon_name:
+                return weapon.has_reached_max_level()
