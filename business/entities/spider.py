@@ -15,7 +15,7 @@ class Spider(MovableEntity, IMonster):
     """A monster entity in the game."""
 
     def __init__(self, src_x: int, src_y: int, sprite: Sprite):
-        super().__init__(src_x, src_y, 2, sprite)
+        super().__init__(src_x, src_y, 1, sprite)
         self.__health: int = 10
         self.__damage = 5
         self.__attack_range = 100
@@ -58,28 +58,32 @@ class Spider(MovableEntity, IMonster):
             if e1.sprite.rect.colliderect(new_position):
                 for j, e2 in enumerate(entities):
                     if i != j and e1.sprite.rect.colliderect(e2.sprite.rect):
-                        print("Colision: ", e1, e2)
                         return e1, e2
                     else:
-                        new_position = self.sprite.rect.move(dx, dy).inflate(-10, -10)
+                        new_position = self.sprite.rect.move(
+                            dx, dy).inflate(-10, -10)
         return None
 
     def __get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]:
-        
-        distance_a = (monster_a.pos_x - self.pos_x) ** 2 + (monster_a.pos_y - self.pos_y) ** 2
-        distance_b = (monster_b.pos_x - self.pos_x) ** 2 + (monster_b.pos_y - self.pos_y) ** 2
-        
+
+        distance_a = (monster_a.pos_x - self.pos_x) ** 2 + \
+            (monster_a.pos_y - self.pos_y) ** 2
+        distance_b = (monster_b.pos_x - self.pos_x) ** 2 + \
+            (monster_b.pos_y - self.pos_y) ** 2
+
         if distance_a < distance_b:
             nearest_monster = monster_a
         else:
             nearest_monster = monster_b
-        
-        print(f"De los monstruos {monster_a} y {monster_b}, {nearest_monster} es el más cercano")
-        
+
+        print(
+            f"De los monstruos {monster_a} y {monster_b}, {nearest_monster} es el más cercano")
+
         return nearest_monster
 
     def update(self, world: IGameWorld):
-        direction_x, direction_y = self.__get_direction_towards_the_player(world)
+        direction_x, direction_y = self.__get_direction_towards_the_player(
+            world)
         if (direction_x, direction_y) == (0, 0):
             return
 
@@ -88,9 +92,11 @@ class Spider(MovableEntity, IMonster):
         if self.__movement_collides_with_entities(dx, dy, monsters) == None and self.__can_move == True:
             self.move(direction_x, direction_y)
         if self.__movement_collides_with_entities(dx, dy, monsters) != None:
-            collision = self.__movement_collides_with_entities(dx, dy, monsters)
+            collision = self.__movement_collides_with_entities(
+                dx, dy, monsters)
             if collision != None:
-                e1, e2 = self.__movement_collides_with_entities(dx, dy, monsters)
+                e1, e2 = self.__movement_collides_with_entities(
+                    dx, dy, monsters)
                 nearest_enemy = self.__get_nearest_enemy(e1, e2,)
                 if nearest_enemy == True:
                     nearest_enemy.move(direction_x, direction_y)
@@ -110,12 +116,13 @@ class Spider(MovableEntity, IMonster):
         self.__health = max(0, self.__health - amount)
         self.sprite.take_damage()
 
-    def drop_loot(self, luck:int):
+    def drop_loot(self, luck: int):
         starting_number = 1
         true_luck = 100 - luck
         drop_rate = random.randint(starting_number, true_luck)
         if drop_rate <= 40:
-            amount_of_experience = 2 #Esto habría que sacarlo de un json con los datos de cada Gema.
+            # Esto habría que sacarlo de un json con los datos de cada Gema.
+            amount_of_experience = 2
             gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
             return gem
         return None

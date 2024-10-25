@@ -35,14 +35,13 @@ class Sprite(pygame.sprite.Sprite):
         return self._rect
 
     def update_pos(self, pos_x: float, pos_y: float):
-        
         """Update the position of the sprite.
 
         Args:
             pos_x (float): The x-coordinate of the sprite.
             pos_y (float): The y-coordinate of the sprite.
         """
-        
+
         self._rect.center = (int(pos_x), int(pos_y))
 
     def __restore_image(self):
@@ -50,23 +49,30 @@ class Sprite(pygame.sprite.Sprite):
 
     def __change_color(self, color: tuple[int, int, int]):
         self._image = self.__original_image.copy()  # Make a copy of the original image
-        self._image.fill(color, special_flags=pygame.BLEND_MULT)  # Change color
+        # Change color
+        self._image.fill(color, special_flags=pygame.BLEND_MULT)
         self._image.set_colorkey((0, 0, 0))  # Set transparency if necessary
 
     def __decrease_damage_countdown(self):
         self.__is_in_damage_countdown -= 1
-        if self.__is_in_damage_countdown <= 0:
-            self.__is_in_damage_countdown = 0
+        if self.__is_in_damage_countdown == 0:
             self.__restore_image()
 
     def take_damage(self):
         """Take damage."""
         self.__change_color((255, 0, 0))
-        self.__is_in_damage_countdown = 30
+        self.__is_in_damage_countdown = 300
+
+    def heal(self):
+        """Healing Animation"""
+        self.__change_color((0, 255, 200))
+        self.__is_in_damage_countdown = 300
 
     def update(self, *args, **kwargs):
         """Update the sprite behavior"""
         super().__init__(*args, **kwargs)
+
+        print(self.__is_in_damage_countdown)
         if self.__is_in_damage_countdown > 0:
             self.__decrease_damage_countdown()
 
@@ -122,7 +128,6 @@ class PlayerSprite(Sprite):
         "./assets/player/Walk_Left_4.png"
     ]
 
-
     def __init__(self, pos_x: float, pos_y: float):
         self.__current_idle_index = 0
         self.__current_walk_index = 0
@@ -131,14 +136,15 @@ class PlayerSprite(Sprite):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.direction = None
-        
-        self._image = pygame.image.load(PlayerSprite.ASSET_IDLE_UP[0]).convert_alpha()
-        self._image = pygame.transform.scale(self._image, (40, 50))
-        
-        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
-        
-        super().__init__(self._image, self._rect)
 
+        self._image = pygame.image.load(
+            PlayerSprite.ASSET_IDLE_UP[0]).convert_alpha()
+        self._image = pygame.transform.scale(self._image, (40, 50))
+
+        self._rect = self._image.get_rect(
+            center=(int(self.pos_x), int(self.pos_y)))
+
+        super().__init__(self._image, self._rect)
 
     def __load_idle_image(self, direction_assets: list):
         image_path = direction_assets[self.__current_idle_index]
@@ -160,12 +166,12 @@ class PlayerSprite(Sprite):
             if direction == "left":
                 self.__load_idle_image(PlayerSprite.ASSET_IDLE_LEFT)
             if direction == "right":
-                self.__load_idle_image(PlayerSprite.ASSET_IDLE_RIGHT)            
-            self.__frame_count = 0 
+                self.__load_idle_image(PlayerSprite.ASSET_IDLE_RIGHT)
+            self.__frame_count = 0
 
     def __load_walk_image(self, direction_assets: list):
         image_path = direction_assets[self.__current_walk_index]
-        
+
         image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
         image = pygame.transform.scale(image, (40, 50))
         self._image = image
@@ -185,11 +191,12 @@ class PlayerSprite(Sprite):
                 self.__load_walk_image(PlayerSprite.ASSET_WALK_LEFT)
             if direction == "right":
                 self.__load_walk_image(PlayerSprite.ASSET_WALK_RIGHT)
-            self.__frame_count = 0 
+            self.__frame_count = 0
 
     @property
     def image(self):
         return self._image
+
 
 class ZombieSprite(Sprite):
     """A class representing the zombie sprite."""
@@ -200,7 +207,7 @@ class ZombieSprite(Sprite):
         "./assets/zombie/Zombie_Walk_Up_3.png",
         "./assets/zombie/Zombie_Walk_Up_4.png"
     ]
-    
+
     ASSET_WALK_DOWN = [
         "./assets/zombie/Zombie_Walk_Down_1.png",
         "./assets/zombie/Zombie_Walk_Down_2.png",
@@ -214,7 +221,7 @@ class ZombieSprite(Sprite):
         "./assets/zombie/Zombie_Walk_Right_3.png",
         "./assets/zombie/Zombie_Walk_Right_4.png"
     ]
-    
+
     ASSET_WALK_LEFT = [
         "./assets/zombie/Zombie_Walk_Left_1.png",
         "./assets/zombie/Zombie_Walk_Left_2.png",
@@ -259,12 +266,14 @@ class ZombieSprite(Sprite):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.direction = None
-        
-        self._image = pygame.image.load(ZombieSprite.ASSET_WALK_UP[0]).convert_alpha()
+
+        self._image = pygame.image.load(
+            ZombieSprite.ASSET_WALK_UP[0]).convert_alpha()
         self._image = pygame.transform.scale(self._image, (60, 75))
-        
-        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
-        
+
+        self._rect = self._image.get_rect(
+            center=(int(self.pos_x), int(self.pos_y)))
+
         super().__init__(self._image, self._rect)
 
     def __load_walk_image(self, direction_assets: list):
@@ -320,38 +329,45 @@ class SpiderSprite(Sprite):
     ASSET = "./assets/spider.png"
 
     def __init__(self, pos_x: float, pos_y: float):
-        image: pygame.Surface = pygame.image.load(SpiderSprite.ASSET).convert_alpha()
+        image: pygame.Surface = pygame.image.load(
+            SpiderSprite.ASSET).convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
         rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
 
+
 class BulletSprite(Sprite):
     """A class representing the bullet sprite."""
     ASSET = "./assets/joker-dc.png"
-    
+
     def __init__(self, pos_x: float, pos_y: float, size: int = 100):  # Default size is now 100
         # Create a surface for the bullet sprite with the specified size
-        image: pygame.Surface = pygame.image.load(BulletSprite.ASSET).convert_alpha()
-        
+        image: pygame.Surface = pygame.image.load(
+            BulletSprite.ASSET).convert_alpha()
+
         # Scale the image to the desired size
-        image = pygame.transform.scale(image, (size, size))  # Scale to size x size
-        
-        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))  # Position the bullet at the given coordinates
+        image = pygame.transform.scale(
+            image, (size, size))  # Scale to size x size
+
+        # Position the bullet at the given coordinates
+        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
 
 
 class BulletGuidedSprite(Sprite):
-    def __init__(self, pos_x: float, pos_y: float, size: int = 20):  # Default size is now 100 (10x bigger)
+    # Default size is now 100 (10x bigger)
+    def __init__(self, pos_x: float, pos_y: float, size: int = 20):
         # Create a surface for the bullet sprite with the new size
-        image = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)  # Double the size for width and height
-        pygame.draw.circle(image, (255, 0, 0), (size, size), size // 2)  # Draw circle with 10x the size
-        rect = image.get_rect(center=(int(pos_x), int(pos_y)))  # Position the bullet at the given coordinates
+        # Double the size for width and height
+        image = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
+        pygame.draw.circle(image, (255, 0, 0), (size, size),
+                           size // 2)  # Draw circle with 10x the size
+        # Position the bullet at the given coordinates
+        rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
-    
-
 
 
 class ExperienceGemSprite(Sprite):
