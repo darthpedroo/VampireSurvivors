@@ -23,10 +23,11 @@ class GameWorld(IGameWorld):
         self._paused = False
         self._upgrading = False
         self._random_weapons_to_choose = []
-        self.__list_of_weapons = ["Auto_Joker", "Manual_Gun", "Manual_Joker"]
-    
+        self.__list_of_weapons = ["Auto_Joker",
+                                  "Manual_Gun", "Manual_Joker", "The_Mega_Ice"]
+
     def add_random_weapons(self):
-        weapons = self.__list_of_weapons.copy()  
+        weapons = self.__list_of_weapons.copy()
         for _ in range(3):
             if not weapons:
                 print("No more ammo for you, little vater")
@@ -38,16 +39,15 @@ class GameWorld(IGameWorld):
                 self._random_weapons_to_choose.append(weapon_instance)
 
             weapons.remove(rnd_weapon)
-        
-    
+
     def restore_random_weapons(self):
         self._random_weapons_to_choose = []
-    
-    def update_player(self,sprite_direction:str, x_mov:int, y_mov:int):
+
+    def update_player(self, sprite_direction: str, x_mov: int, y_mov: int):
         if not self._paused:
             self.__player.sprite.change_to_walk_sprite(sprite_direction)
             self.__player.move(x_mov, y_mov)
-    
+
     def change_paused_state(self):
         if self._paused:
             self._paused = False
@@ -57,19 +57,19 @@ class GameWorld(IGameWorld):
     @property
     def paused(self):
         return self._paused
-    
+
     def set_upgrading_state(self, state: bool):
         self._upgrading = state
-        
-    def set_paused_state(self,state: bool):
+
+    def set_paused_state(self, state: bool):
         self._paused = state
-    
+
     def get_mouse_position(self):
         mouse_pos = pygame.mouse.get_pos()
         return mouse_pos
-    
+
     def get_camera(self):
-        return self.__display.camera        
+        return self.__display.camera
 
     def update(self):
         if not self._paused:
@@ -113,7 +113,7 @@ class GameWorld(IGameWorld):
     @property
     def experience_gems(self) -> list[IExperienceGem]:
         return self.__experience_gems[:]
-    
+
     @property
     def paused(self):
         return self._paused
@@ -121,5 +121,3 @@ class GameWorld(IGameWorld):
     @property
     def upgrading(self):
         return self._upgrading
-    
-    

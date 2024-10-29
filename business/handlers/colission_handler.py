@@ -18,6 +18,8 @@ class CollisionHandler:
         for bullet in bullets:
             for monster in monsters:
                 if CollisionHandler.__collides_with(bullet, monster):
+
+                    bullet.apply_affect(monster)
                     monster.take_damage(bullet.damage_amount)
                     bullet.take_damage(bullet.damage_amount)
 
@@ -31,7 +33,7 @@ class CollisionHandler:
             if CollisionHandler.__collides_with(player, gem):
                 player.pickup_gem(gem)
                 world.remove_experience_gem(gem)
-        
+
     @staticmethod
     def handle_collisions(world: IGameWorld):
         """Handles collisions between entities in the game world.
@@ -41,4 +43,5 @@ class CollisionHandler:
         """
         CollisionHandler.__handle_bullets(world.bullets, world.monsters)
         CollisionHandler.__handle_monsters(world.monsters, world.player)
-        CollisionHandler.__handle_gems(world.experience_gems, world.player, world)
+        CollisionHandler.__handle_gems(
+            world.experience_gems, world.player, world)

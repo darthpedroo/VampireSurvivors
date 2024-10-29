@@ -55,19 +55,29 @@ class MovableEntity(Entity, ICanMove):
         self._pos_y: float = pos_y
         self._speed: float = speed
         self._sprite: Sprite = sprite
+        self._moving = True
+
+    def set_moving(self, moving_state: bool):
+        self._moving = moving_state
 
     def move(self, direction_x: float, direction_y: float):
-        self._pos_x += direction_x * self._speed
-        self._pos_y += direction_y * self._speed
-        
-        self._logger.debug(
-            "Moving in direction (%.2f, %.2f) with speed %.2f",
-            direction_x,
-            direction_y,
-            self._speed,
-        )
-        
-        self.sprite.update_pos(self._pos_x, self._pos_y)
+
+        if self._moving:
+            self._pos_x += direction_x * self._speed
+            self._pos_y += direction_y * self._speed
+
+            self._logger.debug(
+                "Moving in direction (%.2f, %.2f) with speed %.2f",
+                direction_x,
+                direction_y,
+                self._speed,
+            )
+            self.sprite.update_pos(self._pos_x, self._pos_y)
+
+    def apply_ice_effect(self, time):
+        print("Time Applied: ", time)
+        self.set_moving(False)
+        self.sprite.freeze(time)
 
     @property
     def speed(self) -> float:

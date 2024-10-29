@@ -68,6 +68,10 @@ class Sprite(pygame.sprite.Sprite):
         self.__change_color((0, 255, 200))
         self.__is_in_damage_countdown = 300
 
+    def freeze(self, countdown: int):
+        self.__change_color((0, 0, 255))
+        self.__is_in_damage_countdown = countdown
+
     def update(self, *args, **kwargs):
         """Update the sprite behavior"""
         super().__init__(*args, **kwargs)
@@ -339,12 +343,14 @@ class SpiderSprite(Sprite):
 
 class BulletSprite(Sprite):
     """A class representing the bullet sprite."""
-    ASSET = "./assets/joker-dc.png"
+    # ASSET = "./assets/joker-dc.png"
 
-    def __init__(self, pos_x: float, pos_y: float, size: int = 100):  # Default size is now 100
+    # Default size is now 100
+    def __init__(self, pos_x: float, pos_y: float, asset: str, size: int = 100):
+        self.asset = asset
         # Create a surface for the bullet sprite with the specified size
         image: pygame.Surface = pygame.image.load(
-            BulletSprite.ASSET).convert_alpha()
+            self.asset).convert_alpha()
 
         # Scale the image to the desired size
         image = pygame.transform.scale(
@@ -352,20 +358,6 @@ class BulletSprite(Sprite):
 
         # Position the bullet at the given coordinates
         rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
-
-        super().__init__(image, rect)
-
-
-class BulletGuidedSprite(Sprite):
-    # Default size is now 100 (10x bigger)
-    def __init__(self, pos_x: float, pos_y: float, size: int = 20):
-        # Create a surface for the bullet sprite with the new size
-        # Double the size for width and height
-        image = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
-        pygame.draw.circle(image, (255, 0, 0), (size, size),
-                           size // 2)  # Draw circle with 10x the size
-        # Position the bullet at the given coordinates
-        rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
 

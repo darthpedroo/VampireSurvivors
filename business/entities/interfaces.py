@@ -103,6 +103,7 @@ class IHasPosition(IHasSprite):
         """
         pass
 
+
 class ICanMove(IHasPosition):
     """Interface for entities that can move."""
 
@@ -138,46 +139,51 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 class IMove(ABC):
     """Interface for the different moves/actions a player can perform. Attack / Heal / Ulti
     """
-    
+
     @abstractmethod
-    def perform_move(self, entity:"Entity"):
+    def perform_move(self, entity: "Entity"):
         """Hace que la entidad realice el movimiento implementado
 
         Args:
             entity (Entity): La entidad que realiza el movimiento
         """
 
+
 class IUpgradable(ABC):
     """Interface for the items that can be upgraded"""
 
     @abstractmethod
-    def upgrade_level(self, level:int):
+    def upgrade_level(self, level: int):
         """Adds the modification for the Upgradable"""
         pass
-        
+
     @abstractmethod
     def upgrade_next_level(self):
         """Increases level by one"""
         pass
-    
+
     @abstractmethod
     def load_upgrades(self):
         pass
-    
-    
-    
+
 
 class IAttack(IMove):
     def is_attack_critical(self):
         """Checks if the current attack is a critical one 
         """
-        
+
     def is_cool_down_over(self):
         """Checks if cooldown is over to attack again
         """
 
+
 class IBullet(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for bullet entities."""
+
+    @abstractmethod
+    def apply_affect(self, other_entity: "MovableEntity"):
+        """Applies the effect of the bullet"""
+
 
 class IExperienceGem(IUpdatable, IHasPosition):
     """Interface for experience gem entities."""
