@@ -36,3 +36,6 @@ class Bullet(MovableEntity, IBullet):
 
     def __str__(self):
         return f"Bullet(pos=({self._pos_x, self._pos_y}), dir=({self.__dir_x, self.__dir_y}))"
+
+    def apply_affect(self, other_entity: "MovableEntity"):
+        return super().apply_affect(other_entity)
