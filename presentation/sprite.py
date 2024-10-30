@@ -13,7 +13,7 @@ class Sprite(pygame.sprite.Sprite):
         self._image: pygame.Surface = image
         self._rect: pygame.Rect = rect
         super().__init__(*groups)
-        self.__is_in_damage_countdown = 0
+        self.__sprite_color_countdown = 0
         self.__original_image: pygame.Surface = image
 
     @property
@@ -54,30 +54,29 @@ class Sprite(pygame.sprite.Sprite):
         self._image.set_colorkey((0, 0, 0))  # Set transparency if necessary
 
     def __decrease_damage_countdown(self):
-        self.__is_in_damage_countdown -= 1
-        if self.__is_in_damage_countdown == 0:
+        self.__sprite_color_countdown -= 1
+        if self.__sprite_color_countdown == 0:
             self.__restore_image()
 
     def take_damage(self):
         """Take damage."""
         self.__change_color((255, 0, 0))
-        self.__is_in_damage_countdown = 300
+        self.__sprite_color_countdown = 300
 
     def heal(self):
         """Healing Animation"""
         self.__change_color((0, 255, 200))
-        self.__is_in_damage_countdown = 300
+        self.__sprite_color_countdown = 300
 
     def freeze(self, countdown: int):
         self.__change_color((0, 0, 255))
-        self.__is_in_damage_countdown = countdown
+        self.__sprite_color_countdown = countdown
 
     def update(self, *args, **kwargs):
         """Update the sprite behavior"""
-        super().__init__(*args, **kwargs)
+        super().update(*args, **kwargs)
 
-        print(self.__is_in_damage_countdown)
-        if self.__is_in_damage_countdown > 0:
+        if self.__sprite_color_countdown > 0:
             self.__decrease_damage_countdown()
 
 

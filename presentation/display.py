@@ -19,6 +19,9 @@ class Display(IDisplay):
     def __init__(self):
         # Set the window display mode
         self.__screen = pygame.display.set_mode(settings.SCREEN_DIMENSION)
+        self.__minutes = 0
+        self.__seconds = 0
+        self.__frames = 0
 
         # Set the window title
         pygame.display.set_caption(settings.GAME_TITLE)
@@ -125,6 +128,23 @@ class Display(IDisplay):
         # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (10, 50))
 
+    def __draw_time(self):
+        self.__frames = self.__frames + 1
+        if self.__frames == 30:
+            self.__seconds = self.__seconds + 1
+            self.__frames = 0
+        if self.__seconds == 60:
+            self.__minutes = self.__minutes + 1
+        # Define the font and size
+        font = pygame.font.SysFont(None, 36)
+
+        # Render the text for mouse position
+        position_text = f"{self.__minutes:02}:{self.__seconds:02}"
+        text_surface = font.render(position_text, True, (255, 255, 255))
+
+        # Draw the text on the screen at a fixed position
+        self.__screen.blit(text_surface, (300, 10))
+
     def render_frame(self):
         # Update the camera to follow the player
         self.camera.update(self.__world.player.sprite.rect)
@@ -153,6 +173,7 @@ class Display(IDisplay):
         # Draw the player
         self.__draw_player()
         self.__draw_mouse_position()
+        self.__draw_time()
         
         if self.__world.paused and not self.__world.upgrading:
             

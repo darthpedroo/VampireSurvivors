@@ -1,14 +1,22 @@
 """This module contains the Monster factory, which manages what type of monster that should be spawned."""
 
+import random
 from typing import List
 
 from presentation.sprite import Sprite, ZombieSprite, SpiderSprite
-from business.entities.zombie import Zombie
-from business.entities.spider import Spider
+from business.entities.monsters.zombie import Zombie
+from business.entities.monsters.spider import Spider
 
 
 class MonsterFactory:
     """A monster entity in the game."""
+
+    ALL_MONSTERS = ["zombie", "spider"]
+
+    @staticmethod
+    def get_random_monster(pos_x: int, pos_y: int):
+        random_monster = random.choice(MonsterFactory.ALL_MONSTERS)
+        return MonsterFactory.get_monster(random_monster, pos_x, pos_y)
 
     @staticmethod
     def get_monster(monster_type: str, pos_x: int, pos_y: int):

@@ -6,7 +6,7 @@ import random
 import pygame
 
 import settings
-from business.entities.zombie import Zombie
+from business.entities.monsters.zombie import Zombie
 from business.world.interfaces import IGameWorld, IMonsterSpawner
 from business.world.monsterfactory import MonsterFactory
 
@@ -27,9 +27,6 @@ class MonsterSpawner(IMonsterSpawner):
     def spawn_monster(self, world: IGameWorld):
         pos_x = random.randint(0, settings.WORLD_WIDTH)
         pos_y = random.randint(0, settings.WORLD_HEIGHT)
-        factory = MonsterFactory()
-        monsters = ["zombie", "spider"]
-        selected_monster = random.choice(monsters)
-        monster = factory.get_monster(selected_monster, pos_x, pos_y)
+        monster = MonsterFactory().get_random_monster(pos_x, pos_y)
         world.add_monster(monster)
         self.__logger.debug("Spawning monster at (%d, %d)", pos_x, pos_y)
