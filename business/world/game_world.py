@@ -45,13 +45,13 @@ class GameWorld(IGameWorld):
     def restore_random_weapons(self):
         self._random_weapons_to_choose = []
 
-    def update_player(self, sprite_direction: str, x_mov: int, y_mov: int):
+    def update_player(self, x_mov: int, y_mov: int):
         if not self._paused:
             moving_state = MovableEntityMovingState()
             self.__player.switch_state(moving_state)
             self.__player.update(self, moving_state)
             self.__player.set_direction(x_mov, y_mov)
-            self.__player.sprite.change_to_walk_sprite(sprite_direction)
+            
             
         
 
