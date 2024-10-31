@@ -3,8 +3,6 @@ from business.entities.state_machine.movable_entity_base_state import MovableEnt
 
 class MovableEntityMovingState(MovableEntityBaseState):
     
-
-    
     def update_state(self, movable_entity: "MovableEntity"):
         if movable_entity._moving:
             

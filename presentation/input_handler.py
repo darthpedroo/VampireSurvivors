@@ -4,6 +4,9 @@ import pygame
 
 from business.world.game_world import GameWorld
 from presentation.interfaces import IInputHandler
+from business.entities.state_machine.movable_entity_idle_state import MovableEntityIdleState
+from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
+
 
 
 class InputHandler(IInputHandler):
@@ -21,30 +24,39 @@ class InputHandler(IInputHandler):
             y_dir = -1
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
+            new_state = MovableEntityMovingState()            
+            self.__world.change_player_state(new_state)
         if keys[pygame.K_s]:
             self.__direction = "down"
             x_dir = 0
             y_dir = 1
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
+            new_state = MovableEntityMovingState()            
+            self.__world.change_player_state(new_state)
         if keys[pygame.K_a]:
             self.__direction = "left"
             x_dir = -1
             y_dir = 0
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
+            new_state = MovableEntityMovingState()            
+            self.__world.change_player_state(new_state)
         if keys[pygame.K_d]:
             self.__direction = "right"
             x_dir = 1
             y_dir = 0
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
+            new_state = MovableEntityMovingState()            
+            self.__world.change_player_state(new_state)
         
         
 
         if is_moving == False and self.__world.paused == False:
             
-            self.__world.player.set_direction(0,0)
+            new_state = MovableEntityIdleState()            
+            self.__world.change_player_state(new_state)
             
             if self.__direction == "up":
                 self.__world.player.sprite.change_to_idle_sprite("up")

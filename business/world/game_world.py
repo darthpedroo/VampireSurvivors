@@ -47,11 +47,16 @@ class GameWorld(IGameWorld):
 
     def update_player(self, x_mov: int, y_mov: int):
         if not self._paused:
-            moving_state = MovableEntityMovingState()
-            self.__player.switch_state(moving_state)
-            self.__player.update(self, moving_state)
+            current_state = self.__player.current_state
+            self.__player.update(self, current_state)
             self.__player.set_direction(x_mov, y_mov)
-            
+    
+    def change_player_state(self, new_state):
+        """Changes the state of the player
+        Args:
+            new_state (_type_): _description_
+        """
+        self.__player.switch_state(new_state)
             
         
 
