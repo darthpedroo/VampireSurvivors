@@ -1,6 +1,6 @@
 """Module for the ExperienceGem class."""
 
-from business.entities.entity import Entity
+from business.entities.state_machine.entity import Entity
 from business.entities.interfaces import IExperienceGem
 from presentation.sprite import ExperienceGemSprite
 

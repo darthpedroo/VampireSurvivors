@@ -41,6 +41,9 @@ class InputHandler(IInputHandler):
             is_moving = True
             
         if is_moving == False and self.__world.paused == False:
+            
+            self.__world.player.set_direction(0,0)
+            
             if self.__direction == "up":
                 self.__world.player.sprite.change_to_idle_sprite("up")
             if self.__direction == "down":

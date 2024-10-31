@@ -116,16 +116,16 @@ class ICanMove(IHasPosition):
             float: The speed of the entity.
         """
 
-    @abstractmethod
-    def move(self, direction_x: float, direction_y: float):
-        """Move the entity in the given direction based on its speed.
+#    @abstractmethod
+#    def move(self, direction_x: float, direction_y: float):
+#        """Move the entity in the given direction based on its speed.
 
-        This method should update the entity's position and sprite.
+#        This method should update the entity's position and sprite.
 
-        Args:
-            direction_x (float): The direction in x-coordinate.
-            direction_y (float): The direction in y-coordinate.
-        """
+#        Args:
+#            direction_x (float): The direction in x-coordinate.
+#            direction_y (float): The direction in y-coordinate.
+#        """
 
 
 class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):

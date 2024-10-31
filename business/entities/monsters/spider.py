@@ -3,7 +3,7 @@
 import random
 from typing import List
 
-from business.entities.entity import MovableEntity
+from business.entities.state_machine.entity import MovableEntity
 from business.entities.interfaces import IDamageable, IHasPosition, IHasSprite, IMonster
 from business.entities.experience_gem import ExperienceGem
 from business.handlers.cooldown_handler import CooldownHandler
@@ -22,6 +22,7 @@ class Spider(MovableEntity, IMonster):
         self.__attack_cooldown = CooldownHandler(2000)
         self._logger.debug("Created %s", self)
         self.__can_move = True
+        
 
     def attack(self, target: IDamageable):
         """Attacks the target."""
@@ -90,20 +91,27 @@ class Spider(MovableEntity, IMonster):
         monsters = [m for m in world.monsters if m != self]
         dx, dy = direction_x * self.speed, direction_y * self.speed
         if self.__movement_collides_with_entities(dx, dy, monsters) == None and self.__can_move == True:
-            self.move(direction_x, direction_y)
+            
+            self.set_direction(direction_x, direction_y)
+            self.current_state.update_state(self)
+            
+            #self.move(direction_x, direction_y)
+        
+        
         if self.__movement_collides_with_entities(dx, dy, monsters) != None:
             collision = self.__movement_collides_with_entities(
                 dx, dy, monsters)
             if collision != None:
                 e1, e2 = self.__movement_collides_with_entities(
                     dx, dy, monsters)
-                nearest_enemy = self.__get_nearest_enemy(e1, e2,)
-                if nearest_enemy == True:
-                    nearest_enemy.move(direction_x, direction_y)
+                nearest_enemy = self.__get_nearest_enemy(e1, e2)
+                if nearest_enemy is not None:
+                    nearest_enemy.set_direction(direction_x, direction_y)
+                    nearest_enemy.current_state.update_state(self)
 
         self.attack(world.player)
 
-        super().update(world)
+        super().update()
 
     def __str__(self):
         return f"Zombie(hp={self.health}, pos={self.pos_x, self.pos_y})"

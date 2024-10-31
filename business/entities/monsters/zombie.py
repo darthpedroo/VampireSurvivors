@@ -3,7 +3,7 @@
 import random
 from typing import List
 
-from business.entities.entity import MovableEntity
+from business.entities.state_machine.entity import MovableEntity
 from business.entities.interfaces import IDamageable, IHasPosition, IHasSprite, IMonster
 from business.entities.experience_gem import ExperienceGem
 from business.handlers.cooldown_handler import CooldownHandler
@@ -98,7 +98,10 @@ class Zombie(MovableEntity, IMonster):
                 self.sprite.change_to_attack_sprite("left")
         else:
             if self.__movement_collides_with_entities(dx, dy, monsters) == None:
-                self.move(direction_x, direction_y)
+
+                self.set_direction(direction_x, direction_y)
+                self.current_state.update_state(self)
+
                 if direction_x > 0:
                     self.sprite.change_to_walk_sprite("right")
                 if direction_y > 0:
@@ -110,11 +113,12 @@ class Zombie(MovableEntity, IMonster):
             else:
                 e1, e2 = self.__movement_collides_with_entities(
                     dx, dy, monsters)
-                nearest_enemy = self.__get_nearest_enemy(e1, e2,)
-                nearest_enemy.move(direction_x, direction_y)
+                nearest_enemy = self.__get_nearest_enemy(e1, e2)
+                nearest_enemy.set_direction(direction_x,direction_y)
+                nearest_enemy.current_state.update_state(self)
         self.attack(world.player, direction_x, direction_y)
 
-        super().update(world)
+        super().update()
 
     def __str__(self):
         return f"Zombie(hp={self.health}, pos={self.pos_x, self.pos_y})"
