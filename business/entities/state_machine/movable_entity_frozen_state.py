@@ -14,10 +14,9 @@ class MovableEntityFrozenState(MovableEntityBaseState):
             movable_entity.sprite.restore_image()
         else:
             movable_entity.set_moving(False)
-            movable_entity.sprite.freeze(100)
+            movable_entity.sprite.freeze()
         
     def enter_state(self, movable_entity):
         movable_entity.current_state = self
-        self.cooldown = CooldownHandler(1000) #HARDCODED VALUE! WRONG! 
-        print("Entering State: ", type(self))
+        self.cooldown = CooldownHandler(10000) #HARDCODED VALUE! WRONG! 
         
