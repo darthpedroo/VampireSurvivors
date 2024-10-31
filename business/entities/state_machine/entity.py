@@ -7,6 +7,7 @@ from business.entities.interfaces import ICanMove, IDamageable, IHasPosition, IH
 from business.world.interfaces import IGameWorld
 from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
 from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
+from business.entities.state_machine.movable_entity_frozen_state import MovableEntityFrozenState
 from presentation.sprite import Sprite
 
 
@@ -82,8 +83,9 @@ class MovableEntity(Entity, ICanMove):
         new_state.enter_state(self)
     
     def apply_ice_effect(self, time):
-        self.set_moving(False)
-        self.sprite.freeze(time)
+        frozen_state = MovableEntityFrozenState()
+        self.switch_state(frozen_state)
+        
 
     @property
     def speed(self) -> float:

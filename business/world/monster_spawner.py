@@ -16,7 +16,8 @@ class MonsterSpawner(IMonsterSpawner):
 
     def __init__(self):
         self.__logger = logging.getLogger(__name__)
-        self._max_monsters = 10
+        self._max_monsters = 100
+        
         
 
     def update(self, world: IGameWorld):

@@ -24,34 +24,27 @@ class InputHandler(IInputHandler):
             y_dir = -1
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
-            new_state = MovableEntityMovingState()            
-            self.__world.change_player_state(new_state)
+
         if keys[pygame.K_s]:
             self.__direction = "down"
             x_dir = 0
             y_dir = 1
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
-            new_state = MovableEntityMovingState()            
-            self.__world.change_player_state(new_state)
+
         if keys[pygame.K_a]:
             self.__direction = "left"
             x_dir = -1
             y_dir = 0
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
-            new_state = MovableEntityMovingState()            
-            self.__world.change_player_state(new_state)
+
         if keys[pygame.K_d]:
             self.__direction = "right"
             x_dir = 1
             y_dir = 0
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
-            new_state = MovableEntityMovingState()            
-            self.__world.change_player_state(new_state)
-        
-        
 
         if is_moving == False and self.__world.paused == False:
             

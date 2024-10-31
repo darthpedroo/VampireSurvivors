@@ -88,6 +88,7 @@ class GameWorld(IGameWorld):
             self.player.update(self, self.player.current_state)
             for monster in self.monsters:
                 monster.update(self)
+           #     print("UPDATING;", type(monster))
             for bullet in self.__bullets:
                 bullet.update(self)
             self.__monster_spawner.update(self)

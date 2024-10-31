@@ -83,35 +83,39 @@ class Spider(MovableEntity, IMonster):
         return nearest_monster
 
     def update(self, world: IGameWorld):
-        direction_x, direction_y = self.__get_direction_towards_the_player(
-            world)
-        if (direction_x, direction_y) == (0, 0):
-            return
-
-        monsters = [m for m in world.monsters if m != self]
-        dx, dy = direction_x * self.speed, direction_y * self.speed
-        if self.__movement_collides_with_entities(dx, dy, monsters) == None and self.__can_move == True:
-            
-            self.set_direction(direction_x, direction_y)
-            self.current_state.update_state(self)
-            
-            #self.move(direction_x, direction_y)
+        
+        self.current_state.update_state(self)
         
         
-        if self.__movement_collides_with_entities(dx, dy, monsters) != None:
-            collision = self.__movement_collides_with_entities(
-                dx, dy, monsters)
-            if collision != None:
-                e1, e2 = self.__movement_collides_with_entities(
-                    dx, dy, monsters)
-                nearest_enemy = self.__get_nearest_enemy(e1, e2)
-                if nearest_enemy is not None:
-                    nearest_enemy.set_direction(direction_x, direction_y)
-                    nearest_enemy.current_state.update_state(self)
+    #   direction_x, direction_y = self.__get_direction_towards_the_player(
+    #       world)
+    #   if (direction_x, direction_y) == (0, 0):
+    #       return
 
-        self.attack(world.player)
+    #   monsters = [m for m in world.monsters if m != self]
+    #   dx, dy = direction_x * self.speed, direction_y * self.speed
+    #   if self.__movement_collides_with_entities(dx, dy, monsters) == None and self.__can_move == True:
+    #       
+    #       self.set_direction(direction_x, direction_y)
+    #       self.current_state.update_state(self)
+    #       
+    #       #self.move(direction_x, direction_y)
+    #   
+    #   
+    #   if self.__movement_collides_with_entities(dx, dy, monsters) != None:
+    #       collision = self.__movement_collides_with_entities(
+    #           dx, dy, monsters)
+    #       if collision != None:
+    #           e1, e2 = self.__movement_collides_with_entities(
+    #               dx, dy, monsters)
+    #           nearest_enemy = self.__get_nearest_enemy(e1, e2)
+    #           if nearest_enemy is not None:
+    #               nearest_enemy.set_direction(direction_x, direction_y)
+    #               nearest_enemy.current_state.update_state(self)
 
-        super().update()
+    #    self.attack(world.player)
+
+    #    super().update()
 
     def __str__(self):
         return f"Zombie(hp={self.health}, pos={self.pos_x, self.pos_y})"
@@ -123,6 +127,7 @@ class Spider(MovableEntity, IMonster):
     def take_damage(self, amount):
         self.__health = max(0, self.__health - amount)
         self.sprite.take_damage()
+        
 
     def drop_loot(self, luck: int):
         starting_number = 1

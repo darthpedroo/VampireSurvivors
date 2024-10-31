@@ -8,6 +8,7 @@ from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
 from presentation.sprite import BulletSprite
 from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
+from business.entities.state_machine.movable_entity_frozen_state import MovableEntityFrozenState
 
 
 
@@ -22,7 +23,6 @@ class IceBullet(MovableEntity, IBullet):
         self.set_direction(dir_x, dir_y)
         self.current_state = current_state    
         
-
     @property
     def health(self) -> int:  # Why does it have health ? :v
         return self._health
@@ -30,7 +30,7 @@ class IceBullet(MovableEntity, IBullet):
     def take_damage(self, amount):
         self._health -= amount
 
-    def update(self, _: IGameWorld):
+    def update(self, world: IGameWorld):
         self.current_state.update_state(self)
 
     @property
@@ -41,5 +41,5 @@ class IceBullet(MovableEntity, IBullet):
         return f"Bullet(pos=({self._pos_x, self._pos_y}), dir=({self.__dir_x, self.__dir_y}))"
 
     def apply_affect(self, other_entity: MovableEntity):
-        ice_effect_duration = 100
-        other_entity.apply_ice_effect(ice_effect_duration)
+        other_entity.apply_ice_effect(100)
+
