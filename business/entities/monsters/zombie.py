@@ -84,8 +84,8 @@ class Zombie(MovableEntity, IMonster):
     def update(self, world: IGameWorld):
         
         direction_x, direction_y = self.__get_direction_towards_the_player(world)
-        self.set_direction(direction_x, direction_y)
-        self.current_state.update_state(self)
+        #self.set_direction(direction_x, direction_y)
+        
         monsters = [m for m in world.monsters if m != self]
         dx, dy = direction_x * self.speed, direction_y * self.speed
         
@@ -114,7 +114,8 @@ class Zombie(MovableEntity, IMonster):
                     dx, dy, monsters)
                 nearest_enemy = self.__get_nearest_enemy(e1, e2,)
                 nearest_enemy.set_direction(direction_x, direction_y)
-                
+        
+        self.current_state.update_state(self)        
         self.attack(world.player, direction_x, direction_y)
         
 
