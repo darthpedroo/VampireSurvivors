@@ -2,11 +2,12 @@
 
 import pygame
 
-from business.entities.entity import MovableEntity
+from business.entities.state_machine.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
 from business.entities.weapon_handler import WeaponHandler
+from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
 from presentation.sprite import Sprite
 
 
@@ -124,9 +125,11 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
                     self.__health = self.MAX_HEALTH
                 self.__last_regeneration_time = current_time
 
-    def update(self, world: IGameWorld):
-        super().update(world)
+    def update(self, world: IGameWorld, current_state:MovableEntityBaseState):
+        #super().update(world)
 
+        current_state.update_state(self)
+        
         if self.__upgrading:
             world.set_upgrading_state(True)
             world.set_paused_state(True)

@@ -4,6 +4,9 @@ import pygame
 
 from business.world.game_world import GameWorld
 from presentation.interfaces import IInputHandler
+from business.entities.state_machine.movable_entity_idle_state import MovableEntityIdleState
+from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
+
 
 
 class InputHandler(IInputHandler):
@@ -19,28 +22,35 @@ class InputHandler(IInputHandler):
             self.__direction = "up"
             x_dir = 0
             y_dir = -1
-            self.__world.update_player(self.__direction, x_dir,y_dir)
+            self.__world.update_player(x_dir,y_dir)
             is_moving = True
+
         if keys[pygame.K_s]:
             self.__direction = "down"
             x_dir = 0
             y_dir = 1
-            self.__world.update_player(self.__direction, x_dir,y_dir)
+            self.__world.update_player(x_dir,y_dir)
             is_moving = True
+
         if keys[pygame.K_a]:
             self.__direction = "left"
             x_dir = -1
             y_dir = 0
-            self.__world.update_player(self.__direction, x_dir,y_dir)
+            self.__world.update_player(x_dir,y_dir)
             is_moving = True
+
         if keys[pygame.K_d]:
             self.__direction = "right"
             x_dir = 1
             y_dir = 0
-            self.__world.update_player(self.__direction, x_dir,y_dir)
+            self.__world.update_player(x_dir,y_dir)
             is_moving = True
-            
+
         if is_moving == False and self.__world.paused == False:
+            
+            new_state = MovableEntityIdleState()            
+            self.__world.change_player_state(new_state)
+            
             if self.__direction == "up":
                 self.__world.player.sprite.change_to_idle_sprite("up")
             if self.__direction == "down":
@@ -49,6 +59,9 @@ class InputHandler(IInputHandler):
                 self.__world.player.sprite.change_to_idle_sprite("left")
             if self.__direction == "right":
                 self.__world.player.sprite.change_to_idle_sprite("right")
+        
+        elif is_moving:
+            self.__world.player.sprite.change_to_walk_sprite(self.__direction)
 
     def process_input(self):
         keys = pygame.key.get_pressed()

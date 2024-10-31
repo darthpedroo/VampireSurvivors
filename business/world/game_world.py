@@ -3,6 +3,8 @@
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.weapons.weapon_factory import WeaponFactory
+from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
+
 
 import pygame
 import random
@@ -43,10 +45,20 @@ class GameWorld(IGameWorld):
     def restore_random_weapons(self):
         self._random_weapons_to_choose = []
 
-    def update_player(self, sprite_direction: str, x_mov: int, y_mov: int):
+    def update_player(self, x_mov: int, y_mov: int):
         if not self._paused:
-            self.__player.sprite.change_to_walk_sprite(sprite_direction)
-            self.__player.move(x_mov, y_mov)
+            current_state = self.__player.current_state
+            self.__player.update(self, current_state)
+            self.__player.set_direction(x_mov, y_mov)
+    
+    def change_player_state(self, new_state):
+        """Changes the state of the player
+        Args:
+            new_state (_type_): _description_
+        """
+        self.__player.switch_state(new_state)
+            
+        
 
     def change_paused_state(self):
         if self._paused:
@@ -73,9 +85,10 @@ class GameWorld(IGameWorld):
 
     def update(self):
         if not self._paused:
-            self.player.update(self)
+            self.player.update(self, self.player.current_state)
             for monster in self.monsters:
                 monster.update(self)
+           #     print("UPDATING;", type(monster))
             for bullet in self.__bullets:
                 bullet.update(self)
             self.__monster_spawner.update(self)

@@ -24,7 +24,7 @@ class ProjectileFactory:
             return Bullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size)
         if item_name == "Ice_Bullet":
             health = 100
-            damage = 1 * weapon_damage_multiplier
+            damage = 0 
             asset = "./assets/experience_gems.png"
             size = 50
             return IceBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size)
