@@ -26,10 +26,10 @@ def initialize_game_world(display):
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    #player._weapon_handler.add_weapon("Manual_Joker")
+    player._weapon_handler.add_weapon("Manual_Joker")
     #player._weapon_handler.add_weapon("Manual_Gun")
     #player._weapon_handler.add_weapon("Auto_Joker")
-    player._weapon_handler.add_weapon("The_Mega_Ice")
+    #player._weapon_handler.add_weapon("The_Mega_Ice")
     return GameWorld(monster_spawner, tile_map, player, display)
 
 

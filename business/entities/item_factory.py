@@ -20,7 +20,7 @@ class ProjectileFactory:
             asset = "./assets/joker-dc.png"
             health = 1000
             damage = 1 * weapon_damage_multiplier
-            size = 300
+            size = 100
             return Bullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size)
         if item_name == "Ice_Bullet":
             health = 100
