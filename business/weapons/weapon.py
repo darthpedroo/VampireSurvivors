@@ -15,9 +15,6 @@ class Weapon(ABC):
         self._damage_multiplier = 1
         self._upgrades = []
         
-    
-        
-
     def is_cooldown_over(self, current_time):
         return current_time - self._last_shot_time >= self._base_shoot_cooldown
     

@@ -25,6 +25,17 @@ class WeaponHandler():
         else:
             raise WeaponOverflow()
 
+    def get_all_weapons(self):
+        return self.__list_of_weapons
+    
+    def get_weapon_and_bullet_names(self):
+        weapon_and_bullet_names = []
+        for weapon in self.__list_of_weapons:
+            weapon_bullet_tuple = (weapon.weapon_name, weapon.bullet_name)
+            weapon_and_bullet_names.append(weapon_bullet_tuple)
+        return weapon_and_bullet_names
+        
+
     def use_every_weapon(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_base_damage_multiplier:int, player_base_attack_speed_multiplier:int):
         for weapon in self.__list_of_weapons:
             weapon.use(player_pos_x, player_pos_y, world, current_time, player_base_damage_multiplier,player_base_attack_speed_multiplier)

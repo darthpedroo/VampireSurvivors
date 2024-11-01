@@ -10,9 +10,6 @@ from presentation.tileset import Tileset
 from presentation.gui.menu_screen import MenuScreen
 from presentation.gui.button import Button
 
-
-
-
 class Display(IDisplay):
     """Class for displaying the game world."""
 
@@ -100,32 +97,22 @@ class Display(IDisplay):
     
     def __draw_mouse_position(self):
         
-        
         camera_rect = self.camera.camera_rect
 
-        # Define the font and size
         font = pygame.font.SysFont(None, 36)
 
-        # Render the text for mouse position
         position_text = f"camera_rect: ({camera_rect})"
         text_surface = font.render(position_text, True, (255, 255, 255))
 
-        # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (10, 100))
-        
-        
-        
-        # Get the mouse position
+
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        # Define the font and size
         font = pygame.font.SysFont(None, 36)
 
-        # Render the text for mouse position
         position_text = f"Mouse Position: ({mouse_x + camera_rect[0]}, {mouse_y+camera_rect[1]})"
         text_surface = font.render(position_text, True, (255, 255, 255))
 
-        # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (10, 50))
 
     def __draw_time(self):
@@ -173,8 +160,9 @@ class Display(IDisplay):
 
         # Draw the player
         self.__draw_player()
-        self.__draw_mouse_position()
+        # self.__draw_mouse_position()
         self.__draw_time()
+        self.render_inventory()
         
         if self.__world.paused and not self.__world.upgrading:
             
@@ -191,9 +179,88 @@ class Display(IDisplay):
 
         pygame.display.flip()
 
+    def render_inventory_2(self):
+
+        list_of_weapons = self.__world.player.get_player_weapons()
     
+        font = pygame.font.SysFont(None, 36)
         
+        text_color = (117, 176, 156)
+        background_color = (30, 30, 30)
         
+        padding = 10
+        line_height = max(font.get_height(), 40) + 5  # Ensure enough space for text and image
+
+        # Calculate the inventory box dimensions
+        box_width = 350
+        box_height = len(list_of_weapons) * line_height + padding 
+        
+        # Positioning
+        x, y = 0, 70  # Top-left position of the inventory box
+        
+        # Draw background box
+        pygame.draw.rect(self.__screen, background_color, (x - padding, y - padding, box_width, box_height))
+        
+        # Render each weapon and bullet item
+        for index, weapon_dop in enumerate(list_of_weapons):
+            weapon_name = weapon_dop.weapon_name
+            bullet = weapon_dop.bullet_name
+            
+            weapon_text = f"{weapon_name} Level: {weapon_dop.level}"
+            text_surface = font.render(weapon_text, True, text_color)
+            
+            bullet_image_path = f"./assets/bullets/{bullet}.png"
+            try:
+                bullet_image = pygame.image.load(bullet_image_path)
+                bullet_image = pygame.transform.scale(bullet_image, (30, 30))  # Resize if needed
+            except pygame.error:
+                bullet_image = None  # Handle missing images gracefully
+
+            # Calculate text and image positions
+            text_x = x + 40  # Offset for image
+            text_y = y + index * line_height
+            image_x = x
+            image_y = text_y
+
+            # Blit bullet image if available
+            if bullet_image:
+                self.__screen.blit(bullet_image, (image_x, image_y))
+            
+            # Blit text next to image
+            self.__screen.blit(text_surface, (text_x, text_y))
+
+    def render_inventory(self):
+        # Fetch the list of player's weapons
+        list_of_weapons = self.__world.player.get_player_weapons()
+        
+        # Set image size and layout parameters
+        image_size = 30  # Size of each bullet image
+        padding = 10  # Space between images
+        columns = 8  # Number of images per row
+        x_start, y_start = 10, 70  # Starting position for the grid
+
+        # Render each bullet image in a row/grid format
+        for index, weapon_dop in enumerate(list_of_weapons):
+            bullet = weapon_dop.bullet_name
+            bullet_image_path = f"./assets/bullets/{bullet}.png"
+            
+            # Load and resize bullet image
+            try:
+                bullet_image = pygame.image.load(bullet_image_path)
+                bullet_image = pygame.transform.scale(bullet_image, (image_size, image_size))
+            except pygame.error:
+                bullet_image = None  # Handle missing images gracefully
+
+            # Calculate grid position
+            col = index % columns
+            row = index // columns
+            x = x_start + col * (image_size + padding)
+            y = y_start + row * (image_size + padding)
+
+            # Blit bullet image if available
+            if bullet_image:
+                self.__screen.blit(bullet_image, (x, y))
+
     def render_pause_menu(self):
         menu_width = settings.SCREEN_WIDTH
         menu_height = settings.SCREEN_HEIGHT
@@ -230,7 +297,6 @@ class Display(IDisplay):
         if resume_button.is_clicked():
             self.__world.change_paused_state()
 
-    
     def render_upgrade_menu(self, weapons:["Weapon"]):
         click_counter = 0
         menu_width = settings.SCREEN_WIDTH

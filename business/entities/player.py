@@ -28,6 +28,9 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self._weapon_handler = WeaponHandler()
         self.__upgrading = False
 
+    def get_player_weapons(self):
+        return self._weapon_handler.get_all_weapons()
+
     def add_weapon(self, weapon_name: str, world: IGameWorld):
         self.__upgrading = False
         self._weapon_handler.add_weapon(weapon_name)

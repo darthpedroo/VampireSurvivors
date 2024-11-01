@@ -13,11 +13,11 @@ class ProjectileFactory:
         if item_name == "Bullet":
             health = 10
             damage = 1 * weapon_damage_multiplier
-            asset = "./assets/zombie.png"
+            asset = "./assets/bullets/Bullet.png"
             size = 100
             return Bullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size)
         if item_name == "Joker_Bullet":
-            asset = "./assets/joker-dc.png"
+            asset = "./assets/bullets/Joker_Bullet.png"
             health = 1000
             damage = 1 * weapon_damage_multiplier
             size = 100
@@ -25,6 +25,6 @@ class ProjectileFactory:
         if item_name == "Ice_Bullet":
             health = 100
             damage = 0 
-            asset = "./assets/experience_gems.png"
+            asset = "./assets/bullets/Ice_Bullet.png"
             size = 50
             return IceBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size)
