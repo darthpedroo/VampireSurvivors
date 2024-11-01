@@ -93,101 +93,75 @@ class Sprite(pygame.sprite.Sprite):
 class PlayerSprite(Sprite):
     """A class representing the player sprite."""
 
-    ASSET_IDLE_UP = [
-        "./assets/player/Idle_Up_1.png",
-        "./assets/player/Idle_Up_2.png"
-    ]
+    ASSET_WALK_TILESET = "./assets/player/Walk.png"
+    ASSET_IDLE_TILESET = "./assets/player/Idle.png"
 
-    ASSET_IDLE_DOWN = [
-        "./assets/player/Idle_Down_1.png",
-        "./assets/player/Idle_Down_2.png"
-    ]
+    WALK_DOWN = [0, 1, 2 , 3]
+    WALK_UP = [5, 6, 7 , 8]
+    WALK_RIGHT = [10, 11, 12, 13]
+    WALK_LEFT = [15, 16, 17, 18]
 
-    ASSET_IDLE_RIGHT = [
-        "./assets/player/Idle_Right_1.png",
-        "./assets/player/Idle_Right_2.png"
-    ]
-
-    ASSET_IDLE_LEFT = [
-        "./assets/player/Idle_Left_1.png",
-        "./assets/player/Idle_Left_2.png"
-    ]
-
-    ASSET_WALK_UP = [
-        "./assets/player/Walk_Up_1.png",
-        "./assets/player/Walk_Up_2.png",
-        "./assets/player/Walk_Up_3.png",
-        "./assets/player/Walk_Up_4.png"
-    ]
-
-    ASSET_WALK_DOWN = [
-        "./assets/player/Walk_Down_1.png",
-        "./assets/player/Walk_Down_2.png",
-        "./assets/player/Walk_Down_3.png",
-        "./assets/player/Walk_Down_4.png"
-    ]
-
-    ASSET_WALK_RIGHT = [
-        "./assets/player/Walk_Right_1.png",
-        "./assets/player/Walk_Right_2.png",
-        "./assets/player/Walk_Right_3.png",
-        "./assets/player/Walk_Right_4.png"
-    ]
-
-    ASSET_WALK_LEFT = [
-        "./assets/player/Walk_Left_1.png",
-        "./assets/player/Walk_Left_2.png",
-        "./assets/player/Walk_Left_3.png",
-        "./assets/player/Walk_Left_4.png"
-    ]
+    IDLE_DOWN = [0, 1]
+    IDLE_UP = [3, 4]
+    IDLE_RIGHT = [6, 7]
+    IDLE_LEFT = [9, 10]
 
     def __init__(self, pos_x: float, pos_y: float):
         self.__current_idle_index = 0
         self.__current_walk_index = 0
         self.__frame_count = 0
-        self.__frame_delay = 10
+        self.__frame_delay = 6
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.direction = None
 
-        self._image = pygame.image.load(
-            PlayerSprite.ASSET_IDLE_UP[0]).convert_alpha()
-        self._image = pygame.transform.scale(self._image, (40, 50))
+        self.walk_tileset = Tileset(self.ASSET_WALK_TILESET, 32, 32, 5, 4)
+        self.idle_tileset = Tileset(self.ASSET_IDLE_TILESET, 32, 32, 3, 4)
 
+        self._image = self.idle_tileset.get_tile(0)
+        self._image = pygame.transform.scale(self._image, (60, 80))
         self._rect = self._image.get_rect(
             center=(int(self.pos_x), int(self.pos_y)))
 
         super().__init__(self._image, self._rect)
 
-    def __load_idle_image(self, direction_assets: list):
-        image_path = direction_assets[self.__current_idle_index]
-        image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-        image = pygame.transform.scale(image, (40, 50))
-        self._image = image
+    def __load_idle_image(self):
+        if self.direction == "up":
+            index = PlayerSprite.IDLE_UP[self.__current_idle_index]
+        if self.direction == "down":
+            index = PlayerSprite.IDLE_DOWN[self.__current_idle_index]
+        if self.direction == "left":
+            index = PlayerSprite.IDLE_DOWN[self.__current_idle_index]
+        if self.direction == "right":
+            index = PlayerSprite.IDLE_DOWN[self.__current_idle_index]
+        
+        self._image = self.idle_tileset.get_tile(index)
+        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
+        self.__current_idle_index = (self.__current_idle_index + 1) % 2
 
     def change_to_idle_sprite(self, direction: str):
         self.__frame_count += 1
         self.direction = direction
 
         if self.__frame_count >= self.__frame_delay:
-            self.__current_idle_index = (self.__current_idle_index + 1) % 2
-            if direction == "up":
-                self.__load_idle_image(PlayerSprite.ASSET_IDLE_UP)
-            if direction == "down":
-                self.__load_idle_image(PlayerSprite.ASSET_IDLE_DOWN)
-            if direction == "left":
-                self.__load_idle_image(PlayerSprite.ASSET_IDLE_LEFT)
-            if direction == "right":
-                self.__load_idle_image(PlayerSprite.ASSET_IDLE_RIGHT)
+            self.__load_idle_image()
             self.__frame_count = 0
 
-    def __load_walk_image(self, direction_assets: list):
-        image_path = direction_assets[self.__current_walk_index]
+    def __load_walk_image(self):
+        if self.direction == "up":
+            index = PlayerSprite.WALK_UP[self.__current_walk_index]
+        if self.direction == "down":
+            index = PlayerSprite.WALK_DOWN[self.__current_walk_index]
+        if self.direction == "left":
+            index = PlayerSprite.WALK_LEFT[self.__current_walk_index]
+        if self.direction == "right":
+            index = PlayerSprite.WALK_RIGHT[self.__current_walk_index]
 
-        image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-        image = pygame.transform.scale(image, (40, 50))
-        self._image = image
+        self._image = self.walk_tileset.get_tile(index)
+        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 4
 
@@ -196,14 +170,7 @@ class PlayerSprite(Sprite):
         self.direction = direction
 
         if self.__frame_count >= self.__frame_delay:
-            if direction == "up":
-                self.__load_walk_image(PlayerSprite.ASSET_WALK_UP)
-            if direction == "down":
-                self.__load_walk_image(PlayerSprite.ASSET_WALK_DOWN)
-            if direction == "left":
-                self.__load_walk_image(PlayerSprite.ASSET_WALK_LEFT)
-            if direction == "right":
-                self.__load_walk_image(PlayerSprite.ASSET_WALK_RIGHT)
+            self.__load_walk_image()
             self.__frame_count = 0
 
     @property
@@ -378,7 +345,7 @@ class ExperienceGemSprite(Sprite):
 
     def __init__(self, pos_x: float, pos_y: float):
         tileset = Tileset(
-            self.ASSET, settings.TILE_HEIGHT, settings.TILE_HEIGHT, 2, 2
+            self.ASSET, settings.TILE_WIDTH, settings.TILE_HEIGHT, 2, 2
         )
         image: pygame.Surface = tileset.get_tile(0)
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
