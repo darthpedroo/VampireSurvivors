@@ -18,5 +18,5 @@ class MovableEntityFrozenState(MovableEntityBaseState):
         
     def enter_state(self, movable_entity):
         movable_entity.current_state = self
-        self.cooldown = CooldownHandler(10000) #HARDCODED VALUE! WRONG! 
+        self.cooldown = CooldownHandler(500) #HARDCODED VALUE! WRONG! 
         

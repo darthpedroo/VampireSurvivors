@@ -11,7 +11,7 @@ from business.entities.monsters.spider import Spider
 class MonsterFactory:
     """A monster entity in the game."""
 
-    ALL_MONSTERS = ["zombie"]
+    ALL_MONSTERS = ["spider", "zombie"]
 
     @staticmethod
     def get_random_monster(pos_x: int, pos_y: int):

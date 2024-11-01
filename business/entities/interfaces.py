@@ -145,7 +145,6 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         Returns:
             tuple[IHasSprite, IHasSprite]:
         """
-
         distance_a = (monster_a.pos_x - self.pos_x) ** 2 + \
             (monster_a.pos_y - self.pos_y) ** 2
         distance_b = (monster_b.pos_x - self.pos_x) ** 2 + \
@@ -158,29 +157,30 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
         return nearest_monster
 
-    def movement_collides_with_entities(self, dx: float, dy: float, entities: list[IHasSprite]) -> bool:
-        """_summary_
-
-        Args:
-            dx (float): _description_
-            dy (float): _description_
-            entities (list[IHasSprite]): _description_
-
-        Returns:
-            bool: _description_
-        """
-        new_position = self.sprite.rect.move(dx, dy).inflate(-10, -10)
-        for i, e1 in enumerate(entities):
-            if e1.sprite.rect.colliderect(new_position):
-                for j, e2 in enumerate(entities):
-                    if i != j and e1.sprite.rect.colliderect(e2.sprite.rect):
-                        return e1, e2
-                    else:
-                        new_position = self.sprite.rect.move(
-                            dx, dy).inflate(-10, -10)
-        return None
+    def movement_collides_with_entities(self, entities: list["ICanMove"]) -> list["ICanMove"]:
+        
+        extra_hitbox_x = 30
+        extra_hitbox_y = 30
+        intended_position = self.sprite.rect.move(self.speed, self.speed).inflate(extra_hitbox_x, extra_hitbox_y)
+        colliding_entities = [entity for entity in entities if entity.sprite.rect.colliderect(intended_position)]
     
-    def get_direction_towards_the_player(self, world: "IGameWorld")-> tuple[float,float]:
+        return colliding_entities if colliding_entities else None
+
+    def check_which_entity_is_nearest_to_the_player(self, other_entity: "ImvoableEntity", world: "IGameWorld"):
+
+        player = world.player
+
+        distance_self_entity = (self.pos_x - player.pos_x,
+                                self.pos_y - player.pos_y)
+        distance_other_entity = (
+            other_entity.pos_x - player.pos_x, other_entity.pos_y - player.pos_y)
+
+        if distance_self_entity < distance_other_entity:
+            return (self, other_entity)
+        else:
+            return (other_entity, self)
+
+    def get_direction_towards_the_player(self, world: "IGameWorld") -> tuple[float, float]:
         """Gets the direction towards the player
 
         Args:
@@ -198,6 +198,7 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
             direction_y = direction_y // abs(direction_y)
 
         return direction_x, direction_y
+
 
 class IMove(ABC):
     """Interface for the different moves/actions a player can perform. Attack / Heal / Ulti
