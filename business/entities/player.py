@@ -23,7 +23,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def __init__(self, pos_x: int, pos_y: int, sprite: Sprite):
         super().__init__(pos_x, pos_y, 5, sprite)
 
-        self.__health: int = 100
+        self.__health: int = 10000
         self.__experience = 0
         self.__level = 1
         self.__luck = 1
