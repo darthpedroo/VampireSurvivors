@@ -134,6 +134,7 @@ class Display(IDisplay):
             self.__seconds = self.__seconds + 1
             self.__frames = 0
         if self.__seconds == 60:
+            self.__seconds = 0
             self.__minutes = self.__minutes + 1
         # Define the font and size
         font = pygame.font.SysFont(None, 36)
