@@ -9,6 +9,9 @@ from business.entities.player import Player
 from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
+
+from business.stats.stats_handler import PlayerStats
+
 from game import Game
 from presentation.display import Display
 from presentation.input_handler import InputHandler
@@ -18,7 +21,17 @@ from presentation.sprite import PlayerSprite
 def initialize_player():
     """Initializes the player object"""
     x, y = 500, 500
-    return Player(x, y, PlayerSprite(x, y))
+    
+    max_health = 100
+    movement_speed = 1
+    base_damage_multiplier = 1
+    base_attack_speed = 1
+    regeneration_rate = 10000
+    regeneration_percentage = 100
+    xp_multiplier = 1
+    luck = 1
+    player_stats = PlayerStats(max_health, movement_speed, base_damage_multiplier, base_attack_speed, regeneration_rate, regeneration_percentage, xp_multiplier, luck)
+    return Player(x, y, PlayerSprite(x, y),player_stats)
 
 
 def initialize_game_world(display):

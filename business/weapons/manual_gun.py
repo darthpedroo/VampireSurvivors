@@ -3,9 +3,9 @@ from business.world.interfaces import IGameWorld
 
 
 class ManualGun(Weapon):
-    MAX_LEVEL = 5
-    def __init__(self, weapon_name, bullet_name, bullet_cooldown, bullet_speed):
-        super().__init__(weapon_name, bullet_name, bullet_cooldown, bullet_speed)
+
+    def __init__(self, weapon_name, bullet_name, bullet_cooldown, bullet_speed, max_level):
+        super().__init__(weapon_name, bullet_name, bullet_cooldown, bullet_speed, max_level)
         self._upgrades = [{"NAME":"Level 0",
             "DESCRIPTION": "UNLOCKS THE WEAPON!",
             "ATTRIBUTE": "_level",

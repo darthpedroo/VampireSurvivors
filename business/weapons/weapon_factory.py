@@ -9,19 +9,23 @@ class WeaponFactory:
             bullet_name = "Joker_Bullet"
             bullet_cooldown = 10000
             bullet_speed = 20
-            return AutoAimGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed)
+            max_level = 5
+            return AutoAimGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed,max_level)
         if weapon_type == "Manual_Gun":
             bullet_name = "Bullet"
             bullet_cooldown = 200
             bullet_speed = 20
-            return ManualGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed)
+            max_level = 5
+            return ManualGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed,max_level)
         if weapon_type == "Manual_Joker":
             bullet_name = "Joker_Bullet"
             bullet_cooldown = 1300
             bullet_speed = 20
-            return ManualGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed)
+            max_level = 5
+            return ManualGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed,max_level = 5)
         if weapon_type == "The_Mega_Ice":
             bullet_name = "Ice_Bullet"
             bullet_cooldown = 2705
             bullet_speed = 20
-            return ManualGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed)
+            max_level = 5
+            return ManualGun(weapon_type, bullet_name, bullet_cooldown, bullet_speed,max_level)

@@ -8,6 +8,7 @@ from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
 from business.entities.weapon_handler import WeaponHandler
 from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
+from business.stats.stats_handler import PlayerStats
 from presentation.sprite import Sprite
 
 
@@ -16,20 +17,14 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     The player is the main character of the game. It can move around the game world and shoot at monsters.
     """
-
-    BASE_DAMAGE = 5
-    MAX_HEALTH = 100
-
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite):
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, player_stats: PlayerStats):
         super().__init__(pos_x, pos_y, 5, sprite)
 
-        self.__health: int = 100
+        self.__player_stats = player_stats
+        self.__health: int = self.__player_stats.max_health
         self.__experience = 0
         self.__level = 1
-        self.__luck = 1
         self.__last_regeneration_time = 0
-        self.__regeneration_rate = 10000
-        self._logger.debug("Created %s", self)
         self._weapon_handler = WeaponHandler()
         self.__upgrading = False
 
@@ -91,7 +86,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def damage_amount(self):
-        return Player.BASE_DAMAGE
+        return self.__player_stats.base_damage_multiplier
 
     @property
     def health(self) -> int:
@@ -99,7 +94,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def luck(self) -> int:
-        return self.__luck
+        return self.__player_stats.luck
 
     def take_damage(self, amount):
         self.__health = max(0, self.__health - amount)
@@ -109,7 +104,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__gain_experience(gem.amount)
 
     def __gain_experience(self, amount: int):
-        self.__experience += amount
+        self.__experience += amount * self.__player_stats.xp_multiplier
         while self.__experience >= self.experience_to_next_level:
             self.__experience -= self.experience_to_next_level
             self.__level += 1
@@ -117,17 +112,16 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     def regenerate_health(self, current_time):
 
-        if self.__health < self.MAX_HEALTH:
-            if current_time - self.__last_regeneration_time >= self.__regeneration_rate:
+        if self.__health < self.__player_stats.max_health:
+            if current_time - self.__last_regeneration_time >= self.__player_stats.regeneration:
                 self.sprite.heal()
-                self.__health += self.__health * 0.1
-                if self.__health > self.MAX_HEALTH:
-                    self.__health = self.MAX_HEALTH
+                self.__health += self.__player_stats.max_health * self.__player_stats.regeneration_percentage / 100
+                if self.__health > self.__player_stats.max_health:
+                    self.__health = self.__player_stats.max_health
                 self.__last_regeneration_time = current_time
 
     def update(self, world: IGameWorld, current_state:MovableEntityBaseState):
-        #super().update(world)
-
+        
         current_state.update_state(self)
         
         if self.__upgrading:
@@ -139,6 +133,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
         try:
             self._weapon_handler.use_every_weapon(
-                self.pos_x, self.pos_y, world, current_time)
+                self.pos_x, self.pos_y, world, current_time, self.__player_stats.base_damage_multiplier, self.__player_stats.base_attack_speed)
         except AttributeError as error:
             print("Loading...", error)

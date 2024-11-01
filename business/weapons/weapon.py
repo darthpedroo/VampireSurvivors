@@ -4,15 +4,18 @@ from business.entities.item_factory import ProjectileFactory
 import math
 
 class Weapon(ABC):
-    def __init__(self, weapon_name:str, bullet_name: str, bullet_cooldown: int, bullet_speed: int):
+    def __init__(self, weapon_name:str, bullet_name: str, bullet_cooldown: int, bullet_speed: int, max_level:int):
         self.weapon_name = weapon_name
         self._last_shot_time = 0
         self._base_shoot_cooldown = bullet_cooldown
         self._bullet_name = bullet_name
         self._speed = bullet_speed
         self._level = 1
+        self._max_level = max_level
         self._damage_multiplier = 1
         self._upgrades = []
+        
+    
         
 
     def is_cooldown_over(self, current_time):
@@ -50,22 +53,22 @@ class Weapon(ABC):
             setattr(self, attribute_to_modify, new_value)
     
     def upgrade_next_level(self):
-        if self._level < self.MAX_LEVEL:
+        if self._level < self._max_level:
             self._level += 1
             self.upgrade_level(self._level)
         else:
             print("Max level acquired")
     
     def has_reached_max_level(self):
-        return self._level == self.MAX_LEVEL
+        return self._level == self._max_level
 
 
-    def use(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time):
+    def use(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_damage_multiplier:int, player_attack_speed:int ):
         projectile_factory = ProjectileFactory()
         try:
             bullet_direction_x, bullet_direction_y = self.aim(world, player_pos_x, player_pos_y)
             projectile = projectile_factory.create_item(
-                self._bullet_name, player_pos_x, player_pos_y, bullet_direction_x, bullet_direction_y, self._speed, self._damage_multiplier, world)
+                self._bullet_name, player_pos_x, player_pos_y, bullet_direction_x, bullet_direction_y, self._speed * player_attack_speed, self._damage_multiplier * player_damage_multiplier, world)
             if self.is_cooldown_over(current_time):
                 world.add_bullet(projectile)
                 self._last_shot_time = current_time
@@ -81,7 +84,7 @@ class Weapon(ABC):
         return self._level
 
     @abstractmethod
-    def aim(self):
+    def aim(self, world, pos_x, pos_y):
         """Gets the direction where the weapon should aim
         """
         pass

@@ -25,9 +25,9 @@ class WeaponHandler():
         else:
             raise WeaponOverflow()
 
-    def use_every_weapon(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time):
+    def use_every_weapon(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_base_damage_multiplier:int, player_base_attack_speed_multiplier:int):
         for weapon in self.__list_of_weapons:
-            weapon.use(player_pos_x, player_pos_y, world, current_time)
+            weapon.use(player_pos_x, player_pos_y, world, current_time, player_base_damage_multiplier,player_base_attack_speed_multiplier)
 
     def has_weapon(self, weapon_name:str):
         for weapon in self.__list_of_weapons:
