@@ -157,16 +157,14 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
         return nearest_monster
 
-    def movement_collides_with_entities(self, entities: list["ICanMove"], world):
-        # Get the intended new position based on speed and direction
-        intended_position = self.sprite.rect.move(
-            self.speed, self.speed).inflate(200, 200)
-
-        for entity in entities:
-            if entity.sprite.rect.colliderect(intended_position):
-                return entity  # Return the colliding entity directly
-
-        return None
+    def movement_collides_with_entities(self, entities: list["ICanMove"]) -> list["ICanMove"]:
+        
+        extra_hitbox_x = 30
+        extra_hitbox_y = 30
+        intended_position = self.sprite.rect.move(self.speed, self.speed).inflate(extra_hitbox_x, extra_hitbox_y)
+        colliding_entities = [entity for entity in entities if entity.sprite.rect.colliderect(intended_position)]
+    
+        return colliding_entities if colliding_entities else None
 
     def check_which_entity_is_nearest_to_the_player(self, other_entity: "ImvoableEntity", world: "IGameWorld"):
 

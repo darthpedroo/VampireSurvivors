@@ -36,24 +36,33 @@ class Spider(MovableEntity, IMonster):
         return self.__damage
 
     def update(self, world: IGameWorld):
-
         direction_x, direction_y = self.get_direction_towards_the_player(world)
         distance_to_player = self._get_distance_to(world.player)
         monsters = [m for m in world.monsters if m != self]
 
         if distance_to_player < self.__attack_range:
             self.attack(world.player)
-        elif self.movement_collides_with_entities(monsters, world) is not None:
+        else:
+            colliding_entities = self.movement_collides_with_entities(monsters)
+            if colliding_entities:
+                for entity in colliding_entities:
+                    # Calcular vector de repulsión
+                    repulsion_x = entity.pos_x - self.pos_x
+                    repulsion_y = entity.pos_y - self.pos_y
 
-            nearest_entity = self.movement_collides_with_entities(
-                monsters, world)
+                    magnitude = (repulsion_x ** 2 + repulsion_y ** 2) ** 0.5
+                    if magnitude != 0:
+                        repulsion_x /= magnitude
+                        repulsion_y /= magnitude
 
-            nearest_entity.set_direction(direction_x, direction_y)
-            nearest_entity.current_state.update_state(self)
+                    self.set_direction(-repulsion_x, -repulsion_y)
+                    self.current_state.update_state(self)
 
-        elif self.movement_collides_with_entities(monsters, world) is None:
-            self.set_direction(direction_x, direction_y)
-            self.current_state.update_state(self)
+                    entity.set_direction(repulsion_x, repulsion_y)
+                    entity.current_state.update_state(entity)
+            else:
+                self.set_direction(direction_x, direction_y)
+                self.current_state.update_state(self)
 
     def __str__(self):
         return f"Zombie(hp={self.health}, pos={self.pos_x, self.pos_y})"

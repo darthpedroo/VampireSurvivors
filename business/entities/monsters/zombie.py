@@ -59,7 +59,7 @@ class Zombie(MovableEntity, IMonster):
             elif direction_x < 0:
                 self.sprite.change_to_attack_sprite("left")
         else:
-            if self.movement_collides_with_entities(dx, dy, monsters) == None:
+            if self.movement_collides_with_entities(monsters) == None:
                 self.set_direction(direction_x, direction_y)
                 if direction_x > 0:
                     self.sprite.change_to_walk_sprite("right")
@@ -70,10 +70,24 @@ class Zombie(MovableEntity, IMonster):
                 elif direction_x < 0:
                     self.sprite.change_to_walk_sprite("left")
             else:
-                e1, e2 = self.movement_collides_with_entities(
-                    dx, dy, monsters)
-                nearest_enemy = self.get_nearest_enemy(e1, e2,)
-                nearest_enemy.set_direction(direction_x, direction_y)
+                #ABSTRAER ESTA LOGICA A LA CLASE MONSTER :V
+                
+                colliding_entities = self.movement_collides_with_entities(monsters)
+                if colliding_entities:
+                    for entity in colliding_entities:
+                        repulsion_x = entity.pos_x - self.pos_x
+                        repulsion_y = entity.pos_y - self.pos_y
+
+                        magnitude = (repulsion_x ** 2 + repulsion_y ** 2) ** 0.5
+                        if magnitude != 0:
+                            repulsion_x /= magnitude
+                            repulsion_y /= magnitude
+
+                        self.set_direction(-repulsion_x, -repulsion_y)
+                        self.current_state.update_state(self)
+
+                        entity.set_direction(repulsion_x, repulsion_y)
+                        entity.current_state.update_state(entity)
         
         self.current_state.update_state(self)        
         self.attack(world.player, direction_x, direction_y)
