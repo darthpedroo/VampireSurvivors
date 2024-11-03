@@ -8,19 +8,21 @@ from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
 from presentation.sprite import BulletSprite
 from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
+from business.stats.stats import BulletStats
+
 
 
 
 class Bullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, pos_x, pos_y, dir_x, dir_y, speed: int, health: int, damage_amount: int, asset: str, size, current_state = MovableEntityMovingState()):
-        super().__init__(pos_x, pos_y, speed, BulletSprite(pos_x, pos_y, asset, size))
+    def __init__(self, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()):
+        super().__init__(pos_x, pos_y, stats, BulletSprite(pos_x, pos_y, asset, stats.size))
         self.__dir_x = dir_x
         self.__dir_y = dir_y
         self._logger.debug("Created %s", self)
         self._health = health
-        self._damage_amount = damage_amount
+        self._damage_amount = stats.damage
         self.set_direction(dir_x, dir_y)
         self.current_state = current_state    
 

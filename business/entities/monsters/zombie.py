@@ -16,8 +16,8 @@ from business.entities.state_machine.movable_entity_frozen_state import MovableE
 class Zombie(MovableEntity, IMonster):
     """A monster entity in the game."""
 
-    def __init__(self, src_x: int, src_y: int, sprite: Sprite):
-        super().__init__(src_x, src_y, 0.5, sprite)
+    def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
+        super().__init__(src_x, src_y, stats, sprite)
         self.__health: int = 15
         self.__damage = 10
         self.__attack_range = 50
@@ -47,7 +47,7 @@ class Zombie(MovableEntity, IMonster):
         direction_x, direction_y = self.get_direction_towards_the_player(world)
         
         monsters = [m for m in world.monsters if m != self]
-        dx, dy = direction_x * self.speed, direction_y * self.speed
+        dx, dy = direction_x * self._stats.movement_speed, direction_y * self._stats.movement_speed
         
         if self.__can_attack == True:
             if direction_x > 0:

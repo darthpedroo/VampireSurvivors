@@ -6,6 +6,7 @@ from typing import List
 from presentation.sprite import Sprite, ZombieSprite, SpiderSprite
 from business.entities.monsters.zombie import Zombie
 from business.entities.monsters.spider import Spider
+from business.stats.stats import EntityStats
 
 
 class MonsterFactory:
@@ -21,8 +22,21 @@ class MonsterFactory:
     @staticmethod
     def get_monster(monster_type: str, pos_x: int, pos_y: int):
         if monster_type == "zombie":
-            return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y))
+            
+            max_health = 100
+            speed = 1
+            damage_multiplier = 3
+            base_attack_speed = 10
+            size = 10
+            stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
+            return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y,size),stats)
         elif monster_type == "spider":
-            return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y))
+            max_health = 100
+            speed = 1
+            damage_multiplier = 3
+            base_attack_speed = 10
+            size = 100
+            stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
+            return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y,size),stats)
         else:
             raise ValueError("Not W")

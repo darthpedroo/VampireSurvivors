@@ -15,8 +15,8 @@ from business.entities.state_machine.movable_entity_frozen_state import MovableE
 class IceBullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, pos_x, pos_y, dir_x, dir_y, speed: int, health: int, damage_amount: int, asset: str, size, current_state = MovableEntityMovingState()):
-        super().__init__(pos_x, pos_y, speed, BulletSprite(pos_x, pos_y, asset, size))
+    def __init__(self, pos_x, pos_y, dir_x, dir_y, stats: int, health: int, damage_amount: int, asset: str, size, current_state = MovableEntityMovingState()):
+        super().__init__(pos_x, pos_y, stats, BulletSprite(pos_x, pos_y, asset, size))
         self._logger.debug("Created %s", self)
         self._health = health
         self._damage_amount = damage_amount

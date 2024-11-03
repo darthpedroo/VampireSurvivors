@@ -7,49 +7,76 @@ from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
 from business.entities.weapon_handler import WeaponHandler
+from business.perks.perks_handler import PerksHandler
 from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
+from business.stats.stats import PlayerStats
 from presentation.sprite import Sprite
-
+#from business.perks.perk import Perk
+#from business.perks.perk_factory import PerkFactory
 
 class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """Player entity.
 
     The player is the main character of the game. It can move around the game world and shoot at monsters.
     """
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, player_stats: PlayerStats):
+        super().__init__(pos_x, pos_y, player_stats, sprite)
 
-    BASE_DAMAGE = 5
-    MAX_HEALTH = 100
-
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite):
-        super().__init__(pos_x, pos_y, 5, sprite)
-
-        self.__health: int = 100
+        self.__health: int = self._stats.max_health
         self.__experience = 0
         self.__level = 1
-        self.__luck = 1
         self.__last_regeneration_time = 0
-        self.__regeneration_rate = 10000
-        self._logger.debug("Created %s", self)
         self._weapon_handler = WeaponHandler()
+        self._perks_handler = PerksHandler(self._stats)
         self.__upgrading = False
 
-    def add_weapon(self, weapon_name: str, world: IGameWorld):
+    def get_player_weapons(self):
+        return self._weapon_handler.get_all_items()
+    
+    def get_player_perks(self):
+        return self._perks_handler.get_all_items()
+
+    def add_item(self, item_name: str, world: IGameWorld):    
         self.__upgrading = False
-        self._weapon_handler.add_weapon(weapon_name)
+        try:
+            self._weapon_handler.add_item(item_name)
+        except ValueError:
+            self._perks_handler.add_item(item_name, self._stats)
+            self._perks_handler.apply_perk_to_player_stats(item_name, self._stats)
+            
+            
         world.set_upgrading_state(False)
         world.set_paused_state(False)
 
-    def has_weapon(self, weapon_name: str):
-        return self._weapon_handler.has_weapon(weapon_name)
+    def has_item(self, item_name: str):
+        return self._weapon_handler.has_item(item_name) or self._perks_handler.has_item(item_name)
 
-    def get_weapon_level(self, weapon_name: str):
-        return self._weapon_handler.get_weapon_level(weapon_name)
+    def get_item_level(self, item_name: str):
+        try:
+            return self._weapon_handler.get_item_level(item_name)
+        except ValueError:
+            return self._perks_handler.get_item_level(item_name)
 
-    def upgrade_weapon_next_level(self, weapon_name: str):
-        self._weapon_handler.upgrade_weapon_next_level(weapon_name)
+    def upgrade_item_next_level(self, item_name: str):
+        try:
+            # Try upgrading the item with weapon handler
+            return self._weapon_handler.upgrade_item_next_level(item_name)
+        except ValueError:
+            # If it fails, try upgrading with perks handler
+            success = self._perks_handler.upgrade_item_next_level(item_name)
+            # Apply perk if the upgrade was successful
+            if success:
+                self._perks_handler.apply_perk_to_player_stats(item_name, self._stats)
+                return success
+            else:
+                # Raise an error if neither handler can upgrade the item
+                raise ValueError(f"Item '{item_name}' could not be upgraded by any handler")
 
-    def weapon_reached_max_level(self, weapon_name: str):
-        return self._weapon_handler.has_reached_max_level(weapon_name)
+
+    def item_reached_max_level(self, item_name: str):
+        return self._weapon_handler.has_reached_max_level(item_name) or self._perks_handler.has_reached_max_level(item_name)
+
+            
 
     def __str__(self):
         return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
@@ -83,7 +110,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        return 1 + (2 * self.__level ** 2)
+        return 1 
 
     @property
     def level(self):
@@ -91,7 +118,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def damage_amount(self):
-        return Player.BASE_DAMAGE
+        return self._stats.base_damage_multiplier
 
     @property
     def health(self) -> int:
@@ -99,7 +126,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def luck(self) -> int:
-        return self.__luck
+        return self._stats.luck
 
     def take_damage(self, amount):
         self.__health = max(0, self.__health - amount)
@@ -109,7 +136,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__gain_experience(gem.amount)
 
     def __gain_experience(self, amount: int):
-        self.__experience += amount
+        self.__experience += amount * self._stats.xp_multiplier
         while self.__experience >= self.experience_to_next_level:
             self.__experience -= self.experience_to_next_level
             self.__level += 1
@@ -117,17 +144,16 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     def regenerate_health(self, current_time):
 
-        if self.__health < self.MAX_HEALTH:
-            if current_time - self.__last_regeneration_time >= self.__regeneration_rate:
+        if self.__health < self._stats.max_health:
+            if current_time - self.__last_regeneration_time >= self._stats.regeneration:
                 self.sprite.heal()
-                self.__health += self.__health * 0.1
-                if self.__health > self.MAX_HEALTH:
-                    self.__health = self.MAX_HEALTH
+                self.__health += self._stats.max_health * self._stats.regeneration_percentage / 100
+                if self.__health > self._stats.max_health:
+                    self.__health = self._stats.max_health
                 self.__last_regeneration_time = current_time
 
     def update(self, world: IGameWorld, current_state:MovableEntityBaseState):
-        #super().update(world)
-
+        
         current_state.update_state(self)
         
         if self.__upgrading:
@@ -139,6 +165,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
         try:
             self._weapon_handler.use_every_weapon(
-                self.pos_x, self.pos_y, world, current_time)
+                self.pos_x, self.pos_y, world, current_time, self._stats.base_damage_multiplier, self._stats.base_attack_speed)
         except AttributeError as error:
             print("Loading...", error)

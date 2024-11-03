@@ -52,11 +52,11 @@ class Entity(IHasPosition, IHasSprite):
 class MovableEntity(Entity, ICanMove):
     """Base class for all entities that can move."""
 
-    def __init__(self, pos_x: float, pos_y: float, speed: float, sprite: Sprite, current_state = MovableEntityMovingState()):
+    def __init__(self, pos_x: float, pos_y: float, stats: float, sprite: Sprite, current_state = MovableEntityMovingState()):
         super().__init__(pos_x, pos_y, sprite)
         self._pos_x: float = pos_x
         self._pos_y: float = pos_y
-        self._speed: float = speed
+        self._stats = stats
         self._sprite: Sprite = sprite
         self._moving = True
         self.current_state = current_state
@@ -85,12 +85,9 @@ class MovableEntity(Entity, ICanMove):
     def apply_ice_effect(self, time):
         frozen_state = MovableEntityFrozenState()
         self.switch_state(frozen_state)
-        
 
-    @property
-    def speed(self) -> float:
-        return self._speed
 
     @property
     def moving(self):
         return self._moving
+    
