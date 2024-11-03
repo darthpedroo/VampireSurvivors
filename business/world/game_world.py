@@ -3,6 +3,7 @@
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.weapons.weapon_factory import WeaponFactory
+from business.perks.perk_factory import PerkFactory
 from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
 
 
@@ -25,22 +26,35 @@ class GameWorld(IGameWorld):
         self._paused = False
         self._upgrading = False
         self._random_weapons_to_choose = []
-        self.__list_of_weapons = ["Auto_Joker",
-                                  "Manual_Gun", "Manual_Joker", "The_Mega_Ice"]
+        
+        
+        self.__list_of_items = [{"weapon":"Auto_Joker"},{"weapon":"Manual_Gun"}, {"weapon":"Manual_Joker"},{"weapon":"The_Mega_Ice"},{"perk":"Speedy Boots"}]
 
-    def add_random_weapons(self):
-        weapons = self.__list_of_weapons.copy()
-        for _ in range(3):
-            if not weapons:
-                print("No more ammo for you, little vater")
-                break
+    def add_random_items(self):
+        items = self.__list_of_items.copy()
+        count = 0  # Track the number of items added
 
-            rnd_weapon = random.choice(weapons)
-            if not self.__player.weapon_reached_max_level(rnd_weapon):
-                weapon_instance = WeaponFactory().create_weapon(rnd_weapon)
-                self._random_weapons_to_choose.append(weapon_instance)
+        while count < 3 and items:
+            rnd_weapon = random.choice(items)
 
-            weapons.remove(rnd_weapon)
+            # Check if the randomly chosen item has not reached max level
+            if not self.__player.item_reached_max_level(next(iter(rnd_weapon.values()))):
+                
+                # Create the item based on its type and add to list
+                if rnd_weapon.get("weapon") is not None:
+                    chosen_item = WeaponFactory().create_weapon(rnd_weapon["weapon"])                    
+                else:
+                    chosen_item = PerkFactory().create_perk(rnd_weapon["perk"])
+                
+                self._random_weapons_to_choose.append(chosen_item)
+                count += 1  # Increment the count of items added
+
+            # Remove the chosen item from the list to avoid duplicates
+            items.remove(rnd_weapon)
+
+        if count < 3:
+            print("No more ammo for you, little vater")
+
 
     def restore_random_weapons(self):
         self._random_weapons_to_choose = []
@@ -88,7 +102,6 @@ class GameWorld(IGameWorld):
             self.player.update(self, self.player.current_state)
             for monster in self.monsters:
                 monster.update(self)
-           #     print("UPDATING;", type(monster))
             for bullet in self.__bullets:
                 bullet.update(self)
             self.__monster_spawner.update(self)
