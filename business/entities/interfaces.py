@@ -107,14 +107,14 @@ class IHasPosition(IHasSprite):
 class ICanMove(IHasPosition):
     """Interface for entities that can move."""
 
-    @property
-    @abstractmethod
-    def speed(self) -> float:
-        """The speed of the entity.
-
-        Returns:
-            float: The speed of the entity.
-        """
+#    @property
+#    @abstractmethod
+#    def speed(self) -> float:
+#        """The speed of the entity.
+#
+#       Returns:
+#            float: The speed of the entity.
+#        """
 
 #    @abstractmethod
 #    def move(self, direction_x: float, direction_y: float):
@@ -161,7 +161,7 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         
         extra_hitbox_x = 30
         extra_hitbox_y = 30
-        intended_position = self.sprite.rect.move(self.speed, self.speed).inflate(extra_hitbox_x, extra_hitbox_y)
+        intended_position = self.sprite.rect.move(self._stats.movement_speed, self._stats.movement_speed).inflate(extra_hitbox_x, extra_hitbox_y)
         colliding_entities = [entity for entity in entities if entity.sprite.rect.colliderect(intended_position)]
     
         return colliding_entities if colliding_entities else None
@@ -229,6 +229,47 @@ class IUpgradable(ABC):
     @abstractmethod
     def load_upgrades(self):
         pass
+    
+
+class UpgradableItem(ABC):
+
+    def __init__(self, item_name:str,max_level:int):
+        self.item_name = item_name
+        self._level = 1
+        self._upgrades = []
+        self._max_level = max_level
+    
+    def get_upgrade_info_by_level(self, level:int):
+        
+        try:
+            level_info = self._upgrades[level-1]["DESCRIPTION"]
+        except IndexError as error:
+            print("ERROR CON EL INDEX!", error)
+        return level_info
+    
+    def load_upgrades(self, stats):
+        for level in range(self._level):
+            self.upgrade_level(level, stats)
+    
+    def upgrade_level(self, level: int, stats):
+        
+        current_upgrade = self._upgrades[level-1] #ojo
+        attribute_to_modify = current_upgrade.get('ATTRIBUTE')
+        new_value = current_upgrade.get('VALUE')
+        if current_upgrade.get('OPERATION') == 'MULTIPLICATION':
+            new_value = getattr(stats, attribute_to_modify) * new_value
+            setattr(stats, attribute_to_modify, new_value)
+    
+    def upgrade_next_level(self, stats):
+        if self._level < self._max_level:
+            self._level += 1
+            self.upgrade_level(self._level, stats)
+        else:
+            print("Max level acquired")
+    
+    def has_reached_max_level(self):
+        return self._level == self._max_level
+    
 
 
 class IAttack(IMove):
@@ -239,7 +280,6 @@ class IAttack(IMove):
     def is_cool_down_over(self):
         """Checks if cooldown is over to attack again
         """
-
 
 class IBullet(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for bullet entities."""
