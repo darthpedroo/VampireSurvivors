@@ -49,7 +49,7 @@ class PlayerStats(EntityStats):
     """
     def __init__(self, max_health=1, movement_speed=1, base_damage_multiplier=1, base_attack_speed=1, size:int=1, regeneration_rate: int=1, regeneration_percentage:int=1, xp_multiplier:int=1, luck:int=1):
         super().__init__(max_health, movement_speed, base_damage_multiplier, base_attack_speed,size)
-        self.regeneration = regeneration_rate
+        self.regeneration_rate = regeneration_rate
         self.regeneration_percentage = regeneration_percentage
         self.xp_multiplier = xp_multiplier
         self.luck = luck

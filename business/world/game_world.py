@@ -28,7 +28,7 @@ class GameWorld(IGameWorld):
         self._random_weapons_to_choose = []
         
         
-        self.__list_of_items = [{"weapon":"Auto_Joker"},{"weapon":"Manual_Gun"}, {"weapon":"Manual_Joker"},{"weapon":"The_Mega_Ice"},{"perk":"Speedy Boots"}]
+        self.__list_of_items = [{"weapon":"Auto_Joker"},{"weapon":"Manual_Gun"}, {"weapon":"Manual_Joker"},{"weapon":"The_Mega_Ice"},{"perk":"Speedy Boots"}, {"perk":"Sacred Heart"}]
 
     def add_random_items(self):
         items = self.__list_of_items.copy()

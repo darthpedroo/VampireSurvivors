@@ -31,4 +31,4 @@ class ProjectileFactory:
             damage = 0 * damage
             size = 50
             bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
-            return Bullet(entity_pos_x, entity_pos_y, dir_x, dir_y, health, bullet_stats, asset)
+            return IceBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, health, bullet_stats, asset)

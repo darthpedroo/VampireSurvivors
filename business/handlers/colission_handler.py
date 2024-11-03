@@ -18,8 +18,7 @@ class CollisionHandler:
         for bullet in bullets:
             for monster in monsters:
                 if CollisionHandler.__collides_with(bullet, monster):
-
-                    bullet.apply_affect(monster)
+                    bullet.apply_effect(monster)
                     monster.take_damage(bullet.damage_amount)
                     bullet.take_damage(bullet.damage_amount)
 
