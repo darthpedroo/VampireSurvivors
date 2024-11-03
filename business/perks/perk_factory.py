@@ -12,7 +12,7 @@ class PerkFactory():
             "DESCRIPTION": "Boosts your speed by 10%",
             "ATTRIBUTE": "movement_speed", 
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 11
+            "VALUE": 1.1
             },
             {"NAME":"Level 1",
             "DESCRIPTION": "Boosts your speed by 20%",
