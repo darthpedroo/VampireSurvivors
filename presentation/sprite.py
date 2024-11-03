@@ -181,61 +181,18 @@ class PlayerSprite(Sprite):
 class ZombieSprite(Sprite):
     """A class representing the zombie sprite."""
 
-    ASSET_WALK_UP = [
-        "./assets/zombie/Zombie_Walk_Up_1.png",
-        "./assets/zombie/Zombie_Walk_Up_2.png",
-        "./assets/zombie/Zombie_Walk_Up_3.png",
-        "./assets/zombie/Zombie_Walk_Up_4.png"
-    ]
+    ASSET_WALK_TILESET = "./assets/zombie/Walk.png"
+    ASSET_ATTACK_TILESET = "./assets/zombie/Attack.png"
 
-    ASSET_WALK_DOWN = [
-        "./assets/zombie/Zombie_Walk_Down_1.png",
-        "./assets/zombie/Zombie_Walk_Down_2.png",
-        "./assets/zombie/Zombie_Walk_Down_3.png",
-        "./assets/zombie/Zombie_Walk_Down_4.png"
-    ]
+    WALK_DOWN = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    WALK_UP = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    WALK_RIGHT = [22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    WALK_LEFT = [33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
 
-    ASSET_WALK_RIGHT = [
-        "./assets/zombie/Zombie_Walk_Right_1.png",
-        "./assets/zombie/Zombie_Walk_Right_2.png",
-        "./assets/zombie/Zombie_Walk_Right_3.png",
-        "./assets/zombie/Zombie_Walk_Right_4.png"
-    ]
-
-    ASSET_WALK_LEFT = [
-        "./assets/zombie/Zombie_Walk_Left_1.png",
-        "./assets/zombie/Zombie_Walk_Left_2.png",
-        "./assets/zombie/Zombie_Walk_Left_3.png",
-        "./assets/zombie/Zombie_Walk_Left_4.png"
-    ]
-
-    ASSET_ATTACK_UP = [
-        "./assets/zombie/Zombie_Attack_Up_1.png",
-        "./assets/zombie/Zombie_Attack_Up_2.png",
-        "./assets/zombie/Zombie_Attack_Up_3.png",
-        "./assets/zombie/Zombie_Attack_Up_4.png"
-    ]
-
-    ASSET_ATTACK_DOWN = [
-        "./assets/zombie/Zombie_Attack_Down_1.png",
-        "./assets/zombie/Zombie_Attack_Down_2.png",
-        "./assets/zombie/Zombie_Attack_Down_3.png",
-        "./assets/zombie/Zombie_Attack_Down_4.png"
-    ]
-
-    ASSET_ATTACK_RIGHT = [
-        "./assets/zombie/Zombie_Attack_Right_1.png",
-        "./assets/zombie/Zombie_Attack_Right_2.png",
-        "./assets/zombie/Zombie_Attack_Right_3.png",
-        "./assets/zombie/Zombie_Attack_Right_4.png"
-    ]
-
-    ASSET_ATTACK_LEFT = [
-        "./assets/zombie/Zombie_Attack_Left_1.png",
-        "./assets/zombie/Zombie_Attack_Left_2.png",
-        "./assets/zombie/Zombie_Attack_Left_3.png",
-        "./assets/zombie/Zombie_Attack_Left_4.png"
-    ]
+    ATTACK_DOWN = [0, 1, 2, 3, 4, 5, 6, 7]
+    ATTACK_UP = [9, 10, 11, 12, 13, 14, 15, 16]
+    ATTACK_RIGHT = [18, 19, 20, 21, 22, 23, 24, 25]
+    ATTACK_LEFT = [27, 28, 29, 30, 31, 32, 33, 34]
 
     def __init__(self, pos_x: float, pos_y: float, size=100):
         self.__current_walk_index = 0
@@ -247,42 +204,53 @@ class ZombieSprite(Sprite):
         self.pos_y = pos_y
         self.direction = None
 
-        self._image = pygame.image.load(ZombieSprite.ASSET_WALK_UP[0]).convert_alpha()
-        # Scale the image based on the given size
-        self._image = pygame.transform.scale(self._image, (size, int(size * 1.25)))  # Adjusted height
+        self.walk_tileset = Tileset(self.ASSET_WALK_TILESET, 32, 32, 11, 4)
+        self.attack_tileset = Tileset(self.ASSET_ATTACK_TILESET, 32, 32, 9, 4)
+
+        self._image = self.walk_tileset.get_tile(0)
+        self._image = pygame.transform.scale(self._image, (size, int(size * 1.25)))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
 
         super().__init__(self._image, self._rect)
 
-    def __load_walk_image(self, direction_assets: list):
-        image_path = direction_assets[self.__current_walk_index]
-        image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-        image = pygame.transform.scale(image, (60, 75))
-        self._image = image
+    def __load_walk_image(self):
+        if self.direction == "up":
+            index = ZombieSprite.WALK_UP[self.__current_walk_index]
+        elif self.direction == "down":
+            index = ZombieSprite.WALK_DOWN[self.__current_walk_index]
+        elif self.direction == "left":
+            index = ZombieSprite.WALK_LEFT[self.__current_walk_index]
+        elif self.direction == "right":
+            index = ZombieSprite.WALK_RIGHT[self.__current_walk_index]
+        
+        self._image = self.walk_tileset.get_tile(index)
+        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
-        self.__current_walk_index = (self.__current_walk_index + 1) % 4
+        self.__current_walk_index = (self.__current_walk_index + 1) % 10
 
-    def __load_attack_image(self, direction_assets: list):
-        image_path = direction_assets[self.__current_attack_index]
-        image: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-        image = pygame.transform.scale(image, (60, 75))
-        self._image = image
+    def __load_attack_image(self):
+        if self.direction == "up":
+            index = ZombieSprite.ATTACK_UP[self.__current_attack_index]
+        elif self.direction == "down":
+            index = ZombieSprite.ATTACK_DOWN[self.__current_attack_index]
+        elif self.direction == "left":
+            index = ZombieSprite.ATTACK_LEFT[self.__current_attack_index]
+        elif self.direction == "right":
+            index = ZombieSprite.ATTACK_RIGHT[self.__current_attack_index]
+
+        self._image = self.attack_tileset.get_tile(index)
+        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
-        self.__current_attack_index = (self.__current_attack_index + 1) % 4
+        self.__current_attack_index = (self.__current_attack_index + 1) % 8
 
     def change_to_walk_sprite(self, direction: str):
         self.__frame_count += 1
         self.direction = direction
 
         if self.__frame_count >= self.__frame_delay:
-            if direction == "up":
-                self.__load_walk_image(ZombieSprite.ASSET_WALK_UP)
-            if direction == "down":
-                self.__load_walk_image(ZombieSprite.ASSET_WALK_DOWN)
-            if direction == "left":
-                self.__load_walk_image(ZombieSprite.ASSET_WALK_LEFT)
-            if direction == "right":
-                self.__load_walk_image(ZombieSprite.ASSET_WALK_RIGHT)
+            self.__load_walk_image()
             self.__frame_count = 0
 
     def change_to_attack_sprite(self, direction: str):
@@ -290,18 +258,8 @@ class ZombieSprite(Sprite):
         self.direction = direction
 
         if self.__frame_count >= self.__attack_frame_delay:
-            if direction == "up":
-                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_UP)
-            if direction == "down":
-                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_DOWN)
-            if direction == "left":
-                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_LEFT)
-            if direction == "right":
-                self.__load_attack_image(ZombieSprite.ASSET_ATTACK_RIGHT)
+            self.__load_attack_image()
             self.__frame_count = 0
-
-
-
         
 class SpiderSprite(Sprite):
     ASSET = "./assets/spider.png"

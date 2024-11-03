@@ -36,6 +36,8 @@ class Zombie(MovableEntity, IMonster):
             self.__can_attack = True
             target.take_damage(self.damage_amount)
             self.__attack_cooldown.put_on_cooldown()
+        else:
+            self.__can_attack = False
 
     @property
     def damage_amount(self):

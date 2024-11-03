@@ -1,9 +1,9 @@
 # Display
-GAME_TITLE = "Generic Game"
+GAME_TITLE = "Skibidi Survivors"
 FPS = 30
 
 # Tile dimensions
-TILE_HEIGHT = 48  # 32
+TILE_HEIGHT = 38
 TILE_WIDTH = 48
 TILE_DIMENSION = (TILE_WIDTH, TILE_HEIGHT)
 

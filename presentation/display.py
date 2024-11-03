@@ -31,7 +31,7 @@ class Display(IDisplay):
 
     def __load_ground_tileset(self):
         return Tileset(
-            "./assets/ground_tileset.png", settings.TILE_WIDTH, settings.TILE_HEIGHT, 2, 3
+            "./assets/ground_tileset.png", settings.TILE_WIDTH, settings.TILE_HEIGHT, 10, 16
         )
 
     def __render_ground_tiles(self):
@@ -76,20 +76,37 @@ class Display(IDisplay):
         health_rect = pygame.Rect(bar_x, bar_y, health_width, bar_height)
         pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
 
+    def __draw_experience_bar(self):
+        bar_width = settings.SCREEN_WIDTH - 20
+        bar_height = 20 
+        bar_x = 10 
+        bar_y = 10 
+
+        player = self.__world.player
+        experience_percentage = player.experience / player.experience_to_next_level
+
+        bg_rect = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
+        pygame.draw.rect(self.__screen, (100, 100, 100), bg_rect)
+
+        exp_width = int(bar_width * experience_percentage)
+        exp_rect = pygame.Rect(bar_x, bar_y, exp_width, bar_height)
+        pygame.draw.rect(self.__screen, (255, 255, 0), exp_rect)
+
+        font = pygame.font.SysFont(None, 24)
+        exp_text = font.render(
+            f"{player.experience}/{player.experience_to_next_level} XP",
+            True,
+            (0, 0, 0)
+        )
+        text_rect = exp_text.get_rect(center=(settings.SCREEN_WIDTH // 2, bar_y + bar_height // 2))
+        self.__screen.blit(exp_text, text_rect)
+
+
     def __draw_player(self):
         adjusted_rect = self.camera.apply(self.__world.player.sprite.rect)
         self.__screen.blit(self.__world.player.sprite.image, adjusted_rect)
 
         self.__draw_player_health_bar()
-
-        # Draw the experience text
-        font = pygame.font.SysFont(None, 48)
-        experience_text = font.render(
-            f"XP: {self.__world.player.experience}/{self.__world.player.experience_to_next_level}",
-            True,
-            (255, 255, 255),
-        )
-        self.__screen.blit(experience_text, (10, 10))
 
     def load_world(self, world: GameWorld):
         self.__world = world
@@ -180,9 +197,10 @@ class Display(IDisplay):
                 self.__screen.blit(bullet.sprite.image, adjusted_rect)
 
         self.__draw_player()
-        # self.__draw_mouse_position()
+        #self.__draw_mouse_position()
         self.__draw_time()
         self.render_inventory()
+        self.__draw_experience_bar()
         
         if self.__world.paused and not self.__world.upgrading:
             
