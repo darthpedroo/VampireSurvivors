@@ -33,9 +33,7 @@ class Weapon(UpgradableItem):
             movement_speed = self.item_stats.movement_speed
             damage = self.item_stats.damage * player_damage_multiplier
             cooldown = self.item_stats.cooldown * player_attack_speed
-            
-            
-            
+
             projectile = projectile_factory.create_item(
                 self._bullet_name, player_pos_x, player_pos_y, bullet_direction_x, bullet_direction_y, movement_speed, damage,cooldown)
             

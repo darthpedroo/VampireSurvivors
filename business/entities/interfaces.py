@@ -285,7 +285,7 @@ class IBullet(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for bullet entities."""
 
     @abstractmethod
-    def apply_affect(self, other_entity: "MovableEntity"):
+    def apply_effect(self, other_entity: "MovableEntity"):
         """Applies the effect of the bullet"""
 
 

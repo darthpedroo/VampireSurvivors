@@ -106,7 +106,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        return 1 
+        return 5 + (2*self.__level)**2
 
     @property
     def level(self):
@@ -141,7 +141,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def regenerate_health(self, current_time):
 
         if self.__health < self._stats.max_health:
-            if current_time - self.__last_regeneration_time >= self._stats.regeneration:
+            if current_time - self.__last_regeneration_time >= self._stats.regeneration_rate:
                 self.sprite.heal()
                 self.__health += self._stats.max_health * self._stats.regeneration_percentage / 100
                 if self.__health > self._stats.max_health:
