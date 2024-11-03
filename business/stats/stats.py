@@ -57,8 +57,8 @@ class PlayerStats(EntityStats):
     
 
 class MonsterStats(EntityStats):
-    def __init__(self, max_health, movement_speed, base_damage_multiplier, base_attack_speed):
-        super().__init__(max_health, movement_speed, base_damage_multiplier, base_attack_speed)
+    def __init__(self, max_health, movement_speed, base_damage_multiplier, base_attack_speed, size):
+        super().__init__(max_health, movement_speed, base_damage_multiplier, base_attack_speed, size)
 
 
 

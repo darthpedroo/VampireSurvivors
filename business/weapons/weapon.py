@@ -30,9 +30,6 @@ class Weapon(UpgradableItem):
         try:
             bullet_direction_x, bullet_direction_y = self.aim(world, player_pos_x, player_pos_y)
             
-        #  projectile = projectile_factory.create_item(
-          #      self._bullet_name, player_pos_x, player_pos_y, bullet_direction_x, bullet_direction_y, self.item_stats * player_attack_speed, self.item_stats * player_damage_multiplier, world)
-            
             movement_speed = self.item_stats.movement_speed
             damage = self.item_stats.damage * player_damage_multiplier
             cooldown = self.item_stats.cooldown * player_attack_speed
@@ -45,7 +42,7 @@ class Weapon(UpgradableItem):
             if self.is_cooldown_over(current_time):
                 world.add_bullet(projectile)
                 self._last_shot_time = current_time
-        except ZeroDivisionError:
+        except TypeError:
             print("There are no monsters yet...")
 
     @property

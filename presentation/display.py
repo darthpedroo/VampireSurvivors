@@ -58,7 +58,6 @@ class Display(IDisplay):
                 self.__screen.blit(tile_image, (x, y))
 
     def __draw_player_health_bar(self):
-        # Get the player's health
         player = self.__world.player
         
         # Define the health bar dimensions
@@ -132,6 +131,25 @@ class Display(IDisplay):
 
         # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (300, 10))
+    
+    def __draw_monster_health_bar(self,monster):
+        
+        # Define the health bar dimensions
+        bar_width = settings.TILE_WIDTH
+        bar_height = 5
+        bar_x = monster.sprite.rect.centerx - bar_width // 2 - self.camera.camera_rect.left
+        bar_y = monster.sprite.rect.bottom + 5 - self.camera.camera_rect.top
+
+        # Draw the background bar (red)
+        bg_rect = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
+        pygame.draw.rect(self.__screen, (255, 0, 0), bg_rect)
+
+        # Draw the health bar (green)
+        health_percentage = monster.health / monster._stats.max_health
+        
+        health_width = int(bar_width * health_percentage)
+        health_rect = pygame.Rect(bar_x, bar_y, health_width, bar_height)
+        pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
 
     def render_frame(self):
         # Update the camera to follow the player
@@ -151,6 +169,9 @@ class Display(IDisplay):
             if self.camera.camera_rect.colliderect(monster.sprite.rect):
                 adjusted_rect = self.camera.apply(monster.sprite.rect)
                 self.__screen.blit(monster.sprite.image, adjusted_rect)
+                self.__draw_monster_health_bar(monster)
+        
+        
 
         # Draw the bullets
         for bullet in self.__world.bullets:
@@ -185,7 +206,7 @@ class Display(IDisplay):
         list_of_perks = self.__world.player.get_player_perks()
         
         # Set image size and layout parameters
-        image_size = 30  # Size of each image
+        image_size = 40  # Size of each image
         padding = 10     # Space between images
         columns = 8      # Number of images per row
         x_start, y_start = 10, 70  # Starting position for the weapons grid
@@ -325,5 +346,7 @@ class Display(IDisplay):
                     self.__world.player.upgrade_item_next_level(button.text)
                     break
                 else:
-                    self.__world.player.add_item(button.text, self.__world)
+                    self.__world.player.add_item(button.text)
+                    self.__world.set_upgrading_state(False)
+                    self.__world.set_paused_state(False)
                 

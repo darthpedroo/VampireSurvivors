@@ -18,7 +18,7 @@ class Zombie(MovableEntity, IMonster):
 
     def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
         super().__init__(src_x, src_y, stats, sprite)
-        self.__health: int = 15
+        self.__health: int = self._stats.max_health
         self.__damage = 10
         self.__attack_range = 50
         self.__attack_cooldown = CooldownHandler(1000)

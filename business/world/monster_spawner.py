@@ -8,7 +8,7 @@ import pygame
 import settings
 from business.entities.monsters.zombie import Zombie
 from business.world.interfaces import IGameWorld, IMonsterSpawner
-from business.world.monsterfactory import MonsterFactory
+from business.entities.monsters.monsterfactory import MonsterFactory
 
 
 class MonsterSpawner(IMonsterSpawner):

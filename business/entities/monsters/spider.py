@@ -16,7 +16,7 @@ class Spider(MovableEntity, IMonster):
 
     def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
         super().__init__(src_x, src_y, stats, sprite)
-        self.__health: int = 10
+        self.__health: int = self._stats.max_health
         self.__damage = 5
         self.__attack_range = 100
         self.__attack_cooldown = CooldownHandler(2000)

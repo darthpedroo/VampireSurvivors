@@ -36,17 +36,13 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def get_player_perks(self):
         return self._perks_handler.get_all_items()
 
-    def add_item(self, item_name: str, world: IGameWorld):    
+    def add_item(self, item_name: str):    
         self.__upgrading = False
         try:
             self._weapon_handler.add_item(item_name)
         except ValueError:
             self._perks_handler.add_item(item_name, self._stats)
             self._perks_handler.apply_perk_to_player_stats(item_name, self._stats)
-            
-            
-        world.set_upgrading_state(False)
-        world.set_paused_state(False)
 
     def has_item(self, item_name: str):
         return self._weapon_handler.has_item(item_name) or self._perks_handler.has_item(item_name)
