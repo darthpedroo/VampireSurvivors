@@ -10,7 +10,7 @@ from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
 
-from business.stats.stats_handler import PlayerStats
+from business.stats.stats import PlayerStats
 
 from game import Game
 from presentation.display import Display
@@ -23,7 +23,7 @@ def initialize_player():
     x, y = 500, 500
     
     max_health = 100
-    movement_speed = 1
+    movement_speed = 5
     base_damage_multiplier = 1
     base_attack_speed = 1
     regeneration_rate = 10000
@@ -39,7 +39,7 @@ def initialize_game_world(display):
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    player._weapon_handler.add_weapon("Manual_Joker")
+    player._weapon_handler.add_item("Manual_Joker")
     #player._weapon_handler.add_weapon("Manual_Gun")
     #player._weapon_handler.add_weapon("Auto_Joker")
     #player._weapon_handler.add_weapon("The_Mega_Ice")

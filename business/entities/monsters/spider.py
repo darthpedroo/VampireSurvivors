@@ -14,8 +14,8 @@ from presentation.sprite import Sprite
 class Spider(MovableEntity, IMonster):
     """A monster entity in the game."""
 
-    def __init__(self, src_x: int, src_y: int, sprite: Sprite):
-        super().__init__(src_x, src_y, 1, sprite)
+    def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
+        super().__init__(src_x, src_y, stats, sprite)
         self.__health: int = 10
         self.__damage = 5
         self.__attack_range = 100
