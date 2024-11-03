@@ -158,7 +158,6 @@ class Display(IDisplay):
                 adjusted_rect = self.camera.apply(bullet.sprite.rect)
                 self.__screen.blit(bullet.sprite.image, adjusted_rect)
 
-        # Draw the player
         self.__draw_player()
         # self.__draw_mouse_position()
         self.__draw_time()
@@ -170,7 +169,7 @@ class Display(IDisplay):
 
         if self.__world.upgrading:
             if len(self.__world._random_weapons_to_choose) == 0:
-                self.__world.add_random_weapons()
+                self.__world.add_random_items()
 
             self.render_upgrade_menu(self.__world._random_weapons_to_choose)
         
@@ -179,67 +178,19 @@ class Display(IDisplay):
 
         pygame.display.flip()
 
-    def render_inventory_2(self):
-
-        list_of_weapons = self.__world.player.get_player_weapons()
-    
-        font = pygame.font.SysFont(None, 36)
-        
-        text_color = (117, 176, 156)
-        background_color = (30, 30, 30)
-        
-        padding = 10
-        line_height = max(font.get_height(), 40) + 5  # Ensure enough space for text and image
-
-        # Calculate the inventory box dimensions
-        box_width = 350
-        box_height = len(list_of_weapons) * line_height + padding 
-        
-        # Positioning
-        x, y = 0, 70  # Top-left position of the inventory box
-        
-        # Draw background box
-        pygame.draw.rect(self.__screen, background_color, (x - padding, y - padding, box_width, box_height))
-        
-        # Render each weapon and bullet item
-        for index, weapon_dop in enumerate(list_of_weapons):
-            weapon_name = weapon_dop.weapon_name
-            bullet = weapon_dop.bullet_name
-            
-            weapon_text = f"{weapon_name} Level: {weapon_dop.level}"
-            text_surface = font.render(weapon_text, True, text_color)
-            
-            bullet_image_path = f"./assets/bullets/{bullet}.png"
-            try:
-                bullet_image = pygame.image.load(bullet_image_path)
-                bullet_image = pygame.transform.scale(bullet_image, (30, 30))  # Resize if needed
-            except pygame.error:
-                bullet_image = None  # Handle missing images gracefully
-
-            # Calculate text and image positions
-            text_x = x + 40  # Offset for image
-            text_y = y + index * line_height
-            image_x = x
-            image_y = text_y
-
-            # Blit bullet image if available
-            if bullet_image:
-                self.__screen.blit(bullet_image, (image_x, image_y))
-            
-            # Blit text next to image
-            self.__screen.blit(text_surface, (text_x, text_y))
 
     def render_inventory(self):
-        # Fetch the list of player's weapons
+        # Fetch the list of player's weapons and perks
         list_of_weapons = self.__world.player.get_player_weapons()
+        list_of_perks = self.__world.player.get_player_perks()
         
         # Set image size and layout parameters
-        image_size = 30  # Size of each bullet image
-        padding = 10  # Space between images
-        columns = 8  # Number of images per row
-        x_start, y_start = 10, 70  # Starting position for the grid
+        image_size = 30  # Size of each image
+        padding = 10     # Space between images
+        columns = 8      # Number of images per row
+        x_start, y_start = 10, 70  # Starting position for the weapons grid
 
-        # Render each bullet image in a row/grid format
+        # Render each weapon image in a row/grid format
         for index, weapon_dop in enumerate(list_of_weapons):
             bullet = weapon_dop.bullet_name
             bullet_image_path = f"./assets/bullets/{bullet}.png"
@@ -260,6 +211,31 @@ class Display(IDisplay):
             # Blit bullet image if available
             if bullet_image:
                 self.__screen.blit(bullet_image, (x, y))
+
+        # Calculate starting y position for perks grid below weapons
+        y_start_perks = y_start + ((len(list_of_weapons) + columns - 1) // columns) * (image_size + padding) + 20
+
+        # Render each perk image in a row/grid format
+        for index, perk in enumerate(list_of_perks):
+            perk_image_path = f"./assets/perks/{perk.item_name}.png"
+            
+            # Load and resize perk image
+            try:
+                perk_image = pygame.image.load(perk_image_path)
+                perk_image = pygame.transform.scale(perk_image, (image_size, image_size))
+            except pygame.error:
+                perk_image = None  # Handle missing images gracefully
+
+            # Calculate grid position
+            col = index % columns
+            row = index // columns
+            x = x_start + col * (image_size + padding)
+            y = y_start_perks + row * (image_size + padding)
+
+            # Blit perk image if available
+            if perk_image:
+                self.__screen.blit(perk_image, (x, y))
+
 
     def render_pause_menu(self):
         menu_width = settings.SCREEN_WIDTH
@@ -297,7 +273,8 @@ class Display(IDisplay):
         if resume_button.is_clicked():
             self.__world.change_paused_state()
 
-    def render_upgrade_menu(self, weapons:["Weapon"]):
+    def render_upgrade_menu(self, items:["Weapon"]):
+        
         click_counter = 0
         menu_width = settings.SCREEN_WIDTH
         menu_height = settings.SCREEN_HEIGHT
@@ -312,41 +289,41 @@ class Display(IDisplay):
         
         list_of_buttons = []
         button_offset = 0
-        for weapon in weapons:
+        for item in items:
             
-            weapon_level = 0
-            if self.__world.player.has_weapon(weapon.weapon_name):
-                weapon_level = self.__world.player.get_weapon_level(weapon.weapon_name)            
+            item_level = 0
+            if self.__world.player.has_item(item.item_name):
+                item_level = self.__world.player.get_item_level(item.item_name)            
             
-            weapon_upgrade_detail = weapon.get_upgrade_info_by_level(weapon_level)
+            item_upgrade_detail = item.get_upgrade_info_by_level(item_level)
             button_offset +=150
-            weapon_button_width = settings.SCREEN_WIDTH
-            weapon_button_height = 100
-            weapon_button_colour = settings.BG_COLOR
-            weapon_colour = settings.WHITE_COLOUR
-            weapon_button = Button(weapon_button_width, weapon_button_height, weapon_button_colour, self.__screen)
-            weapon_button.add_text(weapon.weapon_name, 20,weapon_colour)
+            item_button_width = settings.SCREEN_WIDTH
+            item_button_height = 100
+            item_button_colour = settings.BG_COLOR
+            item_colour = settings.WHITE_COLOUR
+            item_button = Button(item_button_width, item_button_height, item_button_colour, self.__screen)
+            item_button.add_text(item.item_name, 20,item_colour)
             
-            text_weapon_level = str(f"Level: {weapon_level}")
-            weapon_button.add_text(text_weapon_level , 70,weapon_colour)
+            text_item_level = str(f"Level: {item_level}")
+            item_button.add_text(text_item_level , 70,item_colour)
             
-            text_weapon_upgrade_detail = str(f"DESCRIPCIÓN:{weapon_upgrade_detail}")
+            text_item_upgrade_detail = str(f"DESCRIPCIÓN:{item_upgrade_detail}")
             
-            weapon_button.add_text(text_weapon_upgrade_detail , 90,weapon_colour)
+            item_button.add_text(text_item_upgrade_detail , 90,item_colour)
             
-            weapon_button.draw(0,100 + button_offset)
-            weapon_button.set_name(weapon.weapon_name)
-            list_of_buttons.append(weapon_button)
+            item_button.draw(0,100 + button_offset)
+            item_button.set_name(item.item_name)
+            list_of_buttons.append(item_button)
         
         for button in list_of_buttons:
             if button.is_clicked() and click_counter == 0:
                 click_counter += 1
-                if self.__world.player.has_weapon(button.text):
+                if self.__world.player.has_item(button.text):
                     self.__world.set_paused_state(False)
                     self.__world.set_upgrading_state(False)
-                    self.__world.player.set_upgrading(False)                
-                    self.__world.player.upgrade_weapon_next_level(button.text)
+                    self.__world.player.set_upgrading(False)
+                    self.__world.player.upgrade_item_next_level(button.text)
                     break
                 else:
-                    self.__world.player.add_weapon(button.text, self.__world)
+                    self.__world.player.add_item(button.text, self.__world)
                 
