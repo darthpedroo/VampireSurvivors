@@ -12,19 +12,39 @@ class IGameWorld(ABC):
     """
     @abstractmethod
     def set_upgrading_state(self, state: bool):
-        pass
-        
+        """Sets the upgrading state"""
+
     @abstractmethod
     def set_paused_state(self,state: bool):
-        pass
-    
+        """Sets the pause state"""
+
     @abstractmethod
     def change_paused_state(self):
-        pass
-    
+        """Changes the pause state"""
+
     @abstractmethod
     def get_mouse_position(self): #Quizas no deberia estar acá sino en display
-        """Return the player mouse position
+        """Return the player mouse position"""
+
+    @abstractmethod
+    def get_camera(self): #Quizas no deberia estar acá sino en display
+        """Return the camera position"""
+
+    @abstractmethod
+    def add_random_items(self):
+        """Adds random items"""
+
+    @abstractmethod
+    def restore_random_weapons(self):
+        """Restores random weapons"""
+
+    @abstractmethod
+    def update_player(self, x_mov: int, y_mov: int):
+        """Updates the player
+
+        Args:
+            x_mov (int): The direction of the movement on x axis
+            y_mov (int): The direction of the movement on y axis
         """
 
     @abstractmethod
@@ -113,6 +133,24 @@ class IGameWorld(ABC):
 
         Returns:
             list[IExperienceGem]: A copy of the list of experience gems in the world.
+        """
+
+    @property
+    @abstractmethod
+    def paused(self) -> bool:
+        """Gets the paused state of the game.
+
+        Returns:
+            paused (bool): The paused state of the game.
+        """
+
+    @property
+    @abstractmethod
+    def upgrading(self) -> bool:
+        """Gets the upgrading state of the game.
+
+        Returns:
+            upgrading (bool): The upgrading state of the game.
         """
 
 

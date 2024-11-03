@@ -1,9 +1,8 @@
-"""This module contains the Monster factory, which manages what type of monster that should be spawned."""
+"""This module contains the Monster factory, which manages what type of monster that should be spawned.""" #pylint: disable=line-too-long
 
 import random
-from typing import List
 
-from presentation.sprite import Sprite, ZombieSprite, SpiderSprite
+from presentation.sprite import ZombieSprite, SpiderSprite
 from business.entities.monsters.zombie import Zombie
 from business.entities.monsters.spider import Spider
 from business.stats.stats import EntityStats
@@ -16,13 +15,31 @@ class MonsterFactory:
 
     @staticmethod
     def get_random_monster(pos_x: int, pos_y: int):
+        """Gets a random monster
+        
+        Args:
+            pos_x (int): The position of the monster to be spawned on the x axis.
+            pos_y (int): The position of the monster to be spawned on the y axis.
+        
+        Returns:
+            Zombie | Spider: An instance of the monster depending on which monster was chosen.
+        """
         random_monster = random.choice(MonsterFactory.ALL_MONSTERS)
         return MonsterFactory.get_monster(random_monster, pos_x, pos_y)
 
     @staticmethod
     def get_monster(monster_type: str, pos_x: int, pos_y: int):
+        """Gets a random monster
+        
+        Args:
+            monster_type (str): The type of monster to be spawned.
+            pos_x (int): The position of the monster to be spawned on the x axis.
+            pos_y (int): The position of the monster to be spawned on the y axis.
+        
+        Returns:
+            Zombie | Spider: An instance of the monster depending on which monster was chosen.
+        """
         if monster_type == "zombie":
-            
             max_health = 200
             speed = 1
             damage_multiplier = 3

@@ -1,20 +1,18 @@
 """This module contains the implementation of the game world."""
 
+import random
+import pygame
+
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.weapons.weapon_factory import WeaponFactory
 from business.perks.perk_factory import PerkFactory
-from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
-
-
-import pygame
-import random
 
 
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, display: "Display"):
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, display: "Display"): #pylint: disable=line-too-long
         # Initialize the player and lists for monsters, bullets and gems
         self.__player: IPlayer = player
         self.__monsters: list[IMonster] = []
@@ -25,10 +23,15 @@ class GameWorld(IGameWorld):
         self.__display = display
         self._paused = False
         self._upgrading = False
-        self._random_weapons_to_choose = []
-        
-        
-        self.__list_of_items = [{"weapon":"Auto_Joker"},{"weapon":"Manual_Gun"}, {"weapon":"Manual_Joker"},{"weapon":"The_Mega_Ice"},{"perk":"Speedy Boots"}, {"perk":"Sacred Heart"}]
+        self.random_weapons_to_choose = []
+
+
+        self.__list_of_items = [{"weapon":"Auto_Joker"},
+                                {"weapon":"Manual_Gun"},
+                                {"weapon":"Manual_Joker"},
+                                {"weapon":"The_Mega_Ice"},
+                                {"perk":"Speedy Boots"},
+                                {"perk":"Sacred Heart"}]
 
     def add_random_items(self):
         items = self.__list_of_items.copy()
@@ -39,14 +42,14 @@ class GameWorld(IGameWorld):
 
             # Check if the randomly chosen item has not reached max level
             if not self.__player.item_reached_max_level(next(iter(rnd_weapon.values()))):
-                
+
                 # Create the item based on its type and add to list
                 if rnd_weapon.get("weapon") is not None:
-                    chosen_item = WeaponFactory().create_weapon(rnd_weapon["weapon"])                    
+                    chosen_item = WeaponFactory().create_weapon(rnd_weapon["weapon"])
                 else:
                     chosen_item = PerkFactory().create_perk(rnd_weapon["perk"])
-                
-                self._random_weapons_to_choose.append(chosen_item)
+
+                self.random_weapons_to_choose.append(chosen_item)
                 count += 1  # Increment the count of items added
 
             # Remove the chosen item from the list to avoid duplicates
@@ -57,32 +60,26 @@ class GameWorld(IGameWorld):
 
 
     def restore_random_weapons(self):
-        self._random_weapons_to_choose = []
+        self.random_weapons_to_choose = []
 
     def update_player(self, x_mov: int, y_mov: int):
         if not self._paused:
             current_state = self.__player.current_state
             self.__player.update(self, current_state)
             self.__player.set_direction(x_mov, y_mov)
-    
+
     def change_player_state(self, new_state):
         """Changes the state of the player
         Args:
             new_state (_type_): _description_
         """
         self.__player.switch_state(new_state)
-            
-        
 
     def change_paused_state(self):
         if self._paused:
             self._paused = False
         else:
             self._paused = True
-
-    @property
-    def paused(self):
-        return self._paused
 
     def set_upgrading_state(self, state: bool):
         self._upgrading = state
@@ -141,9 +138,9 @@ class GameWorld(IGameWorld):
         return self.__experience_gems[:]
 
     @property
-    def paused(self):
+    def paused(self) -> bool:
         return self._paused
 
     @property
-    def upgrading(self):
+    def upgrading(self) -> bool:
         return self._upgrading

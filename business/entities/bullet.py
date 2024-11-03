@@ -1,22 +1,16 @@
 """Module for a bullet entity that moves towards a target direction."""
 
-import math
-import pygame
-
+from business.stats.stats import BulletStats
+from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
 from business.entities.state_machine.entity import MovableEntity
 from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
 from presentation.sprite import BulletSprite
-from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
-from business.stats.stats import BulletStats
-
-
-
 
 class Bullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()):
+    def __init__(self, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()): #pylint: disable=line-too-long
         super().__init__(pos_x, pos_y, stats, BulletSprite(pos_x, pos_y, asset, stats.size))
         self.__dir_x = dir_x
         self.__dir_y = dir_y
@@ -24,7 +18,7 @@ class Bullet(MovableEntity, IBullet):
         self._health = health
         self._damage_amount = stats.damage
         self.set_direction(dir_x, dir_y)
-        self.current_state = current_state    
+        self.current_state = current_state
 
     @property
     def health(self) -> int:  # Why does it have health ? :v
@@ -45,4 +39,3 @@ class Bullet(MovableEntity, IBullet):
 
     def apply_effect(self, other_entity: "MovableEntity"):
         return super().apply_effect(other_entity)
-

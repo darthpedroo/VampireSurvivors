@@ -18,7 +18,13 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """Player entity.
 
     The player is the main character of the game. It can move around the game world and shoot at monsters.
-    """
+
+    Args:
+        pos_x (int): Position of the player on the x axis.
+        pos_y (int): Position of the player on the y axis.
+        sprite (Sprite): Sprite of the player.
+        player_stats (PlayerStats): Stats of the player.
+    """ #pylint: disable=line-too-long
     def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, player_stats: PlayerStats):
         super().__init__(pos_x, pos_y, player_stats, sprite)
 
@@ -30,13 +36,28 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self._perks_handler = PerksHandler(self._stats)
         self.__upgrading = False
 
-    def get_player_weapons(self):
+    def get_player_weapons(self) -> list:
+        """Gets the player weapons.
+
+        Returns:
+            list: A list of the player weapons.
+        """
         return self._weapon_handler.get_all_items()
-    
+
     def get_player_perks(self):
+        """Gets the player perks.
+
+        Returns:
+            list: A list of the player perks.
+        """
         return self._perks_handler.get_all_items()
 
-    def add_item(self, item_name: str):    
+    def add_item(self, item_name: str):
+        """Adds an item to the player.
+
+        Args:
+            item_name (str): The name of the item.
+        """
         self.__upgrading = False
         try:
             self._weapon_handler.add_item(item_name)
@@ -45,15 +66,42 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             self._perks_handler.apply_perk_to_player_stats(item_name, self._stats)
 
     def has_item(self, item_name: str):
+        """Checks if the player has an item.
+
+        Args:
+            item_name (str): The name of the item.
+
+        Returns:
+            bool: True if the player has the item, false otherwise.
+        """
         return self._weapon_handler.has_item(item_name) or self._perks_handler.has_item(item_name)
 
     def get_item_level(self, item_name: str):
+        """Gets the level of an item.
+
+        Args:
+            item_name (str): The name of the item.
+
+        Returns:
+            item_level: The level of the item.
+        """
         try:
             return self._weapon_handler.get_item_level(item_name)
         except ValueError:
             return self._perks_handler.get_item_level(item_name)
 
     def upgrade_item_next_level(self, item_name: str):
+        """Upgrades the level of an item.
+
+        Args:
+            item_name (str): The name of the item.
+
+        Returns:
+            bool: True after upgrading the item.
+
+        Raises:
+            ValueError: If the item could not be upgraded
+        """
         try:
             # Try upgrading the item with weapon handler
             return self._weapon_handler.upgrade_item_next_level(item_name)
@@ -68,20 +116,36 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
                 # Raise an error if neither handler can upgrade the item
                 raise ValueError(f"Item '{item_name}' could not be upgraded by any handler")
 
-
     def item_reached_max_level(self, item_name: str):
-        return self._weapon_handler.has_reached_max_level(item_name) or self._perks_handler.has_reached_max_level(item_name)
+        """Checks if an item has reached max level.
 
-            
+        Args:
+            item_name (str): The name of the item.
+
+        Returns:
+            bool
+        """
+        return self._weapon_handler.has_reached_max_level(item_name) or self._perks_handler.has_reached_max_level(item_name) #pylint: disable=line-too-long
 
     def __str__(self):
-        return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
+        return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))" #pylint: disable=line-too-long
 
     def set_position(self, pos_x: int, pos_y: int):
+        """Sets the position of the player.
+
+        Args:
+            pos_x (int): The position of the player on the x axis.
+            pos_y (int): The position of the player on the y axis.
+        """
         self.pos_x = pos_x
         self.pos_y = pos_y
 
     def set_upgrading(self, new_state: bool):
+        """Sets the upgrading state.
+
+        Args:
+            new_state (bool): The state of upgrading (true or false).
+        """
         self.__upgrading = new_state
 
     @property
@@ -139,7 +203,11 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             self.__upgrading = True
 
     def regenerate_health(self, current_time):
-
+        """Regenerates the health of the player if possible.
+        
+        Args:
+            current_time: The current time.
+        """
         if self.__health < self._stats.max_health:
             if current_time - self.__last_regeneration_time >= self._stats.regeneration_rate:
                 self.sprite.heal()
@@ -148,10 +216,14 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
                     self.__health = self._stats.max_health
                 self.__last_regeneration_time = current_time
 
-    def update(self, world: IGameWorld, current_state:MovableEntityBaseState):
+    def update(self, world: IGameWorld, current_state: MovableEntityBaseState):
+        """Updates the player.
         
+        Args:
+            world (IGameWorld): The game world.
+            current_state (MovableEntityBaseState): The current state of the player
+        """
         current_state.update_state(self)
-        
         if self.__upgrading:
             world.set_upgrading_state(True)
             world.set_paused_state(True)
@@ -161,6 +233,11 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
         try:
             self._weapon_handler.use_every_weapon(
-                self.pos_x, self.pos_y, world, current_time, self._stats.base_damage_multiplier, self._stats.base_attack_speed)
+                self.pos_x,
+                self.pos_y,
+                world,
+                current_time,
+                self._stats.base_damage_multiplier,
+                self._stats.base_attack_speed)
         except AttributeError as error:
             print("Loading...", error)

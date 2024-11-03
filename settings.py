@@ -1,9 +1,11 @@
+"""Module used for settings"""
+
 # Display
 GAME_TITLE = "Skibidi Survivors"
 FPS = 30
 
 # Tile dimensions
-TILE_HEIGHT = 38
+TILE_HEIGHT = 48
 TILE_WIDTH = 48
 TILE_DIMENSION = (TILE_WIDTH, TILE_HEIGHT)
 

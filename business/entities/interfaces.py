@@ -71,7 +71,6 @@ class IHasPosition(IHasSprite):
         Returns:
             float: The x-coordinate of the entity.
         """
-        pass
 
     @pos_x.setter
     @abstractmethod
@@ -81,7 +80,6 @@ class IHasPosition(IHasSprite):
         Args:
             value (float): The new x-coordinate of the entity.
         """
-        pass
 
     @property
     @abstractmethod
@@ -91,7 +89,6 @@ class IHasPosition(IHasSprite):
         Returns:
             float: The y-coordinate of the entity.
         """
-        pass
 
     @pos_y.setter
     @abstractmethod
@@ -101,54 +98,37 @@ class IHasPosition(IHasSprite):
         Args:
             value (float): The new y-coordinate of the entity.
         """
-        pass
 
 
 class ICanMove(IHasPosition):
     """Interface for entities that can move."""
-
-#    @property
-#    @abstractmethod
-#    def speed(self) -> float:
-#        """The speed of the entity.
-#
-#       Returns:
-#            float: The speed of the entity.
-#        """
-
-#    @abstractmethod
-#    def move(self, direction_x: float, direction_y: float):
-#        """Move the entity in the given direction based on its speed.
-
-#        This method should update the entity's position and sprite.
-
-#        Args:
-#            direction_x (float): The direction in x-coordinate.
-#            direction_y (float): The direction in y-coordinate.
-#        """
 
 
 class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for monster entities."""
 
     @abstractmethod
-    def drop_loot(self):
-        pass
+    def drop_loot(self, luck: int):
+        """Drops loot from the monster.
+        
+        Args:
+            luck (int): Luck of the player
+        """
 
-    def get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]:
-        """Gets the nearest enemy in the map
+    def get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]: #pylint: disable=line-too-long
+        """Gets the nearest enemy in the map.
 
         Args:
-            monster_a (IHasSprite): 
-            monster_b (IHasSprite): 
+            monster_a (IHasSprite): The first monster to compare.
+            monster_b (IHasSprite): The second monster to compare.
 
         Returns:
-            tuple[IHasSprite, IHasSprite]:
+            tuple[IHasSprite, IHasSprite]: The nearest monster.
         """
         distance_a = (monster_a.pos_x - self.pos_x) ** 2 + \
-            (monster_a.pos_y - self.pos_y) ** 2
+                      (monster_a.pos_y - self.pos_y) ** 2
         distance_b = (monster_b.pos_x - self.pos_x) ** 2 + \
-            (monster_b.pos_y - self.pos_y) ** 2
+                      (monster_b.pos_y - self.pos_y) ** 2
 
         if distance_a < distance_b:
             nearest_monster = monster_a
@@ -158,16 +138,33 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         return nearest_monster
 
     def movement_collides_with_entities(self, entities: list["ICanMove"]) -> list["ICanMove"]:
-        
+        """Checks for collisions with other entities during movement.
+
+        Args:
+            entities (list[ICanMove]): The list of entities to check for collisions.
+
+        Returns:
+            list[ICanMove]: A list of colliding entities, or None if no collisions occur.
+        """
         extra_hitbox_x = 30
         extra_hitbox_y = 30
-        intended_position = self.sprite.rect.move(self._stats.movement_speed, self._stats.movement_speed).inflate(extra_hitbox_x, extra_hitbox_y)
-        colliding_entities = [entity for entity in entities if entity.sprite.rect.colliderect(intended_position)]
-    
+        intended_position = self.sprite.rect.move(self._stats.movement_speed,self._stats.movement_speed).inflate(extra_hitbox_x, extra_hitbox_y) #pylint: disable=line-too-long
+        colliding_entities = [entity
+                              for entity in entities
+                              if entity.sprite.rect.colliderect(intended_position)]
+
         return colliding_entities if colliding_entities else None
 
-    def check_which_entity_is_nearest_to_the_player(self, other_entity: "ImvoableEntity", world: "IGameWorld"):
+    def check_which_entity_is_nearest_to_the_player(self, other_entity: "ImvoableEntity", world: "IGameWorld"): #pylint: disable=line-too-long
+        """Checks which entity is nearest to the player.
 
+        Args:
+            other_entity (ImvoableEntity): The other entity to compare.
+            world (IGameWorld): The game world.
+
+        Returns:
+            tuple: A tuple of the nearest entity and the other entity.
+        """
         player = world.player
 
         distance_self_entity = (self.pos_x - player.pos_x,
@@ -181,13 +178,13 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
             return (other_entity, self)
 
     def get_direction_towards_the_player(self, world: "IGameWorld") -> tuple[float, float]:
-        """Gets the direction towards the player
+        """Gets the direction towards the player.
 
         Args:
-            world (IGameWorld): 
+            world (IGameWorld): The game world.
 
         Returns:
-            tuple[float,float]: direction_x, direction_y
+            tuple[float, float]: The direction towards the player (direction_x, direction_y).
         """
         direction_x = world.player.pos_x - self.pos_x
         if direction_x != 0:
@@ -201,92 +198,119 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
 
 class IMove(ABC):
-    """Interface for the different moves/actions a player can perform. Attack / Heal / Ulti
-    """
+    """Interface for the different moves/actions a player can perform (e.g., Attack, Heal, Ulti)."""
 
     @abstractmethod
     def perform_move(self, entity: "Entity"):
-        """Hace que la entidad realice el movimiento implementado
+        """Makes the entity perform the implemented move.
 
         Args:
-            entity (Entity): La entidad que realiza el movimiento
+            entity (Entity): The entity that performs the move.
         """
 
 
 class IUpgradable(ABC):
-    """Interface for the items that can be upgraded"""
+    """Interface for the items that can be upgraded."""
 
     @abstractmethod
     def upgrade_level(self, level: int):
-        """Adds the modification for the Upgradable"""
-        pass
+        """Adds the modification for the upgradable item.
+
+        Args:
+            level (int): The level to upgrade.
+        """
 
     @abstractmethod
     def upgrade_next_level(self):
-        """Increases level by one"""
-        pass
+        """Increases the level by one."""
 
     @abstractmethod
     def load_upgrades(self):
-        pass
-    
+        """Loads the upgrades."""
+
 
 class UpgradableItem(ABC):
+    """Represents an upgradable item."""
 
-    def __init__(self, item_name:str,max_level:int):
+    def __init__(self, item_name: str, max_level: int):
         self.item_name = item_name
         self._level = 1
         self._upgrades = []
         self._max_level = max_level
-    
-    def get_upgrade_info_by_level(self, level:int):
-        
+
+    def get_upgrade_info_by_level(self, level: int):
+        """Gets the upgrade information based on the level.
+
+        Args:
+            level (int): The level of the item.
+
+        Returns:
+            level_info: The information of the upgrade on a specific level.
+        """
         try:
-            level_info = self._upgrades[level-1]["DESCRIPTION"]
+            level_info = self._upgrades[level - 1]["DESCRIPTION"]
         except IndexError as error:
             print("ERROR CON EL INDEX!", error)
         return level_info
-    
+
     def load_upgrades(self, stats):
+        """Loads the upgrades for the current level."""
         for level in range(self._level):
             self.upgrade_level(level, stats)
-    
+
     def upgrade_level(self, level: int, stats):
-        
-        current_upgrade = self._upgrades[level-1] #ojo
+        """Upgrades the item at the specified level.
+
+        Args:
+            level (int): The level to upgrade.
+            stats: The stats to modify based on the upgrade.
+        """
+        current_upgrade = self._upgrades[level - 1]  # ojo
         attribute_to_modify = current_upgrade.get('ATTRIBUTE')
         new_value = current_upgrade.get('VALUE')
         if current_upgrade.get('OPERATION') == 'MULTIPLICATION':
             new_value = getattr(stats, attribute_to_modify) * new_value
             setattr(stats, attribute_to_modify, new_value)
-    
+
     def upgrade_next_level(self, stats):
+        """Upgrades to the next level if the maximum level has not been reached."""
         if self._level < self._max_level:
             self._level += 1
             self.upgrade_level(self._level, stats)
         else:
             print("Max level acquired")
-    
+
     def has_reached_max_level(self):
+        """Checks if the item has reached its maximum level.
+
+        Returns:
+            bool: True if the maximum level is reached, False otherwise.
+        """
         return self._level == self._max_level
-    
 
 
 class IAttack(IMove):
-    def is_attack_critical(self):
-        """Checks if the current attack is a critical one 
-        """
+    """Interface for attack moves."""
 
+    @abstractmethod
+    def is_attack_critical(self):
+        """Checks if the current attack is a critical one."""
+
+    @abstractmethod
     def is_cool_down_over(self):
-        """Checks if cooldown is over to attack again
-        """
+        """Checks if cooldown is over to attack again."""
+
 
 class IBullet(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for bullet entities."""
 
     @abstractmethod
     def apply_effect(self, other_entity: "MovableEntity"):
-        """Applies the effect of the bullet"""
+        """Applies the effect of the bullet.
+
+        Args:
+            other_entity (MovableEntity): The entity affected by the bullet.
+        """
 
 
 class IExperienceGem(IUpdatable, IHasPosition):
@@ -295,12 +319,11 @@ class IExperienceGem(IUpdatable, IHasPosition):
     @property
     @abstractmethod
     def amount(self) -> int:
-        """The amount of experience the gem gives.
+        """The amount of experience the gem provides.
 
         Returns:
-            int: The amount of experience the gem gives.
+            int: The experience amount of the gem.
         """
-
 
 class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for the player entity."""
@@ -320,6 +343,15 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
         Returns:
             int: The level of the player.
+        """
+
+    @property
+    @abstractmethod
+    def luck(self) -> int:
+        """The luck of the player.
+
+        Returns:
+            int: The luck of the player.
         """
 
     @property

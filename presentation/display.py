@@ -59,7 +59,7 @@ class Display(IDisplay):
 
     def __draw_player_health_bar(self):
         player = self.__world.player
-        
+
         # Define the health bar dimensions
         bar_width = settings.TILE_WIDTH
         bar_height = 5
@@ -78,9 +78,9 @@ class Display(IDisplay):
 
     def __draw_experience_bar(self):
         bar_width = settings.SCREEN_WIDTH - 20
-        bar_height = 20 
-        bar_x = 10 
-        bar_y = 10 
+        bar_height = 20
+        bar_x = 10
+        bar_y = 10
 
         player = self.__world.player
         experience_percentage = player.experience / player.experience_to_next_level
@@ -110,9 +110,8 @@ class Display(IDisplay):
 
     def load_world(self, world: GameWorld):
         self.__world = world
-    
+
     def __draw_mouse_position(self):
-        
         camera_rect = self.camera.camera_rect
 
         font = pygame.font.SysFont(None, 36)
@@ -148,9 +147,8 @@ class Display(IDisplay):
 
         # Draw the text on the screen at a fixed position
         self.__screen.blit(text_surface, (300, 10))
-    
-    def __draw_monster_health_bar(self,monster):
-        
+
+    def __draw_monster_health_bar(self, monster):
         # Define the health bar dimensions
         bar_width = settings.TILE_WIDTH
         bar_height = 5
@@ -163,18 +161,19 @@ class Display(IDisplay):
 
         # Draw the health bar (green)
         health_percentage = monster.health / monster._stats.max_health
-        
+
         health_width = int(bar_width * health_percentage)
         health_rect = pygame.Rect(bar_x, bar_y, health_width, bar_height)
         pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
 
     def render_frame(self):
+        """Renders frames"""
         # Update the camera to follow the player
         self.camera.update(self.__world.player.sprite.rect)
 
         # Render the ground tiles
         self.__render_ground_tiles()
-        
+
         # Draw all the experience gems
         for gem in self.__world.experience_gems:
             if self.camera.camera_rect.colliderect(gem.sprite.rect):
@@ -187,8 +186,6 @@ class Display(IDisplay):
                 adjusted_rect = self.camera.apply(monster.sprite.rect)
                 self.__screen.blit(monster.sprite.image, adjusted_rect)
                 self.__draw_monster_health_bar(monster)
-        
-        
 
         # Draw the bullets
         for bullet in self.__world.bullets:
@@ -201,17 +198,17 @@ class Display(IDisplay):
         self.__draw_time()
         self.render_inventory()
         self.__draw_experience_bar()
-        
+
         if self.__world.paused and not self.__world.upgrading:
-            
+
             self.render_pause_menu()
 
         if self.__world.upgrading:
-            if len(self.__world._random_weapons_to_choose) == 0:
+            if len(self.__world.random_weapons_to_choose) == 0:
                 self.__world.add_random_items()
 
-            self.render_upgrade_menu(self.__world._random_weapons_to_choose)
-        
+            self.render_upgrade_menu(self.__world.random_weapons_to_choose)
+
         else:
             self.__world.restore_random_weapons()
 
@@ -219,10 +216,11 @@ class Display(IDisplay):
 
 
     def render_inventory(self):
+        """Renders item inventory"""
         # Fetch the list of player's weapons and perks
         list_of_weapons = self.__world.player.get_player_weapons()
         list_of_perks = self.__world.player.get_player_perks()
-        
+
         # Set image size and layout parameters
         image_size = 40  # Size of each image
         padding = 10     # Space between images
@@ -233,12 +231,12 @@ class Display(IDisplay):
         for index, weapon_dop in enumerate(list_of_weapons):
             bullet = weapon_dop.bullet_name
             bullet_image_path = f"./assets/bullets/{bullet}.png"
-            
+
             # Load and resize bullet image
             try:
                 bullet_image = pygame.image.load(bullet_image_path)
                 bullet_image = pygame.transform.scale(bullet_image, (image_size, image_size))
-            except pygame.error:
+            except pygame.error: #pylint: disable=no-member
                 bullet_image = None  # Handle missing images gracefully
 
             # Calculate grid position
@@ -252,17 +250,18 @@ class Display(IDisplay):
                 self.__screen.blit(bullet_image, (x, y))
 
         # Calculate starting y position for perks grid below weapons
-        y_start_perks = y_start + ((len(list_of_weapons) + columns - 1) // columns) * (image_size + padding) + 20
+        y_start_perks = y_start + ((len(list_of_weapons) + columns - 1)
+                                    // columns) * (image_size + padding) + 20
 
         # Render each perk image in a row/grid format
         for index, perk in enumerate(list_of_perks):
             perk_image_path = f"./assets/perks/{perk.item_name}.png"
-            
+
             # Load and resize perk image
             try:
                 perk_image = pygame.image.load(perk_image_path)
                 perk_image = pygame.transform.scale(perk_image, (image_size, image_size))
-            except pygame.error:
+            except pygame.error: #pylint: disable=no-member
                 perk_image = None  # Handle missing images gracefully
 
             # Calculate grid position
@@ -277,83 +276,100 @@ class Display(IDisplay):
 
 
     def render_pause_menu(self):
+        """Renders the pause menu"""
         menu_width = settings.SCREEN_WIDTH
         menu_height = settings.SCREEN_HEIGHT
         menu_alpha_value = 128
         menu_colour = settings.BG_COLOR
-        menu_screen = MenuScreen(menu_width,menu_height, menu_alpha_value, menu_colour, self.__screen)
+        menu_screen = MenuScreen(menu_width,
+                                 menu_height,
+                                 menu_alpha_value,
+                                 menu_colour,
+                                 self.__screen)
         title = "Menu de Pausa"
         screen_offset = 10
         start_x, start_y = 0,0
         menu_screen.draw(start_x,start_y)
         menu_screen.add_text(title,screen_offset)
-        
+
         quit_button_width = settings.SCREEN_WIDTH
         quit_button_height = 100
         quit_button_colour = settings.BG_COLOR
-        
+
         text_colour = settings.WHITE_COLOUR
-        quit_button = Button(quit_button_width, quit_button_height, quit_button_colour, self.__screen)
+        quit_button = Button(quit_button_width,
+                             quit_button_height,
+                             quit_button_colour,
+                             self.__screen)
         quit_button.add_text("SALIR DEL JUEGO!", 50,text_colour)
         quit_button.draw(0,100)
-        
+
         resume_button_width = settings.SCREEN_WIDTH
         resume_button_height = 100
         resume_button_colour = settings.BG_COLOR
         text_colour = settings.WHITE_COLOUR
-        
-        resume_button = Button(resume_button_width, resume_button_height, resume_button_colour, self.__screen)
+
+        resume_button = Button(resume_button_width,
+                               resume_button_height,
+                               resume_button_colour,
+                               self.__screen)
         resume_button.add_text("DESPAUSAR JUEGO (o apretar tecla p)!", 50,text_colour)
         resume_button.draw(0,300)
 
         if quit_button.is_clicked():
             quit()
-            
+
         if resume_button.is_clicked():
             self.__world.change_paused_state()
 
     def render_upgrade_menu(self, items:["Weapon"]):
-        
+        """Renders upgrade menu"""
         click_counter = 0
         menu_width = settings.SCREEN_WIDTH
         menu_height = settings.SCREEN_HEIGHT
         menu_alpha_value = 128
         menu_colour = settings.BG_COLOR
-        menu_screen = MenuScreen(menu_width,menu_height, menu_alpha_value, menu_colour, self.__screen)
+        menu_screen = MenuScreen(menu_width,
+                                 menu_height,
+                                 menu_alpha_value,
+                                 menu_colour,
+                                 self.__screen)
         title = "Elegí tu mejora amigo!"
         screen_offset = 10
         start_x, start_y = 0,0
         menu_screen.draw(start_x,start_y)
         menu_screen.add_text(title,screen_offset)
-        
+
         list_of_buttons = []
         button_offset = 0
         for item in items:
-            
             item_level = 0
             if self.__world.player.has_item(item.item_name):
-                item_level = self.__world.player.get_item_level(item.item_name)            
-            
+                item_level = self.__world.player.get_item_level(item.item_name)
+
             item_upgrade_detail = item.get_upgrade_info_by_level(item_level)
             button_offset +=150
             item_button_width = settings.SCREEN_WIDTH
             item_button_height = 100
             item_button_colour = settings.BG_COLOR
             item_colour = settings.WHITE_COLOUR
-            item_button = Button(item_button_width, item_button_height, item_button_colour, self.__screen)
+            item_button = Button(item_button_width,
+                                item_button_height,
+                                item_button_colour,
+                                self.__screen)
             item_button.add_text(item.item_name, 20,item_colour)
-            
+
             text_item_level = str(f"Level: {item_level}")
             item_button.add_text(text_item_level , 70,item_colour)
-            
+
             text_item_upgrade_detail = str(f"DESCRIPCIÓN:{item_upgrade_detail}")
-            
+
             item_button.add_text(text_item_upgrade_detail , 90,item_colour)
-            
+
             item_button.draw(0,100 + button_offset)
             item_button.set_name(item.item_name)
             list_of_buttons.append(item_button)
-        
+
         for button in list_of_buttons:
             if button.is_clicked() and click_counter == 0:
                 click_counter += 1
@@ -367,4 +383,3 @@ class Display(IDisplay):
                     self.__world.player.add_item(button.text)
                     self.__world.set_upgrading_state(False)
                     self.__world.set_paused_state(False)
-                

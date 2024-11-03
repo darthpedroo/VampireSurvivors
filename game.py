@@ -1,9 +1,7 @@
-"""This module defines the Game class."""
+"""Module that defines the Game class."""
 
 import logging
-
 import pygame
-
 import settings
 from business.exceptions import DeadPlayerException
 from business.handlers.colission_handler import CollisionHandler
@@ -28,16 +26,17 @@ class Game:
         self.__running = True
 
     def __process_game_events(self):
+        """Process events like quit and key press."""
         for event in pygame.event.get():
-            # pygame.QUIT event means the user clicked X to close your window
-            if event.type == pygame.QUIT:  # pylint: disable=E1101
+            # pygame.QUIT event means the user clicked X to close the window
+            if event.type == pygame.QUIT:  # pylint: disable=no-member
                 self.__logger.debug("QUIT event detected")
                 self.__running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
+            elif event.type == pygame.KEYDOWN: # pylint: disable=no-member
+                if event.key == pygame.K_p: # pylint: disable=no-member
                     if not self.__world.upgrading:
                         self.__world.change_paused_state()
-    
+
     def run(self):
         """Starts the game loop."""
         self.__logger.debug("Starting the game loop.")

@@ -7,18 +7,19 @@ from presentation.tileset import Tileset
 
 
 class Sprite(pygame.sprite.Sprite):
+    """Base class for game sprites."""
     def __init__(self, image: pygame.Surface, rect: pygame.Rect, *groups, size=100):
         super().__init__(*groups)  # Initialize with groups only
         self.size = size
+        self.__sprite_color_countdown = 0
         self._image: pygame.Surface = image
         self._rect: pygame.Rect = rect
-        self.__sprite_color_damage_countdown = 0
-        self.__sprite_color_heal_countdown = 0
         self.__original_image: pygame.Surface = image
 
 
     @property
     def sprite_color_countdown(self):
+        """The sprite color countdown of the sprite."""
         return self.__sprite_color_countdown
 
     @property
@@ -35,7 +36,8 @@ class Sprite(pygame.sprite.Sprite):
         """The rect of the sprite.
 
         Returns:
-            pygame.Rect: The rect of the sprite. A rect is a rectangle that defines the position and size of the sprite.
+            pygame.Rect: The rect of the sprite.
+            A rect is a rectangle that defines the position and size of the sprite.
         """
         return self._rect
 
@@ -50,15 +52,18 @@ class Sprite(pygame.sprite.Sprite):
         self._rect.center = (int(pos_x), int(pos_y))
 
     def restore_image(self):
+        """Restore the original image of the sprite."""
         self._image = self.__original_image.copy()
 
     def __change_color(self, color: tuple[int, int, int]):
+        """Change the color of the sprite."""
         self._image = self.__original_image.copy()  # Make a copy of the original image
         # Change color
-        self._image.fill(color, special_flags=pygame.BLEND_MULT)
+        self._image.fill(color, special_flags=pygame.BLEND_MULT) # pylint: disable=no-member
         self._image.set_colorkey((0, 0, 0))  # Set transparency if necessary
 
     def __decrease_damage_countdown(self):
+        """Decrease damage countdown and restore image if countdown reaches zero."""
         self.__sprite_color_countdown -= 1
         if self.__sprite_color_countdown == 0:
             self.restore_image()
@@ -74,9 +79,9 @@ class Sprite(pygame.sprite.Sprite):
         """Healing Animation"""
         self.__sprite_color_countdown = 0
         self.__change_color((0, 255, 200))
-        self.__sprite_color_heal_countdown = 300
 
     def freeze(self, countdown: int=100):
+        """Freezing Animation"""
         self.__sprite_color_countdown = 0
         self.__change_color((40, 200, 255))
         self.__sprite_color_countdown = countdown
@@ -86,7 +91,7 @@ class Sprite(pygame.sprite.Sprite):
         """Update the sprite behavior"""
         super().update(*args, **kwargs)
 
-        if self.__sprite_color_damage_countdown > 0:
+        if self.__sprite_color_countdown > 0:
             self.__decrease_damage_countdown()
 
 
@@ -126,6 +131,7 @@ class PlayerSprite(Sprite):
         super().__init__(self._image, self._rect)
 
     def __load_idle_image(self):
+        """Load the idle image for the player based on the direction."""
         if self.direction == "up":
             index = PlayerSprite.IDLE_UP[self.__current_idle_index]
         if self.direction == "down":
@@ -134,14 +140,15 @@ class PlayerSprite(Sprite):
             index = PlayerSprite.IDLE_DOWN[self.__current_idle_index]
         if self.direction == "right":
             index = PlayerSprite.IDLE_DOWN[self.__current_idle_index]
-        
-        self._image = self.idle_tileset.get_tile(index)
+
+        self._image = self.idle_tileset.get_tile(index) # pylint: disable=possibly-used-before-assignment
         self._image = pygame.transform.scale(self._image, (60, 80))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_idle_index = (self.__current_idle_index + 1) % 2
 
     def change_to_idle_sprite(self, direction: str):
+        """Change to the idle sprite for the specified direction."""
         self.__frame_count += 1
         self.direction = direction
 
@@ -150,6 +157,7 @@ class PlayerSprite(Sprite):
             self.__frame_count = 0
 
     def __load_walk_image(self):
+        """Load the walk image for the player based on the direction."""
         if self.direction == "up":
             index = PlayerSprite.WALK_UP[self.__current_walk_index]
         if self.direction == "down":
@@ -159,13 +167,14 @@ class PlayerSprite(Sprite):
         if self.direction == "right":
             index = PlayerSprite.WALK_RIGHT[self.__current_walk_index]
 
-        self._image = self.walk_tileset.get_tile(index)
+        self._image = self.walk_tileset.get_tile(index) # pylint: disable=possibly-used-before-assignment
         self._image = pygame.transform.scale(self._image, (60, 80))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 4
 
     def change_to_walk_sprite(self, direction: str):
+        """Change to the walk sprite for the specified direction."""
         self.__frame_count += 1
         self.direction = direction
 
@@ -208,12 +217,13 @@ class ZombieSprite(Sprite):
         self.attack_tileset = Tileset(self.ASSET_ATTACK_TILESET, 32, 32, 9, 4)
 
         self._image = self.walk_tileset.get_tile(0)
-        self._image = pygame.transform.scale(self._image, (size, int(size * 1.25)))
+        self._image = pygame.transform.scale(self._image, (60, 80))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
 
         super().__init__(self._image, self._rect)
 
     def __load_walk_image(self):
+        """Load the walk image for the zombie based on the direction."""
         if self.direction == "up":
             index = ZombieSprite.WALK_UP[self.__current_walk_index]
         elif self.direction == "down":
@@ -222,14 +232,15 @@ class ZombieSprite(Sprite):
             index = ZombieSprite.WALK_LEFT[self.__current_walk_index]
         elif self.direction == "right":
             index = ZombieSprite.WALK_RIGHT[self.__current_walk_index]
-        
-        self._image = self.walk_tileset.get_tile(index)
+
+        self._image = self.walk_tileset.get_tile(index) # pylint: disable=possibly-used-before-assignment
         self._image = pygame.transform.scale(self._image, (60, 80))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 10
 
     def __load_attack_image(self):
+        """Load the attack image for the zombie based on the direction."""
         if self.direction == "up":
             index = ZombieSprite.ATTACK_UP[self.__current_attack_index]
         elif self.direction == "down":
@@ -239,13 +250,14 @@ class ZombieSprite(Sprite):
         elif self.direction == "right":
             index = ZombieSprite.ATTACK_RIGHT[self.__current_attack_index]
 
-        self._image = self.attack_tileset.get_tile(index)
+        self._image = self.attack_tileset.get_tile(index) # pylint: disable=possibly-used-before-assignment
         self._image = pygame.transform.scale(self._image, (60, 80))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_attack_index = (self.__current_attack_index + 1) % 8
 
     def change_to_walk_sprite(self, direction: str):
+        """Change to the walk sprite for the specified direction."""
         self.__frame_count += 1
         self.direction = direction
 
@@ -254,14 +266,16 @@ class ZombieSprite(Sprite):
             self.__frame_count = 0
 
     def change_to_attack_sprite(self, direction: str):
+        """Change to the attack sprite for the specified direction."""
         self.__frame_count += 1
         self.direction = direction
 
         if self.__frame_count >= self.__attack_frame_delay:
             self.__load_attack_image()
             self.__frame_count = 0
-        
+
 class SpiderSprite(Sprite):
+    """A class representing the spider sprite."""
     ASSET = "./assets/spider.png"
 
     def __init__(self, pos_x: float, pos_y: float, size=100):

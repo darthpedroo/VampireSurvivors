@@ -1,10 +1,9 @@
-"""This module contains the Monster class, which represents a monster entity in the game."""
+"""This module contains the Spider class."""
 
 import random
-from typing import List
 
 from business.entities.state_machine.entity import MovableEntity
-from business.entities.interfaces import IDamageable, IHasPosition, IHasSprite, IMonster
+from business.entities.interfaces import IDamageable, IMonster
 from business.entities.experience_gem import ExperienceGem
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.interfaces import IGameWorld
@@ -21,7 +20,6 @@ class Spider(MovableEntity, IMonster):
         self.__attack_range = 100
         self.__attack_cooldown = CooldownHandler(2000)
         self._logger.debug("Created %s", self)
-        self.__can_move = True
 
     def attack(self, target: IDamageable):
         """Attacks the target."""

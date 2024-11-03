@@ -1,17 +1,28 @@
+"""Module of the Item Factory"""
 from business.entities.bullet import Bullet
 from business.entities.ice_bullet import IceBullet
-from business.stats.stats import WeaponStats, BulletStats
-
+from business.stats.stats import BulletStats
 
 class ProjectileFactory:
-    """Factory que crea distintos tipos de weapons  
-
-    Returns:
-        _type_: _description_
-    """
+    """Represents the proyectile factory"""
     @staticmethod
-    def create_item(item_name: str, entity_pos_x: int, entity_pos_y: int, dir_x: int, dir_y: int, movement_speed:int, damage:int, cooldown:int):
-        if item_name == "Bullet":   
+    def create_item(item_name: str, entity_pos_x: int, entity_pos_y: int, dir_x: int, dir_y: int, movement_speed:int, damage:int, cooldown:int): #pylint: disable=line-too-long
+        """Creates a projectile item based on the given parameters.
+
+        Args:
+            item_name (str): The name of the projectile.
+            entity_pos_x (int): The position on the x axis of the proyectile.
+            entity_pos_y (int): The position on the y axis of the proyectile.
+            dir_x (int): The direction on the x axis of the proyectile.
+            dir_y (int): The direction on the y axis of the proyectile.
+            movement_speed (int): The speed of the projectile.
+            damage (int): The damage of the projectile.
+            cooldown (int): The cooldown of the projectile.
+
+        Returns:
+            Bullet | IceBullet: An instance of Bullet or IceBullet based on the item name.
+        """
+        if item_name == "Bullet":
             asset = "./assets/bullets/Bullet.png"
             health = 10
             size = 50

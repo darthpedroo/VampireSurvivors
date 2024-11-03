@@ -1,10 +1,9 @@
-
+"""Module of the Auto-Aim Gun"""
 from business.weapons.weapon import Weapon
 from business.world.interfaces import IGameWorld
 
-
-
 class AutoAimGun(Weapon):
+    """Represents the Auto-Aim Gun"""
     def __init__(self, weapon_name, bullet_name, max_level, weapon_stats):
         super().__init__(weapon_name, bullet_name, max_level, weapon_stats)
         self._upgrades = [{"NAME":"Level 0",
@@ -40,18 +39,17 @@ class AutoAimGun(Weapon):
             "VALUE": 1.2   
             }]
         self.load_upgrades(self.item_stats)
-        
-    def aim(self, world: IGameWorld, player_pos_x: int, player_pos_y: int):
+
+    def aim(self, world: IGameWorld, pos_x: int, pos_y: int):
         if not world.monsters:
             return
         monster = min(
             world.monsters,
             key=lambda monster: (
-                (monster.pos_x - player_pos_x) ** 2 +
-                (monster.pos_y - player_pos_y) ** 2
+                (monster.pos_x - pos_x) ** 2 +
+                (monster.pos_y - pos_y) ** 2
             ),
         )
         dir_x, dir_y = self.calculate_direction(
-            monster.pos_x-player_pos_x, monster.pos_y - player_pos_y)
+            monster.pos_x-pos_x, monster.pos_y - pos_y)
         return dir_x, dir_y
-

@@ -1,9 +1,17 @@
+"""Module of the perks factory"""
+
 from business.perks.perk import Perk
 from business.stats.stats import PlayerStats
 
 class PerkFactory():
+    """Represents the perks factory"""
     @staticmethod
     def create_perk(perk_name:str):
+        """Adds a perk.
+        
+        Args:
+            perk_name (str): The name of the perk.
+        """
         if perk_name == "Speedy Boots":
             asset = "./assets/perks/Speedy Boots.png"
             max_level = 2
@@ -21,8 +29,7 @@ class PerkFactory():
             "VALUE": 1.2
             }]
             return Perk(perk_name,max_level,upgrades,perk_stats,asset)
-        
-        elif perk_name == "Sacred Heart":    
+        elif perk_name == "Sacred Heart":
             asset = "./assets/perks/Sacred Heart.png"
             max_level = 3
             perk_stats = PlayerStats()
@@ -53,4 +60,3 @@ class PerkFactory():
             return Perk(perk_name,max_level,upgrades,perk_stats,asset)
         else:
             raise ValueError
-

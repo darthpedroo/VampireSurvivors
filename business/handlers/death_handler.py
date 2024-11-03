@@ -1,7 +1,6 @@
 """Module that contains the DeathHandler class."""
 
 import settings
-from business.entities.experience_gem import ExperienceGem
 from business.exceptions import DeadPlayerException
 from business.world.interfaces import IGameWorld
 
@@ -18,12 +17,12 @@ class DeathHandler:
 
     @staticmethod
     def check_deaths(world: IGameWorld):
-        player = world.player
         """Check if any entities have died and remove them from the game world.
 
         Args:
             world (IGameWorld): The game world to check for dead entities.
         """
+        player = world.player
         for bullet in world.bullets:
             if bullet.health <= 0:
                 world.remove_bullet(bullet)

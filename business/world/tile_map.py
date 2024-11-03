@@ -24,7 +24,8 @@ class TileMap(ITileMap):
                     tile_map[row][col] = 2
                 elif (row == settings.WORLD_ROWS - 1 and col == 0):  # Inferior izquierda
                     tile_map[row][col] = 20
-                elif (row == settings.WORLD_ROWS - 1 and col == settings.WORLD_COLUMNS - 1):  # Inferior derecha
+                elif (row == settings.WORLD_ROWS - 1 and
+                      col == settings.WORLD_COLUMNS - 1):  # Inferior derecha
                     tile_map[row][col] = 22
 
                 # Bordes
@@ -36,7 +37,7 @@ class TileMap(ITileMap):
                     tile_map[row][col] = 12
                 elif row == settings.WORLD_ROWS - 1:  # Parte inferior
                     tile_map[row][col] = 21
-                
+
                 # Interior
                 else:
                     random_tile = random.randint(1,10)
@@ -50,5 +51,5 @@ class TileMap(ITileMap):
 
 
     def get(self, row, col) -> int:
-        # Get the tile index at a specific row and column
+        """Get the tile index at a specific row and column"""
         return self.map_data[row][col]

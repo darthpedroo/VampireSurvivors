@@ -1,9 +1,10 @@
+"""Module of the Manual Gun weapon"""
 from business.weapons.weapon import Weapon
 from business.world.interfaces import IGameWorld
 
 
 class ManualGun(Weapon):
-
+    """Represents the Manual Gun"""
     def __init__(self, weapon_name, bullet_name, max_level, weapon_stats):
         super().__init__(weapon_name, bullet_name, max_level, weapon_stats)
         self._upgrades = [{"NAME":"Level 0",
@@ -39,13 +40,11 @@ class ManualGun(Weapon):
             "VALUE": 1.2   
             }]
         self.load_upgrades(self.item_stats)
-        
 
-    def aim(self, world: IGameWorld, player_pos_x: int, player_pos_y: int):
+    def aim(self, world: IGameWorld, pos_x: int, pos_y: int):
         mouse_pos_x, mouse_pos_y = world.get_mouse_position()
         camera_x = world.get_camera().camera_rect[0]
         camera_y = world.get_camera().camera_rect[1]
         dir_x, dir_y = self.calculate_direction(
-            (mouse_pos_x + camera_x) - player_pos_x, (mouse_pos_y + camera_y) - player_pos_y)
+            (mouse_pos_x + camera_x) - pos_x, (mouse_pos_y + camera_y) - pos_y)
         return dir_x, dir_y
-

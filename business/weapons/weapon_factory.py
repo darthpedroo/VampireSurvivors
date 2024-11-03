@@ -1,11 +1,18 @@
+"""Factory of the weapons"""
 from business.weapons.auto_aim_gun import AutoAimGun
 from business.weapons.manual_gun import ManualGun
 from business.stats.stats import WeaponStats
 
 
 class WeaponFactory:
+    """Represents the factory of the weapons"""
     @staticmethod
     def create_weapon(weapon_type: str):
+        """Creates weapons based on their type.
+        
+        Args:
+            weapon_type (str): The type of the weapon to be created
+        """
         if weapon_type == "Auto_Joker":
             bullet_name = "Joker_Bullet"
             damage = 10
