@@ -7,15 +7,15 @@ from presentation.tileset import Tileset
 
 
 class Sprite(pygame.sprite.Sprite):
-    """A class representing a sprite."""
-
-    def __init__(self, image: pygame.Surface, rect: pygame.Rect, *groups):
+    def __init__(self, image: pygame.Surface, rect: pygame.Rect, *groups, size=100):
+        super().__init__(*groups)  # Initialize with groups only
+        self.size = size
         self._image: pygame.Surface = image
         self._rect: pygame.Rect = rect
-        super().__init__(*groups)
         self.__sprite_color_damage_countdown = 0
         self.__sprite_color_heal_countdown = 0
         self.__original_image: pygame.Surface = image
+
 
     @property
     def sprite_color_countdown(self):
@@ -237,7 +237,7 @@ class ZombieSprite(Sprite):
         "./assets/zombie/Zombie_Attack_Left_4.png"
     ]
 
-    def __init__(self, pos_x: float, pos_y: float):
+    def __init__(self, pos_x: float, pos_y: float, size=100):
         self.__current_walk_index = 0
         self.__current_attack_index = 0
         self.__frame_count = 0
@@ -247,12 +247,10 @@ class ZombieSprite(Sprite):
         self.pos_y = pos_y
         self.direction = None
 
-        self._image = pygame.image.load(
-            ZombieSprite.ASSET_WALK_UP[0]).convert_alpha()
-        self._image = pygame.transform.scale(self._image, (60, 75))
-
-        self._rect = self._image.get_rect(
-            center=(int(self.pos_x), int(self.pos_y)))
+        self._image = pygame.image.load(ZombieSprite.ASSET_WALK_UP[0]).convert_alpha()
+        # Scale the image based on the given size
+        self._image = pygame.transform.scale(self._image, (size, int(size * 1.25)))  # Adjusted height
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
 
         super().__init__(self._image, self._rect)
 
@@ -303,18 +301,20 @@ class ZombieSprite(Sprite):
             self.__frame_count = 0
 
 
-class SpiderSprite(Sprite):
-    """A class representing the monster sprite."""
 
+        
+class SpiderSprite(Sprite):
     ASSET = "./assets/spider.png"
 
-    def __init__(self, pos_x: float, pos_y: float):
-        image: pygame.Surface = pygame.image.load(
-            SpiderSprite.ASSET).convert_alpha()
-        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
-        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+    def __init__(self, pos_x: float, pos_y: float, size=100):
+        image: pygame.Surface = pygame.image.load(SpiderSprite.ASSET).convert_alpha()
+        # Scale the image based on the given size
+        image = pygame.transform.scale(image, (size, size))
+        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
+
+
 
 
 class BulletSprite(Sprite):
