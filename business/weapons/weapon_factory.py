@@ -17,14 +17,14 @@ class WeaponFactory:
             bullet_name = "Joker_Bullet"
             damage = 10
             bullet_speed = 20
-            bullet_cooldown = 10000
+            bullet_cooldown = 3000
             max_level = 5
             weapon_stats = WeaponStats(damage, bullet_speed, bullet_cooldown)
             return AutoAimGun(weapon_type, bullet_name,max_level,weapon_stats)
         if weapon_type == "Manual_Gun":
             bullet_name = "Bullet"
             damage = 20
-            bullet_cooldown = 200
+            bullet_cooldown = 500
             bullet_speed = 20
             max_level = 5
             weapon_stats = WeaponStats(damage, bullet_speed, bullet_cooldown)

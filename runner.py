@@ -22,7 +22,7 @@ def initialize_player():
     base_damage_multiplier = 1
     base_attack_speed = 1
     regeneration_rate = 10000
-    regeneration_percentage = 100
+    regeneration_percentage = 10
     xp_multiplier = 1
     luck = 1
     player_stats = PlayerStats(

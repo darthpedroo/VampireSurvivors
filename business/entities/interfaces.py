@@ -146,8 +146,8 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         Returns:
             list[ICanMove]: A list of colliding entities, or None if no collisions occur.
         """
-        extra_hitbox_x = 30
-        extra_hitbox_y = 30
+        extra_hitbox_x = 5
+        extra_hitbox_y = 5
         intended_position = self.sprite.rect.move(self._stats.movement_speed,self._stats.movement_speed).inflate(extra_hitbox_x, extra_hitbox_y) #pylint: disable=line-too-long
         colliding_entities = [entity
                               for entity in entities
@@ -237,6 +237,11 @@ class UpgradableItem(ABC):
         self._level = 1
         self._upgrades = []
         self._max_level = max_level
+    
+    @abstractmethod
+    def get_sprite(self):
+        """Gets the sprite of an item
+        """
 
     def get_upgrade_info_by_level(self, level: int):
         """Gets the upgrade information based on the level.
@@ -248,7 +253,7 @@ class UpgradableItem(ABC):
             level_info: The information of the upgrade on a specific level.
         """
         try:
-            level_info = self._upgrades[level - 1]["DESCRIPTION"]
+            level_info = self._upgrades[level]["DESCRIPTION"] #ojo
         except IndexError as error:
             print("ERROR CON EL INDEX!", error)
         return level_info

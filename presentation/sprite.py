@@ -291,9 +291,7 @@ class SpiderSprite(Sprite):
 
 class BulletSprite(Sprite):
     """A class representing the bullet sprite."""
-    # ASSET = "./assets/joker-dc.png"
 
-    # Default size is now 100
     def __init__(self, pos_x: float, pos_y: float, asset: str, size: int = 100):
         self.asset = asset
         # Create a surface for the bullet sprite with the specified size
@@ -309,6 +307,8 @@ class BulletSprite(Sprite):
 
         super().__init__(image, rect)
 
+
+    
 
 class ExperienceGemSprite(Sprite):
     """A class representing the experience gem sprite."""

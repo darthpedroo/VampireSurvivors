@@ -1,7 +1,9 @@
 """Module of the perks of the game."""
 
-from business.entities.interfaces import UpgradableItem
+from business.entities.interfaces import UpgradableItem, IHasSprite
 from business.stats.stats import PlayerStats
+from presentation.sprite import Sprite
+
 
 class Perk(UpgradableItem):
     """Represents a perk.
@@ -13,12 +15,16 @@ class Perk(UpgradableItem):
         perk_stats (PlayerStats): The stats of the perk.
         asset: The asset of the perk.
     """
-    def __init__(self, item_name, max_level, upgrades: list[dict], perk_stats: PlayerStats, asset):
+    def __init__(self, item_name, max_level, upgrades: list[dict], perk_stats: PlayerStats, asset:Sprite):
         super().__init__(item_name, max_level)
         self._upgrades = upgrades
         self.item_stats = perk_stats
-        self.asset = asset
+        self.sprite = asset
 
+    
+    def get_sprite(self):
+        return self.sprite
+    
     def use(self):
         """Upgrades the perk."""
         self.upgrade_level(self._level, self.item_stats)

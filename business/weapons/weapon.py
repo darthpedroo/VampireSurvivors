@@ -15,6 +15,10 @@ class Weapon(UpgradableItem):
         self.item_stats = weapon_stats
         self._last_shot_time = 0
 
+    def get_sprite(self):
+        current_bullet = ProjectileFactory().create_item(self._bullet_name)
+        return current_bullet.sprite.asset
+    
     def is_cooldown_over(self, current_time):
         """Checks if the cooldown of the weapon is over.
         

@@ -6,7 +6,7 @@ from business.stats.stats import BulletStats
 class ProjectileFactory:
     """Represents the proyectile factory"""
     @staticmethod
-    def create_item(item_name: str, entity_pos_x: int, entity_pos_y: int, dir_x: int, dir_y: int, movement_speed:int, damage:int, cooldown:int): #pylint: disable=line-too-long
+    def create_item(item_name: str, entity_pos_x: int=0, entity_pos_y: int=0, dir_x: int=0, dir_y: int=0, movement_speed:int=1, damage:int=1, cooldown:int=1): #pylint: disable=line-too-long
         """Creates a projectile item based on the given parameters.
 
         Args:
@@ -24,7 +24,7 @@ class ProjectileFactory:
         """
         if item_name == "Bullet":
             asset = "./assets/bullets/Bullet.png"
-            health = 10
+            health = 100
             size = 50
             damage = 1 * damage
             bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
