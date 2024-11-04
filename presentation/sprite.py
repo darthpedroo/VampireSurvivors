@@ -68,12 +68,10 @@ class Sprite(pygame.sprite.Sprite):
         if self.__sprite_color_countdown == 0:
             self.restore_image()
 
-
     def take_damage(self):
         """Take damage."""
         self.__change_color((255, 0, 0))
         self.__sprite_color_countdown = 1
-
 
     def heal(self):
         """Healing Animation"""
@@ -93,7 +91,6 @@ class Sprite(pygame.sprite.Sprite):
 
         if self.__sprite_color_countdown > 0:
             self.__decrease_damage_countdown()
-
 
 class PlayerSprite(Sprite):
     """A class representing the player sprite."""

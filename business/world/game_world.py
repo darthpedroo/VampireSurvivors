@@ -105,7 +105,9 @@ class GameWorld(IGameWorld):
                 monster.update(self)
             for bullet in self.__bullets:
                 bullet.update(self)
-            self.__monster_spawner.update(self)
+            
+            camera = self.__display.camera
+            self.__monster_spawner.update(self,camera)
 
     def add_monster(self, monster: IMonster):
         self.__monsters.append(monster)
