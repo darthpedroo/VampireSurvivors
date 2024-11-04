@@ -204,6 +204,7 @@ class ZombieSprite(Sprite):
         self.__current_walk_index = 0
         self.__current_attack_index = 0
         self.__frame_count = 0
+        self.__size = size
         self.__frame_delay = 10
         self.__attack_frame_delay = 8
         self.pos_x = pos_x
@@ -214,7 +215,7 @@ class ZombieSprite(Sprite):
         self.attack_tileset = Tileset(self.ASSET_ATTACK_TILESET, 32, 32, 9, 4)
 
         self._image = self.walk_tileset.get_tile(0)
-        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._image = pygame.transform.scale(self._image, (self.__size * 0.6, self.__size * 0.8))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
 
         super().__init__(self._image, self._rect)
@@ -231,7 +232,7 @@ class ZombieSprite(Sprite):
             index = ZombieSprite.WALK_RIGHT[self.__current_walk_index]
 
         self._image = self.walk_tileset.get_tile(index) # pylint: disable=possibly-used-before-assignment
-        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._image = pygame.transform.scale(self._image, (self.__size * 0.6, self.__size * 0.8))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_walk_index = (self.__current_walk_index + 1) % 10
@@ -248,7 +249,7 @@ class ZombieSprite(Sprite):
             index = ZombieSprite.ATTACK_RIGHT[self.__current_attack_index]
 
         self._image = self.attack_tileset.get_tile(index) # pylint: disable=possibly-used-before-assignment
-        self._image = pygame.transform.scale(self._image, (60, 80))
+        self._image = pygame.transform.scale(self._image, (self.__size * 0.6, self.__size * 0.8))
         self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
         super().__init__(self._image, self._rect)
         self.__current_attack_index = (self.__current_attack_index + 1) % 8

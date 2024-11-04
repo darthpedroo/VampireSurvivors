@@ -127,3 +127,5 @@ class MovableEntity(Entity, ICanMove):
     def moving(self):
         """Get the moving state of the entity."""
         return self._moving
+    
+    

@@ -6,12 +6,15 @@ from presentation.sprite import ZombieSprite, SpiderSprite
 from business.entities.monsters.zombie import Zombie
 from business.entities.monsters.spider import Spider
 from business.stats.stats import EntityStats
+from business.clock.clock import ClockSingleton
 
 
 class MonsterFactory:
     """A monster entity in the game."""
 
     ALL_MONSTERS = ["spider", "zombie"]
+    CLOCK = ClockSingleton()
+    TIME_STATS_MULTIPLIER = CLOCK.get_time() / 1000
 
     @staticmethod
     def get_random_monster(pos_x: int, pos_y: int):
@@ -40,20 +43,20 @@ class MonsterFactory:
             Zombie | Spider: An instance of the monster depending on which monster was chosen.
         """
         if monster_type == "zombie":
-            max_health = 200
-            speed = 1
-            damage_multiplier = 3
-            base_attack_speed = 10
-            size = 10
+            max_health = 200 + MonsterFactory.TIME_STATS_MULTIPLIER
+            speed = 1 + MonsterFactory.TIME_STATS_MULTIPLIER/100
+            damage_multiplier = 3  + MonsterFactory.TIME_STATS_MULTIPLIER/1000
+            base_attack_speed = 10  + MonsterFactory.TIME_STATS_MULTIPLIER
+            size = 100
             stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
             return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y,size),stats)
         elif monster_type == "spider":
-            max_health = 100
-            speed = 1
-            damage_multiplier = 3
-            base_attack_speed = 10
-            size = 100
+            max_health = 100  + MonsterFactory.TIME_STATS_MULTIPLIER
+            speed = 1 
+            damage_multiplier = 3  + MonsterFactory.TIME_STATS_MULTIPLIER
+            base_attack_speed = 10  + MonsterFactory.TIME_STATS_MULTIPLIER
+            size = 100 
             stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
             return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y,size),stats)
         else:
-            raise ValueError("Not W")
+            raise ValueError("Not A Valid Enemy")

@@ -26,12 +26,12 @@ class Spider(MovableEntity, IMonster):
         if not self.__attack_cooldown.is_action_ready():
             return
 
-        target.take_damage(self.damage_amount)
+        target.take_damage(self.__damage * self._stats.base_damage_multiplier)
         self.__attack_cooldown.put_on_cooldown()
 
     @property
     def damage_amount(self):
-        return self.__damage
+        return self.__damage * self._stats.base_damage_multiplier
 
     def update(self, world: IGameWorld):
         direction_x, direction_y = self.get_direction_towards_the_player(world)
@@ -44,7 +44,6 @@ class Spider(MovableEntity, IMonster):
             colliding_entities = self.movement_collides_with_entities(monsters)
             if colliding_entities:
                 for entity in colliding_entities:
-                    # Calcular vector de repulsión
                     repulsion_x = entity.pos_x - self.pos_x
                     repulsion_y = entity.pos_y - self.pos_y
 

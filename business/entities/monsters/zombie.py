@@ -23,6 +23,10 @@ class Zombie(MovableEntity, IMonster):
         self.__can_attack = False
         self._logger.debug("Created %s", self)
 
+    @property
+    def damage_amount(self):
+        return self.__damage * self._stats.base_damage_multiplier
+
     def attack(self, target: IDamageable, direction_x: int, direction_y: int):
         """Attacks the target."""
         if not self.__attack_cooldown.is_action_ready():
@@ -34,11 +38,6 @@ class Zombie(MovableEntity, IMonster):
             self.__attack_cooldown.put_on_cooldown()
         else:
             self.__can_attack = False
-
-    @property
-    def damage_amount(self):
-        return self.__damage
-
 
     def update(self, world: IGameWorld):
         direction_x, direction_y = self.get_direction_towards_the_player(world)
