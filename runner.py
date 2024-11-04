@@ -37,7 +37,8 @@ def initialize_player():
     )
     player = Player(x, y, PlayerSprite(x, y), player_stats)
     player.add_item("Manual_Gun")
-    player.add_item("Sacred Heart")
+    #player.add_item("Sacred Heart")
+    #player.add_item("The_Mega_Ice")
     return player
 
 

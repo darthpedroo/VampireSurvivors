@@ -29,13 +29,14 @@ class PerkFactory():
             "VALUE": 1.2
             }]
             return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+        
         elif perk_name == "Sacred Heart":
             asset = "./assets/perks/Sacred Heart.png"
             max_level = 3
             perk_stats = PlayerStats()
             upgrades = [{"NAME":"Level 0",
             "DESCRIPTION": "Increases Regeneration rate in 10%",
-            "ATTRIBUTE": "regeneration_rate", 
+            "ATTRIBUTE": "max_health", 
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1.1
             },

@@ -45,6 +45,7 @@ class WeaponFactory:
             max_level = 5
             weapon_stats = WeaponStats(damage, bullet_speed, bullet_cooldown)
             return ManualGun(weapon_type, bullet_name,max_level,weapon_stats)
+        
         else:
             raise ValueError
 

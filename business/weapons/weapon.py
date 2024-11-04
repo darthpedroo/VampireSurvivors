@@ -6,6 +6,7 @@ from business.entities.interfaces import UpgradableItem
 from business.world.interfaces import IGameWorld
 from business.entities.item_factory import ProjectileFactory
 from business.stats.stats import WeaponStats
+from business.handlers.cooldown_handler import CooldownHandler
 
 class Weapon(UpgradableItem):
     """Represents the weapons"""
@@ -14,18 +15,19 @@ class Weapon(UpgradableItem):
         self._bullet_name = bullet_name
         self.item_stats = weapon_stats
         self._last_shot_time = 0
+        self.__cooldown_handler = CooldownHandler(self.item_stats.cooldown)
 
     def get_sprite(self):
         current_bullet = ProjectileFactory().create_item(self._bullet_name)
         return current_bullet.sprite.asset
-    
-    def is_cooldown_over(self, current_time):
+
+    def is_cooldown_over(self):
         """Checks if the cooldown of the weapon is over.
         
         Args:
             current_time: The current time.
         """
-        return current_time - self._last_shot_time >= self.item_stats.cooldown
+        return self.__cooldown_handler.is_action_ready()
 
     def set_last_shot_time(self, new_time):
         """Sets the last time the weapon is shot.
@@ -75,9 +77,10 @@ class Weapon(UpgradableItem):
                                                         movement_speed,
                                                         damage,cooldown)
 
-            if self.is_cooldown_over(current_time):
+            if self.is_cooldown_over():
                 world.add_bullet(projectile)
-                self._last_shot_time = current_time
+                self.__cooldown_handler.put_on_cooldown()
+
         except TypeError:
             print("There are no monsters yet...")
 

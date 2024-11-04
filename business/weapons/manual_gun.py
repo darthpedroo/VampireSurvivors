@@ -39,6 +39,7 @@ class ManualGun(Weapon):
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1.2   
             }]
+        
         self.load_upgrades(self.item_stats)
 
     def aim(self, world: IGameWorld, pos_x: int, pos_y: int):

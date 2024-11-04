@@ -7,7 +7,7 @@ from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPla
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.weapons.weapon_factory import WeaponFactory
 from business.perks.perk_factory import PerkFactory
-
+from business.clock.clock import ClockSingleton
 
 class GameWorld(IGameWorld):
     """Represents the game world."""
@@ -18,6 +18,7 @@ class GameWorld(IGameWorld):
         self.__monsters: list[IMonster] = []
         self.__bullets: list[IBullet] = []
         self.__experience_gems: list[IExperienceGem] = []
+        self.__clock = ClockSingleton()
         self.tile_map: ITileMap = tile_map
         self.__monster_spawner: IMonsterSpawner = spawner
         self.__display = display
@@ -78,11 +79,14 @@ class GameWorld(IGameWorld):
     def change_paused_state(self):
         if self._paused:
             self._paused = False
+            self.__clock.set_paused(False)
         else:
             self._paused = True
+            self.__clock.set_paused(True)
 
     def set_upgrading_state(self, state: bool):
         self._upgrading = state
+        self.__clock.set_paused(state)
 
     def set_paused_state(self, state: bool):
         self._paused = state

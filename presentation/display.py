@@ -8,6 +8,7 @@ from presentation.camera import Camera
 from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
 from presentation.gui.menu_screen import MenuScreen
+from business.clock.clock import ClockSingleton
 from presentation.gui.button import Button, Text
 
 class Display(IDisplay):
@@ -16,9 +17,7 @@ class Display(IDisplay):
     def __init__(self):
         # Set the window display mode
         self.__screen = pygame.display.set_mode(settings.SCREEN_DIMENSION)
-        self.__minutes = 0
-        self.__seconds = 0
-        self.__frames = 0
+        self.__clock = ClockSingleton()
 
         # Set the window title
         pygame.display.set_caption(settings.GAME_TITLE)
@@ -71,7 +70,7 @@ class Display(IDisplay):
         pygame.draw.rect(self.__screen, (255, 0, 0), bg_rect)
 
         # Draw the health bar (green)
-        health_percentage = player.health / 100  # Assuming max health is 100 (code smell?)
+        health_percentage = player.health / player._stats.max_health  
         health_width = int(bar_width * health_percentage)
         health_rect = pygame.Rect(bar_x, bar_y, health_width, bar_height)
         pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
@@ -100,7 +99,6 @@ class Display(IDisplay):
         )
         text_rect = exp_text.get_rect(center=(settings.SCREEN_WIDTH // 2, bar_y + bar_height // 2))
         self.__screen.blit(exp_text, text_rect)
-
 
     def __draw_player(self):
         adjusted_rect = self.camera.apply(self.__world.player.sprite.rect)
@@ -131,22 +129,16 @@ class Display(IDisplay):
         self.__screen.blit(text_surface, (10, 50))
 
     def __draw_time(self):
-        self.__frames = self.__frames + 1
-        if self.__frames == 30:
-            self.__seconds = self.__seconds + 1
-            self.__frames = 0
-        if self.__seconds == 60:
-            self.__seconds = 0
-            self.__minutes = self.__minutes + 1
-        # Define the font and size
+        milliseconds = self.__clock.get_time()
+        total_seconds = milliseconds / 1000
+        hours = int(total_seconds // 3600)
+        minutes = int((total_seconds % 3600) // 60)
+        seconds = int(total_seconds % 60)
+        time_string = f"{hours:02}:{minutes:02}:{seconds:02}"
         font = pygame.font.SysFont(None, 36)
+        text_surface = font.render(time_string, True, (255, 255, 255))        
+        self.__screen.blit(text_surface, (settings.SCREEN_WIDTH // 2 - 50, 30))
 
-        # Render the text for mouse position
-        position_text = f"{self.__minutes:02}:{self.__seconds:02}"
-        text_surface = font.render(position_text, True, (255, 255, 255))
-
-        # Draw the text on the screen at a fixed position
-        self.__screen.blit(text_surface, (300, 10))
 
     def __draw_monster_health_bar(self, monster):
         # Define the health bar dimensions
@@ -315,24 +307,44 @@ class Display(IDisplay):
         quit_button_colour = settings.BG_COLOR
 
         text_colour = settings.WHITE_COLOUR
+        
+        text = [Text("SALIR DEL JUEGO!", 50, text_colour)]
+        
+        x_pos = 0
+        y_pos = 100
+        
         quit_button = Button(quit_button_width,
                              quit_button_height,
                              quit_button_colour,
-                             self.__screen)
-        quit_button.add_text("SALIR DEL JUEGO!", 50,text_colour)
-        quit_button.draw(0,100)
+                             text,
+                             None,
+                             self.__screen,
+                            x_pos,
+                             y_pos,)
+        
+        
+        quit_button.draw(x_pos,y_pos)
 
         resume_button_width = settings.SCREEN_WIDTH
         resume_button_height = 100
         resume_button_colour = settings.BG_COLOR
         text_colour = settings.WHITE_COLOUR
 
-        resume_button = Button(resume_button_width,
-                               resume_button_height,
-                               resume_button_colour,
-                               self.__screen)
-        resume_button.add_text("DESPAUSAR JUEGO (o apretar tecla p)!", 50,text_colour)
-        resume_button.draw(0,300)
+        text = [Text("DESPAUSAR JUEGO (o apretar tecla p)!", 50, text_colour)]
+        
+        x_pos = 0
+        y_pos = 300
+        
+        resume_button = Button(quit_button_width,
+                             quit_button_height,
+                             quit_button_colour,
+                             text,
+                             None,
+                             self.__screen,
+                             x_pos,
+                             y_pos,)
+        
+        resume_button.draw(x_pos,y_pos)
 
         if quit_button.is_clicked():
             quit()

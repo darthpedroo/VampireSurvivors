@@ -7,6 +7,7 @@ from business.exceptions import DeadPlayerException
 from business.handlers.colission_handler import CollisionHandler
 from business.handlers.death_handler import DeathHandler
 from business.world.interfaces import IGameWorld
+from business.clock.clock import ClockSingleton
 from presentation.interfaces import IDisplay, IInputHandler
 
 
@@ -19,7 +20,7 @@ class Game:
 
     def __init__(self, display: IDisplay, game_world: IGameWorld, input_handler: IInputHandler):
         self.__logger = logging.getLogger(self.__class__.__name__)
-        self.__clock = pygame.time.Clock()
+        self.__clock = ClockSingleton()
         self.__display = display
         self.__world = game_world
         self.__input_handler = input_handler
@@ -48,6 +49,6 @@ class Game:
                 CollisionHandler.handle_collisions(self.__world)
                 DeathHandler.check_deaths(self.__world)
                 self.__display.render_frame()
-                self.__clock.tick(settings.FPS)
+                self.__clock.tick()
             except DeadPlayerException:
                 self.__running = False
