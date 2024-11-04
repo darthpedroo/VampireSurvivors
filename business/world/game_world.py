@@ -32,7 +32,11 @@ class GameWorld(IGameWorld):
                                 {"weapon":"Manual_Joker"},
                                 {"weapon":"The_Mega_Ice"},
                                 {"perk":"Speedy Boots"},
-                                {"perk":"Sacred Heart"}]
+                                {"perk":"Sacred Heart"},
+                                {"perk":"Pizzano's Blessing"},
+                                {"perk":"Gym Power"},
+                                {"perk":"Fast Hands"},
+                                {"perk":"Heal Heal Frog's Booty"}]
 
     def add_random_items(self):
         items = self.__list_of_items.copy()

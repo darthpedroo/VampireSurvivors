@@ -2,7 +2,8 @@
 from business.entities.bullet import Bullet
 from business.entities.ice_bullet import IceBullet
 from business.stats.stats import BulletStats
-
+from business.entities.rotating_bullet import RotatingBullet
+from business.entities.state_machine.movable_entity_rotate_state import RotatingState
 class ProjectileFactory:
     """Represents the proyectile factory"""
     @staticmethod
@@ -43,3 +44,11 @@ class ProjectileFactory:
             size = 50
             bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
             return IceBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, health, bullet_stats, asset)
+        if item_name == "Rotating_Bullet" :
+            asset = "./assets/bullets/Rotating_Bullet.png"
+            health = 1.1
+            damage = 1 * damage
+            size = 100
+            item_speed = 1
+            current_state = RotatingState()
+            return RotatingBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size, current_state)

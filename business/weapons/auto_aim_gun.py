@@ -4,11 +4,12 @@ from business.world.interfaces import IGameWorld
 
 class AutoAimGun(Weapon):
     """Represents the Auto-Aim Gun"""
-    def __init__(self, weapon_name, bullet_name, max_level, weapon_stats):
-        super().__init__(weapon_name, bullet_name, max_level, weapon_stats)
+    def __init__(self, item_name, bullet_name, max_level, weapon_stats, level=1):
+        super().__init__(item_name, bullet_name, max_level, weapon_stats, level)
+        self._level = level
         self._upgrades = [{"NAME":"Level 0",
             "DESCRIPTION": "UNLOCKS THE WEAPON!",
-            "ATTRIBUTE": "_level",
+            "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1  
             },
@@ -38,7 +39,7 @@ class AutoAimGun(Weapon):
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1.2   
             }]
-        self.load_upgrades(self.item_stats)
+        self.load_upgrades(self._upgrades, self.level, self.item_stats)
 
     def aim(self, world: IGameWorld, pos_x: int, pos_y: int):
         if not world.monsters:

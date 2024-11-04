@@ -63,7 +63,7 @@ class ItemHandler(ABC):
         """
         for item in self._list_of_items:
             if item.item_name == item_name:  # pylint: disable=no-member
-                item.upgrade_next_level(item.item_stats) # pylint: disable=no-member, no-value-for-parameter
+                item.upgrade_next_level(item._upgrades, item.item_stats) # pylint: disable=no-member, no-value-for-parameter
                 return True  # Exit the function after upgrading the item
         raise ValueError(f"Item with name '{item_name}' not found")
 

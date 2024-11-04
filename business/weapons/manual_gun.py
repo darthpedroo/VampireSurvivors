@@ -5,18 +5,19 @@ from business.world.interfaces import IGameWorld
 
 class ManualGun(Weapon):
     """Represents the Manual Gun"""
-    def __init__(self, weapon_name, bullet_name, max_level, weapon_stats):
-        super().__init__(weapon_name, bullet_name, max_level, weapon_stats)
+    def __init__(self, item_name, bullet_name, max_level, weapon_stats, level=1):
+        super().__init__(item_name, bullet_name, max_level, weapon_stats, level)
+        self._level = level
         self._upgrades = [{"NAME":"Level 0",
             "DESCRIPTION": "UNLOCKS THE WEAPON!",
-            "ATTRIBUTE": "_level",
+            "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1  
             },{"NAME":"Level 1",
             "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
             "ATTRIBUTE": "cooldown",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 0.9  
+            "VALUE": 0.01  
             },
             {"NAME":"Level 2",
             "DESCRIPTION": "INCREASES 10% OF GUN BASE_DAMAGE",
@@ -40,7 +41,11 @@ class ManualGun(Weapon):
             "VALUE": 1.2   
             }]
         
-        self.load_upgrades(self.item_stats)
+        print(self.level)
+        input("dop")
+        self.load_upgrades(self._upgrades, self.level, self.item_stats)
+
+
 
     def aim(self, world: IGameWorld, pos_x: int, pos_y: int):
         mouse_pos_x, mouse_pos_y = world.get_mouse_position()

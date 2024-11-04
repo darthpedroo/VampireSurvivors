@@ -11,6 +11,9 @@ from business.perks.perks_handler import PerksHandler
 from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
 from business.stats.stats import PlayerStats
 from presentation.sprite import Sprite
+from presentation.sprite import PlayerSprite
+from business.handlers.cooldown_handler import CooldownHandler
+
 #from business.perks.perk import Perk
 #from business.perks.perk_factory import PerkFactory
 
@@ -25,17 +28,22 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         sprite (Sprite): Sprite of the player.
         player_stats (PlayerStats): Stats of the player.
     """ #pylint: disable=line-too-long
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, player_stats: PlayerStats):
-        super().__init__(pos_x, pos_y, player_stats, sprite)
+    def __init__(self, pos_x: int, pos_y: int,  player_stats: PlayerStats, weapon_handler: WeaponHandler):
+        super().__init__(pos_x, pos_y, player_stats, PlayerSprite(pos_x, pos_y))
 
         self.__health: int = self._stats.max_health
         self.__experience = 0
         self.__level = 1
-        self.__last_regeneration_time = 0
-        self._weapon_handler = WeaponHandler()
+        self.__last_regeneration_time = CooldownHandler(self._stats.regeneration_rate)
+        self._weapon_handler = weapon_handler
         self._perks_handler = PerksHandler(self._stats)
         self.__upgrading = False
 
+
+    def create_player_json_data(self):
+        player_data = {"pos_x": self.pos_x, "pos_y": self.pos_y, "player_stats": self._stats.create_player_stats_json_data(), "health":self._stats.max_health, "experience": self.__experience, "level": self.__level, "weapon_handler": self._weapon_handler.create_weapon_handler_json_data() , "perks_handler":self._perks_handler.create_perk_handler_json_data(), "upgrading": self.__upgrading }
+        return player_data
+    
     def get_player_weapons(self) -> list:
         """Gets the player weapons.
 
@@ -210,12 +218,13 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             current_time: The current time.
         """
         if self.__health < self._stats.max_health:
-            if current_time - self.__last_regeneration_time >= self._stats.regeneration_rate:
+            
+            if self.__last_regeneration_time.is_action_ready():
                 self.sprite.heal()
                 self.__health += self._stats.max_health * self._stats.regeneration_percentage / 100
                 if self.__health > self._stats.max_health:
                     self.__health = self._stats.max_health
-                self.__last_regeneration_time = current_time
+                self.__last_regeneration_time.put_on_cooldown()
 
     def update(self, world: IGameWorld, current_state: MovableEntityBaseState):
         """Updates the player.

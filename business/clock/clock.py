@@ -11,7 +11,7 @@ class ClockSingleton:
         if cls._instance is None:
             cls._instance = super(ClockSingleton, cls).__new__(cls)
             cls._instance.clock = pygame.time.Clock()
-            cls._instance.__ms = 600000
+            cls._instance.__ms = 0
             cls._instance.__fps = settings.FPS
             cls._instance.__paused = False
 

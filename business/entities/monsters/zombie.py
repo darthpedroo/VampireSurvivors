@@ -17,7 +17,7 @@ class Zombie(MovableEntity, IMonster):
     def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
         super().__init__(src_x, src_y, stats, sprite)
         self.__health: int = self._stats.max_health
-        self.__damage = 10
+        self.__damage = 10 
         self.__attack_range = 50
         self.__attack_cooldown = CooldownHandler(1000)
         self.__can_attack = False
@@ -104,7 +104,7 @@ class Zombie(MovableEntity, IMonster):
         drop_rate = random.randint(starting_number, true_luck)
         if drop_rate <= 40:
             # Esto habría que sacarlo de un json con los datos de cada Gema.
-            amount_of_experience = 2
+            amount_of_experience = 1
             gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
             return gem
         return None

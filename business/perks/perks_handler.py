@@ -14,10 +14,20 @@ class PerksHandler(ItemHandler):
         list_of_items (list): The list of item the player has.
         max_items (int): The maximum amount of items the player can have.
     """
-    def __init__(self, player_stats, list_of_items=[], max_items=5):
+    def __init__(self, player_stats: PlayerStats, list_of_items=[], max_items=5):
+        self.__player_stats = player_stats
         super().__init__(list_of_items, max_items)
 
         self.load_perks(player_stats)
+
+    def create_perk_handler_json_data(self):
+        
+        list_of_perks_data = []
+        for perk in self._list_of_items:
+            list_of_perks_data.append(perk.create_perk_json_data())
+        perks_handler_data = {"player_stats": self.__player_stats.create_player_stats_json_data(), "list_of_items": list_of_perks_data, "max_items": self.max_items}
+        return perks_handler_data
+
 
     def add_item(self, perk_name: str, player_stats):
         """Adds perk to the list of perks.

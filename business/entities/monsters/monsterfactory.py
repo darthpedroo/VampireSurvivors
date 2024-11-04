@@ -52,10 +52,10 @@ class MonsterFactory:
             return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y,size),stats)
         elif monster_type == "spider":
             max_health = 100  + MonsterFactory.TIME_STATS_MULTIPLIER
-            speed = 1 
+            speed = 1 + MonsterFactory.TIME_STATS_MULTIPLIER/100
             damage_multiplier = 3  + MonsterFactory.TIME_STATS_MULTIPLIER
             base_attack_speed = 10  + MonsterFactory.TIME_STATS_MULTIPLIER
-            size = 100 
+            size = 100
             stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
             return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y,size),stats)
         else:

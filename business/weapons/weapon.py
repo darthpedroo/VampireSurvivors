@@ -10,12 +10,17 @@ from business.handlers.cooldown_handler import CooldownHandler
 
 class Weapon(UpgradableItem):
     """Represents the weapons"""
-    def __init__(self, item_name, bullet_name:str, max_level, weapon_stats:WeaponStats):
+    def __init__(self, item_name, bullet_name, max_level,weapon_stats: WeaponStats, level = 1):
+        super().__init__(item_name, max_level, level)
         super().__init__(item_name, max_level)
         self._bullet_name = bullet_name
         self.item_stats = weapon_stats
-        self._last_shot_time = 0
         self.__cooldown_handler = CooldownHandler(self.item_stats.cooldown)
+
+    def create_weapon_json_data(self):
+        print("LEVEL: ", self._level)
+        weapon_data = {"item_name": self.item_name, "bullet_name": self.bullet_name, "level": self._level, "max_level": self._max_level, "item_stats": self.item_stats.create_weapon_stats_json_data()}
+        return weapon_data
 
     def get_sprite(self):
         current_bullet = ProjectileFactory().create_item(self._bullet_name)
@@ -29,13 +34,7 @@ class Weapon(UpgradableItem):
         """
         return self.__cooldown_handler.is_action_ready()
 
-    def set_last_shot_time(self, new_time):
-        """Sets the last time the weapon is shot.
-        
-        Args:
-            new_time: The new time that will be set as the last time the weapon was shot.
-        """
-        self._last_shot_time = new_time
+
 
     def calculate_direction(self, dx, dy):
         """Calculates the direction where the weapon should be shot.
@@ -81,8 +80,8 @@ class Weapon(UpgradableItem):
                 world.add_bullet(projectile)
                 self.__cooldown_handler.put_on_cooldown()
 
-        except TypeError:
-            print("There are no monsters yet...")
+        except TypeError as err:
+            print(err)
 
     @property
     def bullet_name(self):

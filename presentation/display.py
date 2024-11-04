@@ -321,17 +321,11 @@ class Display(IDisplay):
                              self.__screen,
                             x_pos,
                              y_pos,)
-        
-        
         quit_button.draw(x_pos,y_pos)
-
-        resume_button_width = settings.SCREEN_WIDTH
-        resume_button_height = 100
-        resume_button_colour = settings.BG_COLOR
         text_colour = settings.WHITE_COLOUR
 
         text = [Text("DESPAUSAR JUEGO (o apretar tecla p)!", 50, text_colour)]
-        
+
         x_pos = 0
         y_pos = 300
         

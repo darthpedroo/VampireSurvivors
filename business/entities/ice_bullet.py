@@ -27,7 +27,7 @@ class IceBullet(MovableEntity, IBullet):
         self._logger.debug("Created %s", self)
         self.__dir_x = dir_x
         self.__dir_y = dir_y
-        self._health = health
+        self._health = health #HERE !
         self._damage_amount = stats.damage
         self.set_direction(dir_x, dir_y)
         self.current_state = current_state    

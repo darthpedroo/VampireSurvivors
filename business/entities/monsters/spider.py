@@ -78,7 +78,7 @@ class Spider(MovableEntity, IMonster):
         drop_rate = random.randint(starting_number, true_luck)
         if drop_rate <= 40:
             # Esto habría que sacarlo de un json con los datos de cada Gema.
-            amount_of_experience = 2
+            amount_of_experience = 1
             gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
             return gem
         return None

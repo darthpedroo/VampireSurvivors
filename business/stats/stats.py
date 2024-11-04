@@ -46,6 +46,10 @@ class PerkStats(BaseStats):
         self.regeneration_percentage_multiplier = regeneration_percentage_multiplier
         self.xp_multiplier = xp_multiplier
         self.luck_multiplier = luck_multiplier
+    
+    def create_perk_stats_json_data(self):
+        weapon_stats = {"max_health": self.max_health, "movement_speed": self.movement_speed, "base_damage_multiplier": self.base_damage_multiplier, "base_attack_speed": self.base_attack_speed, "size": self.size, "regeneration_rate": self.regeneration_rate, "regeneration_percentage": self.regeneration_percentage, "xp_multiplier": self.xp_multiplier, "luck": self.luck}
+        return weapon_stats
 
 class WeaponStats(BaseStats):
     """Represents the weapon stats
@@ -55,10 +59,16 @@ class WeaponStats(BaseStats):
         speed (int): The speed of the weapon.
         cooldown (int): The cooldown of the weapon.
     """
-    def __init__(self, damage: int, speed:int, cooldown:int):
+    def __init__(self, damage: int=1, speed:int=1, cooldown:int=1):
         self.damage = damage
         self.movement_speed = speed
         self.cooldown = cooldown
+
+    def create_weapon_stats_json_data(self):
+        weapon_stats = {"damage": self.damage, "movement_speed": self.movement_speed, "cooldown": self.cooldown}
+        return weapon_stats
+    
+
 
 class BulletStats(BaseStats):
     """The stats of a bullet
@@ -95,6 +105,10 @@ class PlayerStats(EntityStats):
         self.regeneration_percentage = regeneration_percentage
         self.xp_multiplier = xp_multiplier
         self.luck = luck
+
+    def create_player_stats_json_data(self):
+        weapon_stats = {"max_health": self.max_health, "movement_speed": self.movement_speed, "base_damage_multiplier": self.base_damage_multiplier, "base_attack_speed": self.base_attack_speed, "size": self.size, "regeneration_rate": self.regeneration_rate, "regeneration_percentage": self.regeneration_percentage, "xp_multiplier": self.xp_multiplier, "luck": self.luck}
+        return weapon_stats
 
 class MonsterStats(EntityStats):
     """The stats of a monster
