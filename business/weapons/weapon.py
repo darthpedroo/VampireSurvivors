@@ -15,10 +15,10 @@ class Weapon(UpgradableItem):
         super().__init__(item_name, max_level)
         self._bullet_name = bullet_name
         self.item_stats = weapon_stats
-        self.__cooldown_handler = CooldownHandler(self.item_stats.cooldown)
+        self._cooldown_handler = CooldownHandler(self.item_stats.cooldown)
 
+    
     def create_weapon_json_data(self):
-        print("LEVEL: ", self._level)
         weapon_data = {"item_name": self.item_name, "bullet_name": self.bullet_name, "level": self._level, "max_level": self._max_level, "item_stats": self.item_stats.create_weapon_stats_json_data()}
         return weapon_data
 
@@ -32,7 +32,7 @@ class Weapon(UpgradableItem):
         Args:
             current_time: The current time.
         """
-        return self.__cooldown_handler.is_action_ready()
+        return self._cooldown_handler.is_action_ready()
 
 
 
@@ -78,7 +78,7 @@ class Weapon(UpgradableItem):
 
             if self.is_cooldown_over():
                 world.add_bullet(projectile)
-                self.__cooldown_handler.put_on_cooldown()
+                self._cooldown_handler.put_on_cooldown()
 
         except TypeError as err:
             print(err)

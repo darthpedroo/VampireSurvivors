@@ -44,6 +44,10 @@ class PerksHandler(ItemHandler):
         else:
             raise ItemOverflow()
 
+    def apply_all_perks_to_player_stats(self, player_stats: PlayerStats):
+        for perk in self._list_of_items:
+            perk.apply_perk_boosts_to_player(player_stats)
+        
     def apply_perk_to_player_stats(self, perk_name: str, player_stats: PlayerStats):
         """Applies the perk to the player stats
         
@@ -62,4 +66,4 @@ class PerksHandler(ItemHandler):
             player_stats (PlayerStats): The stats of the player
         """
         for perk in self._list_of_items:
-            perk.use(player_stats) #pylint: disable=no-member
+            perk.use() #pylint: disable=no-member

@@ -15,6 +15,8 @@ from presentation.display import Display
 from presentation.input_handler import InputHandler
 from persistence.player.player_json import PlayerJson
 from business.weapons.weapon_factory import WeaponFactory
+from business.perks.perk_factory import PerkFactory
+from business.perks.perks_handler import PerksHandler
 
 json_path = "./data/player.json"
 player_json = PlayerJson(json_path)
@@ -23,7 +25,7 @@ def initialize_player():
     """Initializes and returns the player object with default stats and items."""
     
     try:
-        player_data = player_json.get_player()
+
         x,y = player_json.get_player_pos()
         max_health = player_json.get_player_stats_from_parameter("max_health")
         movement_speed = player_json.get_player_stats_from_parameter("movement_speed")
@@ -48,18 +50,25 @@ def initialize_player():
         for item in player_json.get_weapon_handler():
             
             item_name = item["item_name"]
-            bullet_name = item["bullet_name"]
             level = item["level"]
-            max_level = item["max_level"]
-            item_stats = item["item_stats"]
-            
             new_weapon = WeaponFactory.create_weapon(item_name, level)
             weapons.append(new_weapon)
 
+        perks = []
+        for perk in player_json.get_perks_handler():
+            item_name = perk["item_name"]
+            level = perk["level"]
+            new_perk = PerkFactory.create_perk(item_name,level)
+            perks.append(new_perk)
+        
+        level = player_json.get_player()["level"]
+        experience = player_json.get_player()["experience"]
         weapon_handler = WeaponHandler(weapons)
-        player = Player(x, y,player_stats,weapon_handler)
+        perks_handler = PerksHandler(player_stats,perks)
+        
+        player = Player(x, y,player_stats,weapon_handler,perks_handler,experience,level)
     
-    except JSONDecodeError as Ex:
+    except JSONDecodeError:
         x,y = 500,500
         max_health = 100
         movement_speed = 5
@@ -80,7 +89,8 @@ def initialize_player():
             luck=luck
         )
         weapon_handler = WeaponHandler()
-        player = Player(x, y,  player_stats,weapon_handler)
+        perks_handler = PerksHandler(player_stats)
+        player = Player(x, y,  player_stats,weapon_handler, perks_handler)
         player.add_item("Manual_Gun")
         player.add_item("Sacred Heart")
         player.add_item("The_Mega_Ice")
@@ -94,8 +104,6 @@ def initialize_game_world(display):
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    print(player._weapon_handler.create_weapon_handler_json_data())
-    #input("caca")
     return GameWorld(monster_spawner, tile_map, player, display)
 
 

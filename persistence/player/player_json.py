@@ -25,6 +25,9 @@ class PlayerJson(PlayerDao):
             except TypeError:
                 return None
 
+    def get_perks_handler(self):
+        return self.get_player_attribute_from_paramater("perks_handler")["list_of_items"]
+
     def get_weapon_handler(self):
         return self.get_player_attribute_from_paramater("weapon_handler")["list_of_items"]
         

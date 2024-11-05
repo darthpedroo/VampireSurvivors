@@ -21,6 +21,9 @@ class Perk(UpgradableItem):
         self._upgrades = upgrades
         self.item_stats = perk_stats
         self.sprite = asset
+        
+        self.load_upgrades(self._upgrades,self._level,self.item_stats)
+        
     
     def create_perk_json_data(self):
         perk_data = {"item_name": self.item_name, "upgrades": self._upgrades, "level": self._level, "perk_stats": self.item_stats.create_player_stats_json_data()}

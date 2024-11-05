@@ -262,9 +262,9 @@ class UpgradableItem(ABC):
         return level_info
 
     def load_upgrades(self, upgrades:[dict], level, stats):
-        print("stats", stats)
+
         """Loads the upgrades for the current level."""
-        for level in range(level):
+        for level in range(level+1):
             self.upgrade_level(level, upgrades, stats)
 
     def upgrade_level(self, level: int, upgrades, stats):
@@ -274,6 +274,7 @@ class UpgradableItem(ABC):
             level (int): The level to upgrade.
             stats: The stats to modify based on the upgrade.
         """
+        
         current_upgrade = upgrades[level - 1]  # ojo
         attribute_to_modify = current_upgrade.get('ATTRIBUTE')
         new_value = current_upgrade.get('VALUE')
@@ -283,6 +284,9 @@ class UpgradableItem(ABC):
         if current_upgrade.get('OPERATION') == 'SUM':
             new_value = getattr(stats, attribute_to_modify) + new_value
             setattr(stats, attribute_to_modify, new_value)
+        
+        if attribute_to_modify == 'cooldown':
+            self._cooldown_handler.update_cooldown_time(new_value)
 
     def upgrade_next_level(self, upgrades, stats):
         """Upgrades to the next level if the maximum level has not been reached."""

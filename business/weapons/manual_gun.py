@@ -38,13 +38,11 @@ class ManualGun(Weapon):
             "DESCRIPTION": "INCREASES 20 % OF GUN BASE_DAMAGE",
             "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 1.2   
+            "VALUE": 1.2  
             }]
         
-        print(self.level)
-        input("dop")
         self.load_upgrades(self._upgrades, self.level, self.item_stats)
-
+        
 
 
     def aim(self, world: IGameWorld, pos_x: int, pos_y: int):

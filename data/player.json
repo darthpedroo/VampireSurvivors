@@ -1,29 +1,29 @@
 {
-    "pos_x": 445,
-    "pos_y": 235,
+    "pos_x": 720,
+    "pos_y": 1440,
     "player_stats": {
-        "max_health": 110.00000000000001,
+        "max_health": 146.41000000000008,
         "movement_speed": 5,
         "base_damage_multiplier": 1,
         "base_attack_speed": 1,
         "size": 1,
-        "regeneration_rate": 12500,
+        "regeneration_rate": 10000,
         "regeneration_percentage": 10,
         "xp_multiplier": 1,
-        "luck": 0
+        "luck": 30
     },
-    "health": 110.00000000000001,
-    "experience": 0,
+    "health": 146.41000000000008,
+    "experience": 14,
     "level": 3,
     "weapon_handler": {
         "list_of_items": [
             {
                 "item_name": "Manual_Gun",
                 "bullet_name": "Bullet",
-                "level": 4,
+                "level": 2,
                 "max_level": 5,
                 "item_stats": {
-                    "damage": 26.400000000000002,
+                    "damage": 24.0,
                     "movement_speed": 20,
                     "cooldown": 5.0
                 }
@@ -38,57 +38,91 @@
                     "movement_speed": 20,
                     "cooldown": 2705
                 }
-            },
-            {
-                "item_name": "Manual_Joker",
-                "bullet_name": "Joker_Bullet",
-                "level": 1,
-                "max_level": 5,
-                "item_stats": {
-                    "damage": 60.0,
-                    "movement_speed": 20,
-                    "cooldown": 1300
-                }
             }
         ],
         "max_items": 5
     },
     "perks_handler": {
         "player_stats": {
-            "max_health": 110.00000000000001,
+            "max_health": 146.41000000000008,
             "movement_speed": 5,
             "base_damage_multiplier": 1,
             "base_attack_speed": 1,
             "size": 1,
-            "regeneration_rate": 12500,
+            "regeneration_rate": 10000,
             "regeneration_percentage": 10,
             "xp_multiplier": 1,
-            "luck": 0
+            "luck": 30
         },
         "list_of_items": [
             {
-                "item_name": "Heal Heal Frog's Booty",
+                "item_name": "Sacred Heart",
                 "upgrades": [
                     {
                         "NAME": "Level 0",
-                        "DESCRIPTION": "Increases regeneration rate in 25%",
-                        "ATTRIBUTE": "regeneration_rate",
-                        "OPERATION": "SUM",
-                        "VALUE": 2500
+                        "DESCRIPTION": "Increases Regeneration rate in 10%",
+                        "ATTRIBUTE": "max_health",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 1.1
                     },
                     {
                         "NAME": "Level 1",
-                        "DESCRIPTION": "Increases regeneration rate in 25%",
+                        "DESCRIPTION": "Increases 20% of Max Health",
                         "ATTRIBUTE": "regeneration_rate",
-                        "OPERATION": "SUM",
-                        "VALUE": 2500
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 1.2
                     },
                     {
                         "NAME": "Level 2",
-                        "DESCRIPTION": "Increases regeneration rate in 50%",
-                        "ATTRIBUTE": "regeneration_rate",
+                        "DESCRIPTION": "Increases 20% of Max Health",
+                        "ATTRIBUTE": "max_health",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 1.2
+                    },
+                    {
+                        "NAME": "Level 3",
+                        "DESCRIPTION": "Doubles your max Health",
+                        "ATTRIBUTE": "max_health",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 2
+                    }
+                ],
+                "level": 1,
+                "perk_stats": {
+                    "max_health": 2.4200000000000004,
+                    "movement_speed": 1,
+                    "base_damage_multiplier": 1,
+                    "base_attack_speed": 1,
+                    "size": 1,
+                    "regeneration_rate": 1,
+                    "regeneration_percentage": 1,
+                    "xp_multiplier": 1,
+                    "luck": 1
+                }
+            },
+            {
+                "item_name": "Pizzano's Blessing",
+                "upgrades": [
+                    {
+                        "NAME": "Level 0",
+                        "DESCRIPTION": "Increases Luck in 10%",
+                        "ATTRIBUTE": "luck",
                         "OPERATION": "SUM",
-                        "VALUE": 5000
+                        "VALUE": 10
+                    },
+                    {
+                        "NAME": "Level 1",
+                        "DESCRIPTION": "Increases Luck in 25%",
+                        "ATTRIBUTE": "luck",
+                        "OPERATION": "SUM",
+                        "VALUE": 25
+                    },
+                    {
+                        "NAME": "Level 2",
+                        "DESCRIPTION": "Increases Luck in 25%",
+                        "ATTRIBUTE": "luck",
+                        "OPERATION": "SUM",
+                        "VALUE": 25
                     }
                 ],
                 "level": 1,
@@ -98,10 +132,10 @@
                     "base_damage_multiplier": 1,
                     "base_attack_speed": 1,
                     "size": 1,
-                    "regeneration_rate": 2501,
+                    "regeneration_rate": 1,
                     "regeneration_percentage": 1,
                     "xp_multiplier": 1,
-                    "luck": 1
+                    "luck": 46
                 }
             }
         ],

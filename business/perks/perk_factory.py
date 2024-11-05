@@ -6,7 +6,8 @@ from business.stats.stats import PlayerStats
 class PerkFactory():
     """Represents the perks factory"""
     @staticmethod
-    def create_perk(perk_name:str):
+    def create_perk(perk_name:str, level=1):
+    
         """Adds a perk.
         
         Args:
@@ -20,7 +21,7 @@ class PerkFactory():
             "DESCRIPTION": "Boosts your speed by 10%",
             "ATTRIBUTE": "movement_speed", 
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 1.1
+            "VALUE": 11
             },
             {"NAME":"Level 1",
             "DESCRIPTION": "Boosts your speed by 15%",
@@ -38,7 +39,7 @@ class PerkFactory():
             "OPERATION":"MULTIPLICATION",
             "VALUE": 1.2
             }]
-            return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+            return Perk(perk_name,max_level,upgrades,perk_stats,asset,level)
 
         elif perk_name == "Sacred Heart":
             asset = "./assets/perks/Sacred Heart.png"
@@ -68,7 +69,7 @@ class PerkFactory():
             "OPERATION":"MULTIPLICATION",
             "VALUE": 2
             }]
-            return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+            return Perk(perk_name,max_level,upgrades,perk_stats,asset,level)
 
         elif perk_name == "Pizzano's Blessing":
             asset = "./assets/perks/Pizzano's Blessing.png"
@@ -92,7 +93,7 @@ class PerkFactory():
             "OPERATION":"SUM",
             "VALUE": 25
             }]
-            return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+            return Perk(perk_name,max_level,upgrades,perk_stats,asset,level)
 
         elif perk_name == "Gym Power":
             asset = "./assets/perks/Gym Power.png"
@@ -128,7 +129,7 @@ class PerkFactory():
             "OPERATION":"SUM",
             "VALUE": 0.1
             }]
-            return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+            return Perk(perk_name,max_level,upgrades,perk_stats,asset,level)
 
         elif perk_name == "Fast Hands":
             asset = "./assets/perks/Fast Hands.png"
@@ -164,7 +165,7 @@ class PerkFactory():
             "OPERATION":"SUM",
             "VALUE": 0.1
             }]
-            return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+            return Perk(perk_name,max_level,upgrades,perk_stats,asset,level)
 
         elif perk_name == "Heal Heal Frog's Booty":
             asset = "./assets/perks/Heal Heal Frog's Booty.png"
@@ -188,6 +189,6 @@ class PerkFactory():
             "OPERATION":"SUM",
             "VALUE": 5000
             }]
-            return Perk(perk_name,max_level,upgrades,perk_stats,asset)
+            return Perk(perk_name,max_level,upgrades,perk_stats,asset,level)
         else:
             raise ValueError

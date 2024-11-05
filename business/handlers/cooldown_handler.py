@@ -18,3 +18,6 @@ class CooldownHandler:
     def put_on_cooldown(self):
         """Put the action on cooldown by updating the last action time."""
         self.__last_action_time = self.clock.get_time()
+
+    def update_cooldown_time(self, new_time:int):
+        self.__cooldown_time = new_time
