@@ -14,18 +14,21 @@ from game import Game
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from persistence.player.player_json import PlayerJson
+from persistence.clock.clock_json import ClockJson
 from business.weapons.weapon_factory import WeaponFactory
 from business.perks.perk_factory import PerkFactory
 from business.perks.perks_handler import PerksHandler
 
-json_path = "./data/player.json"
-player_json = PlayerJson(json_path)
+player_json_path = "./data/player.json"
+player_json = PlayerJson(player_json_path)
+
+clock_json_path = "./data/clock.json"
+clock_json = ClockJson(clock_json_path)
 
 def initialize_player():
     """Initializes and returns the player object with default stats and items."""
     
     try:
-
         x,y = player_json.get_player_pos()
         max_health = player_json.get_player_stats_from_parameter("max_health")
         movement_speed = player_json.get_player_stats_from_parameter("movement_speed")
@@ -131,6 +134,8 @@ def main():
 
     player = world.player
     player_json.save_player(player)
+    
+    clock_json.save_clock(world.clock)
 
     # Properly quit Pygame
     pygame.quit() # pylint: disable=no-member

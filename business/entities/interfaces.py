@@ -109,13 +109,20 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
     
     
-    @abstractmethod
     def drop_loot(self, luck: int):
-        """Drops loot from the monster.
+        try:
+            starting_number = 1
+            true_luck = 100 - luck
+            drop_rate = random.randint(starting_number, true_luck)
+        except ValueError:
+            drop_rate = 100
         
-        Args:
-            luck (int): Luck of the player
-        """
+        if drop_rate <= 40:
+            # Esto habría que sacarlo de un json con los datos de cada Gema.
+            amount_of_experience = 1
+            gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
+            return gem
+        return None
 
     def get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]: #pylint: disable=line-too-long
         """Gets the nearest enemy in the map.

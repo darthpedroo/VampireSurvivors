@@ -28,7 +28,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         sprite (Sprite): Sprite of the player.
         player_stats (PlayerStats): Stats of the player.
     """ #pylint: disable=line-too-long
-    def __init__(self, pos_x: int, pos_y: int, player_stats: PlayerStats, weapon_handler: WeaponHandler, perks_handler: PerksHandler, experience:int=0, level:int=0):
+    def __init__(self, pos_x: int, pos_y: int, player_stats: PlayerStats, weapon_handler: WeaponHandler, perks_handler: PerksHandler, experience:int=0, level:int=1):
         super().__init__(pos_x, pos_y, player_stats, PlayerSprite(pos_x, pos_y))
 
         self.__health: int = self._stats.max_health
@@ -180,7 +180,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     @property
     def experience_to_next_level(self):
         #return 1
-        return (2*self.__level)**2
+        return 1 + (2*self.__level)**2
 
     @property
     def level(self):

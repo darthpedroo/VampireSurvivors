@@ -48,7 +48,6 @@ class ManualGun(Weapon):
     def aim(self, world: IGameWorld, pos_x: int, pos_y: int):
         mouse_pos_x, mouse_pos_y = world.get_mouse_position()
         camera_x = world.get_camera().camera_rect[0]
-        print(camera_x)
         camera_y = world.get_camera().camera_rect[1]
         dir_x, dir_y = self.calculate_direction(
             (mouse_pos_x + camera_x) - pos_x, (mouse_pos_y + camera_y) - pos_y)

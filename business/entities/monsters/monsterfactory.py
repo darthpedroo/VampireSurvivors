@@ -14,7 +14,6 @@ class MonsterFactory:
 
     ALL_MONSTERS = ["spider", "zombie"]
     CLOCK = ClockSingleton()
-    TIME_STATS_MULTIPLIER = CLOCK.get_time() / 1000
 
     @staticmethod
     def get_random_monster(pos_x: int, pos_y: int):
@@ -42,19 +41,22 @@ class MonsterFactory:
         Returns:
             Zombie | Spider: An instance of the monster depending on which monster was chosen.
         """
+        CLOCK = ClockSingleton()
+        time_stats_multiplier = CLOCK.get_time()/1000
         if monster_type == "zombie":
-            max_health = 200 + MonsterFactory.TIME_STATS_MULTIPLIER
-            speed = 1 + MonsterFactory.TIME_STATS_MULTIPLIER/100
-            damage_multiplier = 3  + MonsterFactory.TIME_STATS_MULTIPLIER/1000
-            base_attack_speed = 10  + MonsterFactory.TIME_STATS_MULTIPLIER
+
+            max_health = 200 + time_stats_multiplier
+            speed = 1 + time_stats_multiplier/100
+            damage_multiplier = 3  + time_stats_multiplier/100
+            base_attack_speed = 10  + time_stats_multiplier
             size = 100
             stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
             return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y,size),stats)
         elif monster_type == "spider":
-            max_health = 100  + MonsterFactory.TIME_STATS_MULTIPLIER
-            speed = 1 + MonsterFactory.TIME_STATS_MULTIPLIER/100
-            damage_multiplier = 3  + MonsterFactory.TIME_STATS_MULTIPLIER
-            base_attack_speed = 10  + MonsterFactory.TIME_STATS_MULTIPLIER
+            max_health = 100  + time_stats_multiplier
+            speed = 1 + time_stats_multiplier/100
+            damage_multiplier = 3  + time_stats_multiplier/100
+            base_attack_speed = 10  + time_stats_multiplier
             size = 100
             stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
             return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y,size),stats)

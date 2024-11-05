@@ -31,7 +31,6 @@ class PlayerJson(PlayerDao):
     def get_weapon_handler(self):
         return self.get_player_attribute_from_paramater("weapon_handler")["list_of_items"]
         
-    
     def get_player(self):
         with open(self.__json_path, "r") as outfile:
             player_data = json.load(outfile)

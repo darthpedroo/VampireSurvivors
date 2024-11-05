@@ -351,14 +351,14 @@ class Display(IDisplay):
         click_counter = 0
         menu_width = settings.SCREEN_WIDTH
         menu_height = settings.SCREEN_HEIGHT
-        menu_alpha_value = 128
+        menu_alpha_value = 256
         menu_colour = settings.BG_COLOR
         menu_screen = MenuScreen(menu_width,
                                 menu_height,
                                 menu_alpha_value,
                                 menu_colour,
                                 self.__screen)
-        title = "Elegí tu mejora amigo!"
+        title = "Elegí tu mejora boiler!"
         screen_offset = 10
         start_x, start_y = 0, 0
         menu_screen.draw(start_x, start_y)

@@ -73,9 +73,13 @@ class Spider(MovableEntity, IMonster):
         self.sprite.take_damage()
 
     def drop_loot(self, luck: int):
-        starting_number = 1
-        true_luck = 100 - luck
-        drop_rate = random.randint(starting_number, true_luck)
+        try:
+            starting_number = 1
+            true_luck = 100 - luck
+            drop_rate = random.randint(starting_number, true_luck)
+        except ValueError:
+            drop_rate = 100
+        
         if drop_rate <= 40:
             # Esto habría que sacarlo de un json con los datos de cada Gema.
             amount_of_experience = 1

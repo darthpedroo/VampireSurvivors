@@ -1,8 +1,8 @@
 {
-    "pos_x": 720,
-    "pos_y": 1440,
+    "pos_x": 1520,
+    "pos_y": 1165,
     "player_stats": {
-        "max_health": 146.41000000000008,
+        "max_health": 505.4470284992945,
         "movement_speed": 5,
         "base_damage_multiplier": 1,
         "base_attack_speed": 1,
@@ -10,22 +10,22 @@
         "regeneration_rate": 10000,
         "regeneration_percentage": 10,
         "xp_multiplier": 1,
-        "luck": 30
+        "luck": 0
     },
-    "health": 146.41000000000008,
-    "experience": 14,
-    "level": 3,
+    "health": 505.4470284992945,
+    "experience": 1,
+    "level": 1,
     "weapon_handler": {
         "list_of_items": [
             {
                 "item_name": "Manual_Gun",
                 "bullet_name": "Bullet",
-                "level": 2,
+                "level": 1,
                 "max_level": 5,
                 "item_stats": {
                     "damage": 24.0,
                     "movement_speed": 20,
-                    "cooldown": 5.0
+                    "cooldown": 500
                 }
             },
             {
@@ -44,7 +44,7 @@
     },
     "perks_handler": {
         "player_stats": {
-            "max_health": 146.41000000000008,
+            "max_health": 505.4470284992945,
             "movement_speed": 5,
             "base_damage_multiplier": 1,
             "base_attack_speed": 1,
@@ -52,7 +52,7 @@
             "regeneration_rate": 10000,
             "regeneration_percentage": 10,
             "xp_multiplier": 1,
-            "luck": 30
+            "luck": 0
         },
         "list_of_items": [
             {
@@ -98,44 +98,6 @@
                     "regeneration_percentage": 1,
                     "xp_multiplier": 1,
                     "luck": 1
-                }
-            },
-            {
-                "item_name": "Pizzano's Blessing",
-                "upgrades": [
-                    {
-                        "NAME": "Level 0",
-                        "DESCRIPTION": "Increases Luck in 10%",
-                        "ATTRIBUTE": "luck",
-                        "OPERATION": "SUM",
-                        "VALUE": 10
-                    },
-                    {
-                        "NAME": "Level 1",
-                        "DESCRIPTION": "Increases Luck in 25%",
-                        "ATTRIBUTE": "luck",
-                        "OPERATION": "SUM",
-                        "VALUE": 25
-                    },
-                    {
-                        "NAME": "Level 2",
-                        "DESCRIPTION": "Increases Luck in 25%",
-                        "ATTRIBUTE": "luck",
-                        "OPERATION": "SUM",
-                        "VALUE": 25
-                    }
-                ],
-                "level": 1,
-                "perk_stats": {
-                    "max_health": 1,
-                    "movement_speed": 1,
-                    "base_damage_multiplier": 1,
-                    "base_attack_speed": 1,
-                    "size": 1,
-                    "regeneration_rate": 1,
-                    "regeneration_percentage": 1,
-                    "xp_multiplier": 1,
-                    "luck": 46
                 }
             }
         ],

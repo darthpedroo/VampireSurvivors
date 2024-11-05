@@ -6,8 +6,10 @@ import pygame
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.weapons.weapon_factory import WeaponFactory
+from json import JSONDecodeError
 from business.perks.perk_factory import PerkFactory
 from business.clock.clock import ClockSingleton
+from persistence.clock.clock_json import ClockJson
 
 class GameWorld(IGameWorld):
     """Represents the game world."""
@@ -18,7 +20,7 @@ class GameWorld(IGameWorld):
         self.__monsters: list[IMonster] = []
         self.__bullets: list[IBullet] = []
         self.__experience_gems: list[IExperienceGem] = []
-        self.__clock = ClockSingleton()
+        self.__clock = self.__initialize_clock()
         self.tile_map: ITileMap = tile_map
         self.__monster_spawner: IMonsterSpawner = spawner
         self.__display = display
@@ -38,6 +40,18 @@ class GameWorld(IGameWorld):
                                 {"perk":"Fast Hands"},
                                 {"perk":"Heal Heal Frog's Booty"}]
 
+    def __initialize_clock(self):
+        try:
+            clock_json_path = "./data/clock.json"
+            clock_json = ClockJson(clock_json_path)
+            ms = clock_json.get_clock()
+            ClockSingleton(ms).set_ms(ms["ms"])
+        except JSONDecodeError:
+            input("DOP")
+            ms = 0
+        return ClockSingleton(ms)
+            
+    
     def add_random_items(self):
         items = self.__list_of_items.copy()
         count = 0  # Track the number of items added
@@ -154,3 +168,7 @@ class GameWorld(IGameWorld):
     @property
     def upgrading(self) -> bool:
         return self._upgrading
+
+    @property
+    def clock(self):
+        return self.__clock

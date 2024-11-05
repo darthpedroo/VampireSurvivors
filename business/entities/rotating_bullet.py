@@ -1,13 +1,11 @@
-import math 
-import pygame
+
 from business.entities.state_machine.entity import MovableEntity
 from business.entities.interfaces import IBullet
 from business.world.interfaces import IGameWorld
 from presentation.sprite import BulletSprite
 
 
-class RotatingBullet (MovableEntity,IBullet):
-    
+class RotatingBullet (MovableEntity,IBullet):   
     def __init__(self, pos_x, pos_y, dir_x, dir_y, speed: int, health: int, damage_amount: int, asset: str, size, current_state):
         super().__init__(pos_x, pos_y, speed, BulletSprite(pos_x, pos_y, asset, size))
         self._logger.debug("Created %s", self)
@@ -17,7 +15,6 @@ class RotatingBullet (MovableEntity,IBullet):
         self.current_state = current_state
     
     def apply_effect(self, other_entity: MovableEntity):
-        
         return super().apply_effect(other_entity)
 
     @property
@@ -28,7 +25,7 @@ class RotatingBullet (MovableEntity,IBullet):
     def take_damage(self, amount ):
         self._health -= 0
 
-    def update(self, world: IGameWorld):
+    def update(self):
         self.current_state.update_state(self)
 
     @property
