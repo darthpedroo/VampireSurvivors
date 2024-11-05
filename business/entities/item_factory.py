@@ -4,8 +4,9 @@ from business.entities.ice_bullet import IceBullet
 from business.stats.stats import BulletStats
 from business.entities.rotating_bullet import RotatingBullet
 from business.entities.state_machine.movable_entity_rotate_state import RotatingState
+
 class BulletFactory:
-    """Represents the proyectile factory"""
+    """Represents the bullet factory"""
     @staticmethod
     def create_item(item_name: str, entity_pos_x: int=0, entity_pos_y: int=0, dir_x: int=0, dir_y: int=0, p_health=None, movement_speed:int=1, damage:int=1, cooldown:int=1):
         """Creates a projectile item based on the given parameters.

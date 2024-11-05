@@ -1,4 +1,4 @@
-"""Module for a bullet entity that moves towards a target direction."""
+"""Module for an ice bullet entity that moves towards a target direction."""
 
 from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
 from business.stats.stats import BulletStats
@@ -8,7 +8,7 @@ from business.world.interfaces import IGameWorld
 from presentation.sprite import BulletSprite
 
 class IceBullet(MovableEntity, IBullet):
-    """A bullet that moves towards a target direction."""
+    """An ice bullet that moves towards a target direction."""
 
     def __init__(self, name:str, pos_x: float, pos_y: float, dir_x: float, dir_y: float, health: int, stats: BulletStats, asset: str, current_state: MovableEntityMovingState = MovableEntityMovingState()):
         """Initializes an IceBullet instance.

@@ -11,7 +11,6 @@ class MovableEntityIdleState(MovableEntityBaseState):
         Args:
             movable_entity (MovableEntity): The movable entity in the idle state.
         """
-        print("I am in the thick of it, everybody knows")
 
     def enter_state(self, movable_entity: "MovableEntity"):
         """Enters the idle state for the given movable entity.
