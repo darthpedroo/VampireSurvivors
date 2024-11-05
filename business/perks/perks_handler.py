@@ -36,12 +36,13 @@ class PerksHandler(ItemHandler):
             perk_name (str): The name of the perk.
             player_stats: The stats of the player.
         """
-        if len(self._list_of_items) <=self.max_items:
+        if len(self._list_of_items) < self.max_items:
             perk_factory = PerkFactory()
             perk = perk_factory.create_perk(perk_name)
             self._list_of_items.append(perk)
             perk.use()
         else:
+            print(f"No se puede añadir el item: {perk_name} not enough space my friend")
             raise ItemOverflow()
 
     def apply_all_perks_to_player_stats(self, player_stats: PlayerStats):

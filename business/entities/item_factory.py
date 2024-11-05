@@ -30,7 +30,7 @@ class BulletFactory:
             else:
                 health = p_health
             size = 50
-            damage = 0.4 * damage
+            damage = 0.2 * damage
             bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
             return Bullet(item_name, entity_pos_x, entity_pos_y, dir_x, dir_y, health, bullet_stats, asset)
         if item_name == "Joker_Bullet":
@@ -41,7 +41,7 @@ class BulletFactory:
                 health = p_health
             damage = 1 * damage
             size = 50
-            bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
+            bullet_stats = BulletStats(movement_speed*0.5,damage,cooldown,size)
             return Bullet(item_name,entity_pos_x, entity_pos_y, dir_x, dir_y, health, bullet_stats, asset)
         if item_name == "Ice_Bullet":
             asset = "./assets/bullets/Ice_Bullet.png"

@@ -23,7 +23,7 @@ class WeaponHandler(ItemHandler):
         return weapon_handler_data
     
     def add_item(self, item_name: str):
-        if len(self._list_of_items) <= self.max_items:
+        if len(self._list_of_items) < self.max_items:
             weapon_factory = WeaponFactory()
             weapon = weapon_factory.create_weapon(item_name)
             self._list_of_items.append(weapon)

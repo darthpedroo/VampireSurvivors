@@ -10,6 +10,8 @@ from presentation.tileset import Tileset
 from presentation.gui.menu_screen import MenuScreen
 from business.clock.clock import ClockSingleton
 from presentation.gui.button import Button, Text
+from business.exceptions import ItemOverflow
+
 
 class Display(IDisplay):
     """Class for displaying the game world."""
@@ -346,6 +348,8 @@ class Display(IDisplay):
         if resume_button.is_clicked():
             self.__world.change_paused_state()
 
+
+    
     def render_upgrade_menu(self, items: ["Weapon"]):
         """Renders upgrade menu"""
         click_counter = 0
@@ -434,8 +438,10 @@ class Display(IDisplay):
                     self.__world.player.upgrade_item_next_level(button.text)
                     break
                 else:
-                    self.__world.player.add_item(button.text)
-                    self.__world.set_upgrading_state(False)
-                    self.__world.set_paused_state(False)
-
+                    try:
+                        self.__world.player.add_item(button.text)
+                        self.__world.set_upgrading_state(False)
+                        self.__world.set_paused_state(False)
+                    except ItemOverflow:
+                        print("NO HAY ESPACIO PARA AGREGAR ESE ITEN")
 

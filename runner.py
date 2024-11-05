@@ -21,6 +21,8 @@ from business.perks.perks_handler import PerksHandler
 from persistence.monsters.monster_json import MonsterJson
 from persistence.gems.gems_json import GemsJson
 from persistence.bullets.bullets_json import BulletJson
+from business.exceptions import ItemOverflow
+
 
 player_json_path = "./data/player.json"
 player_json = PlayerJson(player_json_path)
@@ -107,10 +109,14 @@ def initialize_player():
         perks_handler = PerksHandler(player_stats)
         player = Player(x, y,  player_stats,weapon_handler, perks_handler)
         #player.add_item("Toilet_spinner")
-       # player.add_item("Sacred Heart")
-        player.add_item("The_Mega_Ice")
-        player.add_item("Manual_Gun")
-        
+       # player.add_item("Heal Heal Frog's Booty")
+        try:
+            player.add_item("The_Mega_Ice")
+            player.add_item("Manual_Gun")
+            player.add_item("Heal Heal Frog's Booty")
+        except ItemOverflow:
+            print("No se puede agregar el item. Overflow !")     
+
 
     return player
 
