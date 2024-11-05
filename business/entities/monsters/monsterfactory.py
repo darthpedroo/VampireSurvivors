@@ -6,14 +6,14 @@ from presentation.sprite import ZombieSprite, SpiderSprite, ShulkerSprite
 from business.entities.monsters.zombie import Zombie
 from business.entities.monsters.spider import Spider
 from business.entities.monsters.shulker import Shulker
-from business.stats.stats import EntityStats
+from business.stats.stats import MonsterStats
 from business.clock.clock import ClockSingleton
 
 
 class MonsterFactory:
     """A monster entity in the game."""
 
-    ALL_MONSTERS = ["shulker"]
+    ALL_MONSTERS = ["spider", "zombie", "shulker"]
     CLOCK = ClockSingleton()
 
     @staticmethod
@@ -51,7 +51,8 @@ class MonsterFactory:
             damage_multiplier = 3  + time_stats_multiplier/100
             base_attack_speed = 10  + time_stats_multiplier
             size = 100
-            stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
+            precision = 60
+            stats = MonsterStats(max_health,speed,damage_multiplier,base_attack_speed,size,precision)
             return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y,size),stats)
         elif monster_type == "spider":
             max_health = 100  + time_stats_multiplier
@@ -59,7 +60,8 @@ class MonsterFactory:
             damage_multiplier = 3  + time_stats_multiplier/100
             base_attack_speed = 10  + time_stats_multiplier
             size = 100
-            stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
+            precision = 1
+            stats = MonsterStats(max_health,speed,damage_multiplier,base_attack_speed,size,precision)
             return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y,size),stats)
         
         elif monster_type == "shulker":            
@@ -69,8 +71,8 @@ class MonsterFactory:
             base_attack_speed = 10  + time_stats_multiplier
             size = 100
             shield_value = 20
-            stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
+            precision = 1
+            stats = MonsterStats(max_health,speed,damage_multiplier,base_attack_speed,size,precision)
             return Shulker(pos_x, pos_y,ShulkerSprite(pos_x,pos_y,size),stats,shield_value)
-        
         else:
             raise ValueError("Not A Valid Enemy")

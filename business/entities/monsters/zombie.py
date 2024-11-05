@@ -35,15 +35,35 @@ class Zombie(MovableEntity, IMonster):
 
     def attack(self, target: IDamageable, direction_x: int, direction_y: int):
         """Attacks the target."""
+
+        can_attack = False
+
+        number = random.randint(0,100)
+        if self._stats.precision >= number:
+            can_attack = True
+        
+
         if not self.__attack_cooldown.is_action_ready():
             return
 
         if self._get_distance_to(target) < self.__attack_range:
-            self.__can_attack = True
-            target.take_damage(self.damage_amount)
-            self.__attack_cooldown.put_on_cooldown()
+            if can_attack:
+                self.__can_attack = True
+                target.take_damage(self.damage_amount)
+                self.__attack_cooldown.put_on_cooldown()
+            else:
+                self.__attack_cooldown.put_on_cooldown()
+                print("EL ZOMBIE NO PUDO ATACAR PORQUE NO TUVO PRECISION!")
         else:
             self.__can_attack = False
+
+    @property
+    def attack_cooldown(self):
+        return self.__attack_cooldown
+    
+    @property
+    def damage(self):
+        return self.__damage
 
     def update(self, world: IGameWorld):
         direction_x, direction_y = self.get_direction_towards_the_player(world)

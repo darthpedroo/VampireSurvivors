@@ -23,6 +23,7 @@ class EntityStats(ABC):
         self.base_damage_multiplier = base_damage_multiplier
         self.base_attack_speed = base_attack_speed
         self.size = size
+        
     
     def create_entity_stats_json_data(self):
         monster_stats = {
@@ -34,6 +35,11 @@ class EntityStats(ABC):
         }
         return monster_stats
 
+
+class MonsterStats(EntityStats):
+    def __init__(self, max_health: int, movement_speed: int, base_damage_multiplier: int, base_attack_speed: int, size: int, precision:int):
+        super().__init__(max_health, movement_speed, base_damage_multiplier, base_attack_speed, size)
+        self.precision = precision
 
 class PerkStats(BaseStats):
     """The stats of the perks
@@ -79,8 +85,6 @@ class WeaponStats(BaseStats):
         weapon_stats = {"damage": self.damage, "movement_speed": self.movement_speed, "cooldown": self.cooldown}
         return weapon_stats
     
-
-
 class BulletStats(BaseStats):
     """The stats of a bullet
 

@@ -27,13 +27,13 @@ class Spider(MovableEntity, IMonster):
         return monster_data
     
 
-    def attack(self, target: IDamageable):
-        """Attacks the target."""
-        if not self.__attack_cooldown.is_action_ready():
-            return
-
-        target.take_damage(self.__damage * self._stats.base_damage_multiplier)
-        self.__attack_cooldown.put_on_cooldown()
+    @property
+    def attack_cooldown(self):
+        return self.__attack_cooldown
+    
+    @property
+    def damage(self):
+        return self.__damage
 
     @property
     def damage_amount(self):

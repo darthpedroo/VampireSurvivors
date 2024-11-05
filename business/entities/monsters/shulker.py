@@ -7,14 +7,14 @@ from business.entities.interfaces import IDamageable, IMonster
 from business.entities.experience_gem import ExperienceGem
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.interfaces import IGameWorld
-from business.stats.stats import EntityStats
+from business.stats.stats import MonsterStats
 from presentation.sprite import Sprite
 
 
 class Shulker(MovableEntity, IMonster):
     """A monster entity in the game."""
 
-    def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats, shield_value:int=5):
+    def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats:MonsterStats, shield_value:int=5):
         super().__init__(src_x, src_y, stats, sprite)
         self._name = "shulker"
         self.__health: int = self._stats.max_health
@@ -22,21 +22,21 @@ class Shulker(MovableEntity, IMonster):
         self.__attack_range = 100
         self.__attack_cooldown = CooldownHandler(2000)
         self._logger.debug("Created %s", self)
-
         self.__shield = shield_value
-          
+        
+        print(stats.precision)
 
     def create_monster_json_data(self):
         monster_data = {"pos_x": self.pos_x, "pos_y": self.pos_y, "name": self.name}
         return monster_data
     
-    def attack(self, target: IDamageable):
-        """Attacks the target."""
-        if not self.__attack_cooldown.is_action_ready():
-            return
-
-        target.take_damage(self.__damage * self._stats.base_damage_multiplier)
-        self.__attack_cooldown.put_on_cooldown()
+    @property
+    def attack_cooldown(self):
+        return self.__attack_cooldown
+    
+    @property
+    def damage(self):
+        return self.__damage
 
     @property
     def damage_amount(self):

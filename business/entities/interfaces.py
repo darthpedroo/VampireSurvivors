@@ -1,6 +1,7 @@
 """This module contains interfaces for the entities in the game."""
 
 from abc import ABC, abstractmethod
+import random
 
 from presentation.sprite import Sprite
 
@@ -113,19 +114,31 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         return self._name
 
     
-    def drop_loot(self, luck: int):
-        try:
-            starting_number = 1
-            true_luck = 100 - luck
-            drop_rate = random.randint(starting_number, true_luck)
-        except ValueError:
-            drop_rate = 100
-        
-        if drop_rate <= 40:
-            amount_of_experience = 1
-            gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
-            return gem
-        return None
+    def attack(self, target: IDamageable):
+        """Attacks the target."""
+
+        can_attack = False
+
+        number = random.randint(0,100)
+        if self._stats.precision >= number:
+            can_attack = True
+
+        if not self.attack_cooldown.is_action_ready():
+            return
+
+        if can_attack:
+            target.take_damage(self.damage * self._stats.base_damage_multiplier)
+        else:
+            print("Sorry monster, you aren't precise enough")
+        self.attack_cooldown.put_on_cooldown()
+
+    @abstractmethod
+    def attack_cooldown(self):
+        pass
+
+    @abstractmethod
+    def damage(self):
+        pass
 
     def get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]:
         """Gets the nearest enemy in the map.
@@ -208,9 +221,7 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
         return direction_x, direction_y
 
-    @abstractmethod
-    def attack(self):
-        """Implements a Monster Attack"""
+
 
 class IMove(ABC):
     """Interface for the different moves/actions a player can perform (e.g., Attack, Heal, Ulti)."""
