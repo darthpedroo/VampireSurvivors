@@ -342,12 +342,34 @@ class Display(IDisplay):
         
         resume_button.draw(x_pos,y_pos)
 
+        text = [Text("GUARDAR Y SALIR", 50, text_colour)]
+
+        x_pos = 0
+        y_pos = 500
+        
+        save_and_exit = Button(quit_button_width,
+                             quit_button_height,
+                             quit_button_colour,
+                             text,
+                             None,
+                             self.__screen,
+                             x_pos,
+                             y_pos,)
+        
+        save_and_exit.draw(x_pos,y_pos)
+        
+        
         if quit_button.is_clicked():
+            self.__world.delete_data()
             quit()
 
         if resume_button.is_clicked():
             self.__world.change_paused_state()
-
+        
+        if save_and_exit.is_clicked():
+            print("xd")
+            self.__world.save_data()
+            quit()
 
     
     def render_upgrade_menu(self, items: ["Weapon"]):

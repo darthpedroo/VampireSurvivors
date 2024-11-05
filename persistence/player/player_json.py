@@ -9,9 +9,18 @@ class PlayerJson(PlayerDao):
         self.__json_path = json_path
 
     def save_player(self, player:Player):
+        print("saving from !!???")
         json_data = player.create_player_json_data()
         with open(self.__json_path , "w") as outfile:
             json.dump(json_data, outfile, indent=4)
+    
+    def delete_player(self):
+        try:
+            with open(self.__json_path, "w") as outfile:
+                pass 
+        except Exception as ex:
+            print(ex)
+
     
     def get_player_attribute_from_paramater(self, player_attribute:str):
         player_data = self.get_player()

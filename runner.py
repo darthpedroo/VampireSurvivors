@@ -146,14 +146,8 @@ def main():
     game = Game(display, world, input_handler)
     game.run()
 
-    player = world.player
-    player_json.save_player(player)
-    clock_json.save_clock(world.clock)
-    monster_json.save_monsters(world.monsters)
-    gems_json.save_gems(world.experience_gems)
-    bullets_json.save_bullets(world.bullets)
-
     pygame.quit()
+    print("chua")
 
 
 if __name__ == "__main__":

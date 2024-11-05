@@ -22,4 +22,10 @@ class MonsterJson(MonsterDao):
         
         with open(self.__json_path, "w") as outfile:
             json.dump(list_of_monsters_data, outfile, indent=4)
-        
+    
+    def delete_monsters(self):
+        try:
+            with open(self.__json_path, "w") as outfile:
+                pass 
+        except Exception as ex:
+            print(ex)

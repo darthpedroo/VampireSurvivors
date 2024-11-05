@@ -26,6 +26,12 @@ class BulletJson(BulletDao):
         except UnboundLocalError:
             print("There are no Bullets to save !")
 
+    def delete_bullets(self):
+        try:
+            with open(self.__json_path, "w") as outfile:
+                pass 
+        except Exception as ex:
+            print(ex)
 
 
     

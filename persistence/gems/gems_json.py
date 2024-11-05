@@ -27,4 +27,10 @@ class GemsJson(GemsDao):
         
         with open(self.__json_path, "w") as outfile:
             json.dump(list_of_gems_data, outfile, indent=4)
-        
+    
+    def delete_gems(self):
+        try:
+            with open(self.__json_path, "w") as outfile:
+                pass 
+        except Exception as ex:
+            print(ex)

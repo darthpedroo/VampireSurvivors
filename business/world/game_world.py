@@ -10,6 +10,9 @@ from business.weapons.weapon_factory import WeaponFactory
 from business.entities.experience_gem import ExperienceGem
 from business.perks.perk_factory import PerkFactory
 from business.clock.clock import ClockSingleton
+
+from persistence.monsters.monster_json import MonsterJson
+from persistence.player.player_json import PlayerJson
 from persistence.clock.clock_json import ClockJson
 from persistence.gems.gems_json import GemsJson
 from persistence.bullets.bullets_json import BulletJson
@@ -47,6 +50,43 @@ class GameWorld(IGameWorld):
         self.load_gems_json()
         self.load_bullets_json()
         
+        
+    
+    def save_data(self):
+        player_json_path = "./data/player.json"
+        player_json = PlayerJson(player_json_path)
+        clock_json_path = "./data/clock.json"
+        clock_json = ClockJson(clock_json_path)
+        monster_json_path = "./data/monsters.json"
+        monster_json = MonsterJson(monster_json_path)
+        gems_json_path = "./data/gems.json"
+        gems_json = GemsJson(gems_json_path)
+        bullets_json_path = "./data/bullets.json"
+        bullets_json = BulletJson(bullets_json_path)
+
+        player_json.save_player(self.__player)
+        clock_json.save_clock(self.clock)
+        monster_json.save_monsters(self.monsters)
+        gems_json.save_gems(self.experience_gems)
+        bullets_json.save_bullets(self.bullets)
+    
+    def delete_data(self):
+        player_json_path = "./data/player.json"
+        player_json = PlayerJson(player_json_path)
+        clock_json_path = "./data/clock.json"
+        clock_json = ClockJson(clock_json_path)
+        monster_json_path = "./data/monsters.json"
+        monster_json = MonsterJson(monster_json_path)
+        gems_json_path = "./data/gems.json"
+        gems_json = GemsJson(gems_json_path)
+        bullets_json_path = "./data/bullets.json"
+        bullets_json = BulletJson(bullets_json_path)
+        player_json.delete_player()
+        clock_json.delete_clock()
+        monster_json.delete_monsters()
+        gems_json.delete_gems()
+        bullets_json.delete_bullets()
+          
     def __initialize_clock(self):
         try:
             clock_json_path = "./data/clock.json"

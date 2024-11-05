@@ -17,3 +17,9 @@ class ClockJson(ClockDao):
         with open(self.__json_path , "w") as outfile:
             json.dump(json_data, outfile, indent=4)
     
+    def delete_clock(self):
+        try:
+            with open(self.__json_path, "w") as outfile:
+                pass 
+        except Exception as ex:
+            print(ex)
