@@ -1,34 +1,20 @@
 {
-<<<<<<< HEAD
-    "pos_x": 805,
-    "pos_y": 205,
-=======
-    "pos_x": 1215,
-    "pos_y": 610,
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
+    "pos_x": 465,
+    "pos_y": 840,
     "player_stats": {
         "max_health": 100,
         "movement_speed": 5,
         "base_damage_multiplier": 1,
         "base_attack_speed": 1,
         "size": 1,
-<<<<<<< HEAD
-        "regeneration_rate": 12500,
-=======
         "regeneration_rate": 15000,
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
         "regeneration_percentage": 10,
         "xp_multiplier": 1,
         "luck": 0
     },
     "health": 100,
-<<<<<<< HEAD
     "experience": 0,
-    "level": 1,
-=======
-    "experience": 3,
-    "level": 2,
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
+    "level": 5,
     "weapon_handler": {
         "list_of_items": [
             {
@@ -45,27 +31,24 @@
             {
                 "item_name": "Manual_Gun",
                 "bullet_name": "Bullet",
-                "level": 1,
+                "level": 2,
                 "max_level": 5,
                 "item_stats": {
                     "damage": 24.0,
                     "movement_speed": 20,
-                    "cooldown": 500
+                    "cooldown": 450.0
                 }
-<<<<<<< HEAD
-=======
             },
             {
-                "item_name": "Manual_Joker",
-                "bullet_name": "Joker_Bullet",
+                "item_name": "Toilet_spinner",
+                "bullet_name": "Rotating_Bullet",
                 "level": 1,
                 "max_level": 5,
                 "item_stats": {
-                    "damage": 60.0,
-                    "movement_speed": 20,
-                    "cooldown": 1300
+                    "damage": 9.6,
+                    "movement_speed": 1,
+                    "cooldown": 0
                 }
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
             }
         ],
         "max_items": 5
@@ -77,11 +60,7 @@
             "base_damage_multiplier": 1,
             "base_attack_speed": 1,
             "size": 1,
-<<<<<<< HEAD
-            "regeneration_rate": 12500,
-=======
             "regeneration_rate": 15000,
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
             "regeneration_percentage": 10,
             "xp_multiplier": 1,
             "luck": 0

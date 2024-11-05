@@ -172,7 +172,8 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        return 2 * (self.level ** 2)
+        return 1
+        #return 2 * (self.level ** 2)
 
     @property
     def level(self):

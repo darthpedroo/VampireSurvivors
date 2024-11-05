@@ -1,42 +1,62 @@
 [
     {
-        "name": "Ice_Bullet",
-<<<<<<< HEAD
-        "pos_x": 783.7857617655785,
-        "pos_y": 216.22301635627463,
-        "dir_x": -0.8839265931008972,
-        "dir_y": 0.4676256815114424,
-=======
-        "pos_x": 378.50575420989276,
-        "pos_y": 190.0316955292461,
-        "dir_x": -0.8936904335364395,
-        "dir_y": -0.4486840859730272,
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
-        "health": 20,
-        "stats": {
-            "movement_speed": 24.0,
-            "damage": 0,
-            "cooldown": 1,
-            "size": 50
-        },
-        "asset": "./assets/bullets/Ice_Bullet.png"
-<<<<<<< HEAD
-=======
-    },
-    {
         "name": "Bullet",
-        "pos_x": 1096.2060607606606,
-        "pos_y": 491.20606076065985,
-        "dir_x": -0.7071067811865475,
-        "dir_y": -0.7071067811865475,
+        "pos_x": 348.67605012464924,
+        "pos_y": 1625.395759078303,
+        "dir_x": -0.2036918559032213,
+        "dir_y": 0.9790350493412896,
         "health": 20,
         "stats": {
             "movement_speed": 24.0,
-            "damage": 100.0,
+            "damage": 90.0,
             "cooldown": 1,
             "size": 50
         },
         "asset": "./assets/bullets/Bullet.png"
->>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
+    },
+    {
+        "name": "Bullet",
+        "pos_x": 414.03194521461245,
+        "pos_y": 1315.7870931966388,
+        "dir_x": -0.21045626049427094,
+        "dir_y": 0.9776032745540327,
+        "health": 20,
+        "stats": {
+            "movement_speed": 24.0,
+            "damage": 90.0,
+            "cooldown": 1,
+            "size": 50
+        },
+        "asset": "./assets/bullets/Bullet.png"
+    },
+    {
+        "name": "Bullet",
+        "pos_x": 440.5569772916135,
+        "pos_y": 957.484205920955,
+        "dir_x": -0.2036918559032213,
+        "dir_y": 0.9790350493412896,
+        "health": 20,
+        "stats": {
+            "movement_speed": 24.0,
+            "damage": 90.0,
+            "cooldown": 1,
+            "size": 50
+        },
+        "asset": "./assets/bullets/Bullet.png"
+    },
+    {
+        "name": "Rotating_Bullet",
+        "pos_x": 381.52772023838827,
+        "pos_y": 873.650832254184,
+        "dir_x": 381.52772023838827,
+        "dir_y": 873.650832254184,
+        "health": 0.19090909090909103,
+        "stats": {
+            "movement_speed": 9.6,
+            "damage": 0.5,
+            "cooldown": 1,
+            "size": 50
+        },
+        "asset": "./assets/bullets/Rotating_Bullet.png"
     }
 ]

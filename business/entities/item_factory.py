@@ -56,7 +56,7 @@ class BulletFactory:
         if item_name == "Rotating_Bullet" :
             asset = "./assets/bullets/Rotating_Bullet.png"
             health = 1.1
-            damage = 0.5 * damage
+            damage = 5
             size = 50
             bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
             current_state = RotatingState()
