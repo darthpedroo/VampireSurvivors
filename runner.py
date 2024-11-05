@@ -147,6 +147,7 @@ def main():
     game.run()
 
     pygame.quit()
+    world.delete_data()
     print("chua")
 
 

@@ -34,6 +34,7 @@ class EntityStats(ABC):
         }
         return monster_stats
 
+
 class PerkStats(BaseStats):
     """The stats of the perks
 

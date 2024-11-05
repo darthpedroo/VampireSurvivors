@@ -284,6 +284,18 @@ class SpiderSprite(Sprite):
 
         super().__init__(image, rect)
 
+class ShulkerSprite(Sprite):
+    """A class representing the shulker sprite."""
+    
+    ASSET = "./assets/shulker.png"
+
+    def __init__(self, pos_x: float, pos_y: float, size=100):
+        image: pygame.Surface = pygame.image.load(ShulkerSprite.ASSET).convert_alpha()
+        # Scale the image based on the given size
+        image = pygame.transform.scale(image, (size, size))
+        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+
+        super().__init__(image, rect)
 
 
 

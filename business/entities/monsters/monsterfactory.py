@@ -2,9 +2,10 @@
 
 import random
 
-from presentation.sprite import ZombieSprite, SpiderSprite
+from presentation.sprite import ZombieSprite, SpiderSprite, ShulkerSprite
 from business.entities.monsters.zombie import Zombie
 from business.entities.monsters.spider import Spider
+from business.entities.monsters.shulker import Shulker
 from business.stats.stats import EntityStats
 from business.clock.clock import ClockSingleton
 
@@ -12,7 +13,7 @@ from business.clock.clock import ClockSingleton
 class MonsterFactory:
     """A monster entity in the game."""
 
-    ALL_MONSTERS = ["spider", "zombie"]
+    ALL_MONSTERS = ["shulker"]
     CLOCK = ClockSingleton()
 
     @staticmethod
@@ -27,6 +28,7 @@ class MonsterFactory:
             Zombie | Spider: An instance of the monster depending on which monster was chosen.
         """
         random_monster = random.choice(MonsterFactory.ALL_MONSTERS)
+        print("random_monster: ", random_monster)
         return MonsterFactory.get_monster(random_monster, pos_x, pos_y)
 
     @staticmethod
@@ -59,5 +61,16 @@ class MonsterFactory:
             size = 100
             stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
             return Spider(pos_x, pos_y, SpiderSprite(pos_x, pos_y,size),stats)
+        
+        elif monster_type == "shulker":            
+            max_health = 100  + time_stats_multiplier
+            speed = (1 + time_stats_multiplier/10000) * 2 #DUPLICO LA VELOCIDAD BASE
+            damage_multiplier = 3  + time_stats_multiplier/100
+            base_attack_speed = 10  + time_stats_multiplier
+            size = 100
+            shield_value = 20
+            stats = EntityStats(max_health,speed,damage_multiplier,base_attack_speed,size)
+            return Shulker(pos_x, pos_y,ShulkerSprite(pos_x,pos_y,size),stats,shield_value)
+        
         else:
             raise ValueError("Not A Valid Enemy")
