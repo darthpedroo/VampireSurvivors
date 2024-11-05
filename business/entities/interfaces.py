@@ -113,7 +113,6 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         return self._name
 
     
-    
     def drop_loot(self, luck: int):
         try:
             starting_number = 1
@@ -210,6 +209,9 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
         return direction_x, direction_y
 
+    @abstractmethod
+    def attack(self):
+        """Implements a Monster Attack"""
 
 class IMove(ABC):
     """Interface for the different moves/actions a player can perform (e.g., Attack, Heal, Ulti)."""
