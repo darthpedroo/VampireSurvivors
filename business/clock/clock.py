@@ -30,10 +30,9 @@ class ClockSingleton:
             self.__ms += tick
             return tick
         else:
-            # When paused, just call tick() without advancing __ms
             self.clock.tick(self.__fps)
             return 0
-    
+
     def set_ms(self,new_ms:float):
         self.__ms = new_ms
 

@@ -48,7 +48,7 @@ class Weapon(UpgradableItem):
             return dx / distance, dy / distance
         return 0, 0
 
-    def use(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_damage_multiplier: int, player_attack_speed:int): #pylint: disable=line-too-long, too-many-arguments
+    def use(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_damage_multiplier: int, player_attack_speed:int):
         """Uses the weapon.
         
         Args:
@@ -59,7 +59,6 @@ class Weapon(UpgradableItem):
             player_damage_multiplier (int): The player damage multiplier.
             player_attack_speed (int): The player attack speed.
         """
-        #ISSUE! PASAR TODAS LAS ESTADISTICAS
         projectile_factory = BulletFactory()
         try:
             bullet_direction_x, bullet_direction_y = self.aim(world, player_pos_x, player_pos_y)

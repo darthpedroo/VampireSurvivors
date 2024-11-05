@@ -7,7 +7,7 @@ from business.entities.state_machine.movable_entity_rotate_state import Rotating
 class BulletFactory:
     """Represents the proyectile factory"""
     @staticmethod
-    def create_item(item_name: str, entity_pos_x: int=0, entity_pos_y: int=0, dir_x: int=0, dir_y: int=0, p_health=None, movement_speed:int=1, damage:int=1, cooldown:int=1): #pylint: disable=line-too-long
+    def create_item(item_name: str, entity_pos_x: int=0, entity_pos_y: int=0, dir_x: int=0, dir_y: int=0, p_health=None, movement_speed:int=1, damage:int=1, cooldown:int=1):
         """Creates a projectile item based on the given parameters.
 
         Args:

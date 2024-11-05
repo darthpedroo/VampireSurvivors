@@ -27,7 +27,6 @@ class MonsterSpawner(IMonsterSpawner):
             monster_json = MonsterJson(monster_json_path).get_monsters()
             
             for monster in monster_json:
-                print("sorete")
                 monster_type = monster["name"]
                 pos_x = monster["pos_x"]
                 pos_y = monster["pos_y"]

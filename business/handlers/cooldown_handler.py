@@ -7,7 +7,7 @@ class CooldownHandler:
 
     def __init__(self, cooldown_time: int):
         self.clock = ClockSingleton()
-        self.__last_action_time = self.clock.get_time()  # Initialize with current game time
+        self.__last_action_time = self.clock.get_time()
         self.__cooldown_time = cooldown_time
 
     def is_action_ready(self):

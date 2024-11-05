@@ -10,7 +10,7 @@ from presentation.sprite import BulletSprite
 class IceBullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, name:str, pos_x: float, pos_y: float, dir_x: float, dir_y: float, health: int, stats: BulletStats, asset: str, current_state: MovableEntityMovingState = MovableEntityMovingState()): #pylint: disable=line-too-long
+    def __init__(self, name:str, pos_x: float, pos_y: float, dir_x: float, dir_y: float, health: int, stats: BulletStats, asset: str, current_state: MovableEntityMovingState = MovableEntityMovingState()):
         """Initializes an IceBullet instance.
 
         Args:
@@ -29,7 +29,7 @@ class IceBullet(MovableEntity, IBullet):
         self.__asset = asset
         self.__dir_x = dir_x
         self.__dir_y = dir_y
-        self._health = health #HERE !
+        self._health = health
         self._damage_amount = stats.damage
         self.set_direction(dir_x, dir_y)
         self.current_state = current_state

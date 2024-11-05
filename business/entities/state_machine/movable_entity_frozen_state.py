@@ -29,4 +29,4 @@ class MovableEntityFrozenState(MovableEntityBaseState):
             movable_entity: The movable entity entering the frozen state.
         """
         movable_entity.current_state = self
-        self.cooldown = CooldownHandler(5000)  # HARDCODED VALUE! WRONG!
+        self.cooldown = CooldownHandler(5000)

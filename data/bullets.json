@@ -1,10 +1,17 @@
 [
     {
         "name": "Ice_Bullet",
+<<<<<<< HEAD
         "pos_x": 783.7857617655785,
         "pos_y": 216.22301635627463,
         "dir_x": -0.8839265931008972,
         "dir_y": 0.4676256815114424,
+=======
+        "pos_x": 378.50575420989276,
+        "pos_y": 190.0316955292461,
+        "dir_x": -0.8936904335364395,
+        "dir_y": -0.4486840859730272,
+>>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
         "health": 20,
         "stats": {
             "movement_speed": 24.0,
@@ -13,5 +20,23 @@
             "size": 50
         },
         "asset": "./assets/bullets/Ice_Bullet.png"
+<<<<<<< HEAD
+=======
+    },
+    {
+        "name": "Bullet",
+        "pos_x": 1096.2060607606606,
+        "pos_y": 491.20606076065985,
+        "dir_x": -0.7071067811865475,
+        "dir_y": -0.7071067811865475,
+        "health": 20,
+        "stats": {
+            "movement_speed": 24.0,
+            "damage": 100.0,
+            "cooldown": 1,
+            "size": 50
+        },
+        "asset": "./assets/bullets/Bullet.png"
+>>>>>>> cf0a00a1cfc50e86ea92e4b096c97ff40109a9d1
     }
 ]

@@ -14,9 +14,6 @@ from presentation.sprite import Sprite
 from presentation.sprite import PlayerSprite
 from business.handlers.cooldown_handler import CooldownHandler
 
-#from business.perks.perk import Perk
-#from business.perks.perk_factory import PerkFactory
-
 class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """Player entity.
 
@@ -27,7 +24,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         pos_y (int): Position of the player on the y axis.
         sprite (Sprite): Sprite of the player.
         player_stats (PlayerStats): Stats of the player.
-    """ #pylint: disable=line-too-long
+    """
     def __init__(self, pos_x: int, pos_y: int, player_stats: PlayerStats, weapon_handler: WeaponHandler, perks_handler: PerksHandler, experience:int=0, level:int=1):
         super().__init__(pos_x, pos_y, player_stats, PlayerSprite(pos_x, pos_y))
 
@@ -112,17 +109,13 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             ValueError: If the item could not be upgraded
         """
         try:
-            # Try upgrading the item with weapon handler
             return self._weapon_handler.upgrade_item_next_level(item_name)
         except ValueError:
-            # If it fails, try upgrading with perks handler
             success = self._perks_handler.upgrade_item_next_level(item_name)
-            # Apply perk if the upgrade was successful
             if success:
                 self._perks_handler.apply_perk_to_player_stats(item_name, self._stats)
                 return success
             else:
-                # Raise an error if neither handler can upgrade the item
                 raise ValueError(f"Item '{item_name}' could not be upgraded by any handler")
 
     def item_reached_max_level(self, item_name: str):
@@ -134,10 +127,10 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         Returns:
             bool
         """
-        return self._weapon_handler.has_reached_max_level(item_name) or self._perks_handler.has_reached_max_level(item_name) #pylint: disable=line-too-long
+        return self._weapon_handler.has_reached_max_level(item_name) or self._perks_handler.has_reached_max_level(item_name)
 
     def __str__(self):
-        return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))" #pylint: disable=line-too-long
+        return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
 
     def set_position(self, pos_x: int, pos_y: int):
         """Sets the position of the player.
@@ -179,8 +172,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def experience_to_next_level(self):
-        #return 1
-        return 1 
+        return 2 * (self.level ** 2)
 
     @property
     def level(self):

@@ -28,7 +28,7 @@ class ItemHandler(ABC):
             bool: True if the item exists, False otherwise.
         """
         for item in self._list_of_items:
-            if item.item_name == item_name:  # pylint: disable=no-member
+            if item.item_name == item_name:
                 return True
         return False
 
@@ -45,8 +45,8 @@ class ItemHandler(ABC):
             ValueError: If the item is not found.
         """
         for item in self._list_of_items:
-            if item.item_name == item_name:  # pylint: disable=no-member
-                return item._level  # pylint: disable=no-member
+            if item.item_name == item_name:
+                return item._level
         raise ValueError(f"Item with name '{item_name}' not found")
 
     def upgrade_item_next_level(self, item_name: str) -> bool:
@@ -62,9 +62,9 @@ class ItemHandler(ABC):
             ValueError: If the item is not found.
         """
         for item in self._list_of_items:
-            if item.item_name == item_name:  # pylint: disable=no-member
-                item.upgrade_next_level(item._upgrades, item.item_stats) # pylint: disable=no-member, no-value-for-parameter
-                return True  # Exit the function after upgrading the item
+            if item.item_name == item_name:
+                item.upgrade_next_level(item._upgrades, item.item_stats)
+                return True
         raise ValueError(f"Item with name '{item_name}' not found")
 
     def has_reached_max_level(self, item_name: str) -> bool:
@@ -80,8 +80,8 @@ class ItemHandler(ABC):
             ValueError: If the item is not found.
         """
         for item in self._list_of_items:
-            if item.item_name == item_name:  # pylint: disable=no-member
-                return item.has_reached_max_level() # pylint: disable=no-value-for-parameter
+            if item.item_name == item_name:
+                return item.has_reached_max_level()
 
     @abstractmethod
     def add_item(self, item_name: str):
