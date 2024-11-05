@@ -13,6 +13,10 @@ class ExperienceGem(Entity, IExperienceGem):
         self._logger.debug("Created %s", self)
         self.__amount = amount
 
+    def create_experience_gem_json_data(self):
+        experience_gem = {"pos_x": self.pos_x, "pos_y": self.pos_y, "amount": self.amount}
+        return experience_gem
+    
     @property
     def amount(self) -> int:
         return self.__amount

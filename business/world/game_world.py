@@ -2,14 +2,16 @@
 
 import random
 import pygame
+from json import JSONDecodeError
 
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.weapons.weapon_factory import WeaponFactory
-from json import JSONDecodeError
+from business.entities.experience_gem import ExperienceGem
 from business.perks.perk_factory import PerkFactory
 from business.clock.clock import ClockSingleton
 from persistence.clock.clock_json import ClockJson
+from persistence.gems.gems_json import GemsJson
 
 class GameWorld(IGameWorld):
     """Represents the game world."""
@@ -28,11 +30,20 @@ class GameWorld(IGameWorld):
         self._upgrading = False
         self.random_weapons_to_choose = []
 
-
-        self.__list_of_items = [
+        self.__list_of_items =[{"weapon":"Auto_Joker"},
+                                {"weapon":"Manual_Gun"},
+                                {"weapon":"Manual_Joker"},
+                                {"weapon":"The_Mega_Ice"},
+                                {"perk":"Speedy Boots"},
+                                {"perk":"Sacred Heart"},
+                                {"perk":"Pizzano's Blessing"},
+                                {"perk":"Gym Power"},
+                                {"perk":"Fast Hands"},
+                                {"perk":"Heal Heal Frog's Booty"},
                                 {"weapon": "Toilet_spinner"}]
-    
 
+        self.load_gems_json()
+        
     def __initialize_clock(self):
         try:
             clock_json_path = "./data/clock.json"
@@ -45,8 +56,24 @@ class GameWorld(IGameWorld):
     
     def load_monster_spawner_json(self):
         self.__monster_spawner.load_monsters(self)
-        
     
+    def load_gems_json(self):
+        try:
+            gems_json_path = "./data/gems.json"
+            gems_json = GemsJson(gems_json_path)
+            all_gems = gems_json.get_gems()
+
+            for gem in all_gems:
+                print(gem)
+                pos_x = gem["pos_x"]
+                pos_y = gem["pos_y"]
+                amount = gem["amount"]
+                new_gem = ExperienceGem(pos_x,pos_y,amount)
+                self.add_experience_gem(new_gem)
+        except JSONDecodeError:
+            print("Empty Json Gem file")
+            
+                
     def add_random_items(self):
         items = self.__list_of_items.copy()
         count = 0  # Track the number of items added

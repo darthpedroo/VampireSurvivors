@@ -1,20 +1,20 @@
 {
-    "pos_x": 185,
-    "pos_y": 1440,
+    "pos_x": 415,
+    "pos_y": 825,
     "player_stats": {
-        "max_health": 161.0510000000001,
-        "movement_speed": 5,
+        "max_health": 259.37424601000026,
+        "movement_speed": 55,
         "base_damage_multiplier": 1,
         "base_attack_speed": 1,
         "size": 1,
-        "regeneration_rate": 10000,
+        "regeneration_rate": 12000.0,
         "regeneration_percentage": 10,
         "xp_multiplier": 1,
         "luck": 0
     },
-    "health": 161.0510000000001,
+    "health": 259.37424601000026,
     "experience": 0,
-    "level": 15,
+    "level": 21,
     "weapon_handler": {
         "list_of_items": [
             {
@@ -44,12 +44,12 @@
     },
     "perks_handler": {
         "player_stats": {
-            "max_health": 161.0510000000001,
-            "movement_speed": 5,
+            "max_health": 259.37424601000026,
+            "movement_speed": 55,
             "base_damage_multiplier": 1,
             "base_attack_speed": 1,
             "size": 1,
-            "regeneration_rate": 10000,
+            "regeneration_rate": 12000.0,
             "regeneration_percentage": 10,
             "xp_multiplier": 1,
             "luck": 0
@@ -87,10 +87,55 @@
                         "VALUE": 2
                     }
                 ],
-                "level": 1,
+                "level": 2,
                 "perk_stats": {
                     "max_health": 2.4200000000000004,
                     "movement_speed": 1,
+                    "base_damage_multiplier": 1,
+                    "base_attack_speed": 1,
+                    "size": 1,
+                    "regeneration_rate": 1.2,
+                    "regeneration_percentage": 1,
+                    "xp_multiplier": 1,
+                    "luck": 1
+                }
+            },
+            {
+                "item_name": "Speedy Boots",
+                "upgrades": [
+                    {
+                        "NAME": "Level 0",
+                        "DESCRIPTION": "Boosts your speed by 10%",
+                        "ATTRIBUTE": "movement_speed",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 11
+                    },
+                    {
+                        "NAME": "Level 1",
+                        "DESCRIPTION": "Boosts your speed by 15%",
+                        "ATTRIBUTE": "movement_speed",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 1.15
+                    },
+                    {
+                        "NAME": "Level 2",
+                        "DESCRIPTION": "Boosts your speed by 15%",
+                        "ATTRIBUTE": "movement_speed",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 1.15
+                    },
+                    {
+                        "NAME": "Level 3",
+                        "DESCRIPTION": "Boosts your speed by 20%",
+                        "ATTRIBUTE": "movement_speed",
+                        "OPERATION": "MULTIPLICATION",
+                        "VALUE": 1.2
+                    }
+                ],
+                "level": 1,
+                "perk_stats": {
+                    "max_health": 1,
+                    "movement_speed": 145.2,
                     "base_damage_multiplier": 1,
                     "base_attack_speed": 1,
                     "size": 1,
