@@ -311,13 +311,38 @@ class BulletSprite(Sprite):
 class ExperienceGemSprite(Sprite):
     """A class representing the experience gem sprite."""
 
-    ASSET = "./assets/experience_gems.png"
+    ASSET_TILESET = "./assets/experience_gems.png"
 
-    def __init__(self, pos_x: float, pos_y: float):
-        tileset = Tileset(
-            self.ASSET, settings.TILE_WIDTH, settings.TILE_HEIGHT, 2, 2
-        )
-        image: pygame.Surface = tileset.get_tile(0)
-        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+    # Definimos los índices para las diferentes gemas
+    GEM_INDEXES = [0, 1, 2, 3, 4]  # Asumiendo que tienes 5 gemas en total
 
-        super().__init__(image, rect)
+    def __init__(self, pos_x: float, pos_y: float, scale: float = 2.0):
+        self.__current_gem_index = 0
+        self.__frame_count = 0
+        self.__frame_delay = 6
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.scale = scale  
+
+        self.tileset = Tileset(self.ASSET_TILESET, 16, 16, 5, 1)  
+        self._image = self.tileset.get_tile(self.GEM_INDEXES[self.__current_gem_index])
+        self._image = pygame.transform.scale(self._image, (int(16 * self.scale), int(16 * self.scale)))  
+        self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
+
+        super().__init__(self._image, self._rect)
+
+    def update(self):
+        """Actualiza el sprite de la gema para la animación."""
+        self.__frame_count += 1
+
+        if self.__frame_count >= self.__frame_delay:
+            self.__current_gem_index = (self.__current_gem_index + 1) % len(self.GEM_INDEXES)
+            self._image = self.tileset.get_tile(self.GEM_INDEXES[self.__current_gem_index])
+            self._image = pygame.transform.scale(self._image, (int(16 * self.scale), int(16 * self.scale))) 
+            self._rect = self._image.get_rect(center=(int(self.pos_x), int(self.pos_y)))
+            self.__frame_count = 0
+
+    @property
+    def image(self):
+        return self._image
+

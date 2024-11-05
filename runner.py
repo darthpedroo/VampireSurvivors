@@ -18,12 +18,16 @@ from persistence.clock.clock_json import ClockJson
 from business.weapons.weapon_factory import WeaponFactory
 from business.perks.perk_factory import PerkFactory
 from business.perks.perks_handler import PerksHandler
+from persistence.monsters.monster_json import MonsterJson
 
 player_json_path = "./data/player.json"
 player_json = PlayerJson(player_json_path)
 
 clock_json_path = "./data/clock.json"
 clock_json = ClockJson(clock_json_path)
+
+monster_json_path = "./data/monsters.json"
+monster_json = MonsterJson(monster_json_path)
 
 def initialize_player():
     """Initializes and returns the player object with default stats and items."""
@@ -94,7 +98,7 @@ def initialize_player():
         weapon_handler = WeaponHandler()
         perks_handler = PerksHandler(player_stats)
         player = Player(x, y,  player_stats,weapon_handler, perks_handler)
-        player.add_item("Manual_Gun")
+        player.add_item("Toilet_spinner")
         player.add_item("Sacred Heart")
         player.add_item("The_Mega_Ice")
         
@@ -124,6 +128,7 @@ def main():
     # Initialize the game objects
     display = Display()
     world = initialize_game_world(display)
+    world.load_monster_spawner_json()
     display.load_world(world)
     input_handler = InputHandler(world)
 
@@ -134,8 +139,9 @@ def main():
 
     player = world.player
     player_json.save_player(player)
-    
     clock_json.save_clock(world.clock)
+    monster_json.save_monsters(world.monsters)
+    
 
     # Properly quit Pygame
     pygame.quit() # pylint: disable=no-member

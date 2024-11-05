@@ -15,11 +15,17 @@ class Spider(MovableEntity, IMonster):
 
     def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
         super().__init__(src_x, src_y, stats, sprite)
+        self._name = "spider"
         self.__health: int = self._stats.max_health
         self.__damage = 5
         self.__attack_range = 100
         self.__attack_cooldown = CooldownHandler(2000)
         self._logger.debug("Created %s", self)
+
+    def create_monster_json_data(self):
+        monster_data = {"pos_x": self.pos_x, "pos_y": self.pos_y, "name": self.name}
+        return monster_data
+    
 
     def attack(self, target: IDamageable):
         """Attacks the target."""

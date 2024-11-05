@@ -106,6 +106,11 @@ class ICanMove(IHasPosition):
 
 class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     """Interface for monster entities."""
+    
+    
+    @property
+    def name(self):
+        return self._name
 
     
     

@@ -1,8 +1,8 @@
 {
-    "pos_x": 1520,
-    "pos_y": 1165,
+    "pos_x": 185,
+    "pos_y": 1440,
     "player_stats": {
-        "max_health": 505.4470284992945,
+        "max_health": 161.0510000000001,
         "movement_speed": 5,
         "base_damage_multiplier": 1,
         "base_attack_speed": 1,
@@ -12,20 +12,20 @@
         "xp_multiplier": 1,
         "luck": 0
     },
-    "health": 505.4470284992945,
-    "experience": 1,
-    "level": 1,
+    "health": 161.0510000000001,
+    "experience": 0,
+    "level": 15,
     "weapon_handler": {
         "list_of_items": [
             {
-                "item_name": "Manual_Gun",
-                "bullet_name": "Bullet",
-                "level": 1,
+                "item_name": "Toilet_spinner",
+                "bullet_name": "Rotating_Bullet",
+                "level": 5,
                 "max_level": 5,
                 "item_stats": {
-                    "damage": 24.0,
-                    "movement_speed": 20,
-                    "cooldown": 500
+                    "damage": 13.939200000000001,
+                    "movement_speed": 1,
+                    "cooldown": 0.0
                 }
             },
             {
@@ -44,7 +44,7 @@
     },
     "perks_handler": {
         "player_stats": {
-            "max_health": 505.4470284992945,
+            "max_health": 161.0510000000001,
             "movement_speed": 5,
             "base_damage_multiplier": 1,
             "base_attack_speed": 1,

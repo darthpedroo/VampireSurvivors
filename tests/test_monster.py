@@ -1,47 +1,51 @@
-"""Unit tests for the Zombie monster class."""
+        initial_health = self.spider.health
+        damage_amount = 20
+        self.spider.take_damage(damage_amount)
+        
+        # Verificar que se reduce la salud al tomar daño
+        self.assertEqual(self.spider.health, initial_health - damage_amount)
+        self.sprite_mock.take_damage.assert_called_once()
 
-import unittest
-from unittest.mock import MagicMock, patch
+    def test_update_attacks_when_in_range(self):
+        world_mock = MagicMock()
+        world_mock.player = MagicMock()
+        self.spider._get_distance_to = MagicMock(return_value=50)  # Dentro del rango de ataque
+        self.spider.attack = MagicMock()
+        
+        self.spider.update(world_mock)
+        
+        # Verificar que se llama a `attack` cuando el jugador está dentro del rango de ataque
+        self.spider.attack.assert_called_once_with(world_mock.player)
 
-from business.entities.interfaces import IDamageable
-from business.entities.monsters.zombie import Zombie
+    def test_update_moves_towards_player_when_out_of_range(self):
+        world_mock = MagicMock()
+        world_mock.player = MagicMock()
+        self.spider._get_distance_to = MagicMock(return_value=150)  # Fuera del rango de ataque
+        self.spider.set_direction = MagicMock()
+        self.spider.current_state.update_state = MagicMock()
 
+        # Dirección simulada hacia el jugador
+        direction_x, direction_y = 1, 0
+        self.spider.get_direction_towards_the_player = MagicMock(return_value=(direction_x, direction_y))
+        
+        self.spider.update(world_mock)
+        
+        # Verificar que la araña se mueve hacia el jugador
+        self.spider.set_direction.assert_called_once_with(direction_x, direction_y)
+        self.spider.current_state.update_state.assert_called_once_with(self.spider)
 
-class TestMonster(unittest.TestCase):
-    """Tests for the Zombie monster class."""
+    def test_update_avoids_collisions_with_other_monsters(self):
+        world_mock = MagicMock()
+        monster_mock = MagicMock()
+        world_mock.monsters = [monster_mock]
+        
+        # Definir valor de retorno para _get_distance_to y mockear colisiones
+        self.spider._get_distance_to = MagicMock(return_value=150)
+        self.spider.movement_collides_with_entities = MagicMock(return_value=[monster_mock])
+        self.spider.set_direction = MagicMock()
+        
+        self.spider.update(world_mock)
 
-    def setUp(self):
-        """Sets up a Zombie instance for testing."""
-        self.monster = Zombie(5, 5, MagicMock())
+        # Aquí puedes agregar verificaciones específicas para las interacciones de colisión
 
-    def test_attack(self):
-        """Tests that the attack method reduces the target's health when action is ready."""
-        target_mock = MagicMock(spec=IDamageable)
-        target_mock.health = 10
-
-        # Mock the attack cooldown to be ready
-        with patch.object(
-            self.monster._Monster__attack_cooldown_handler,  # pylint: disable=no-member, protected-access
-            "is_action_ready",
-            return_value=True,
-        ):
-            self.monster.attack(target_mock)
-
-        # Verify that take_damage was called with the correct damage amount
-        target_mock.take_damage.assert_called_once_with(self.monster.damage_amount)
-
-    def test_attack_is_not_called_when_action_is_not_ready(self):
-        """Tests that the attack method does not reduce the target's health when action is not ready."""
-        target_mock = MagicMock(spec=IDamageable)
-        target_mock.health = 10
-
-        # Mock the attack cooldown to be not ready
-        with patch.object(
-            self.monster._Monster__attack_cooldown_handler, # pylint: disable=no-member, protected-access
-            "is_action_ready",
-            return_value=False,
-        ):
-            self.monster.attack(target_mock)
-
-        # Verify that take_damage was not called
-        target_mock.take_damage.assert_not_called()
+        

@@ -2,8 +2,8 @@ from abc import ABC
 
 class MonsterDao(ABC):
     
-    def get_monster(self):
+    def get_monsters(self):
         pass
     
-    def save_monster(self):
+    def save_monsters(self):
         pass

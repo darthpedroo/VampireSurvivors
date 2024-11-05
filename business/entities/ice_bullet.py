@@ -30,7 +30,7 @@ class IceBullet(MovableEntity, IBullet):
         self._health = health #HERE !
         self._damage_amount = stats.damage
         self.set_direction(dir_x, dir_y)
-        self.current_state = current_state    
+        self.current_state = current_state
 
     @property
     def health(self) -> int:

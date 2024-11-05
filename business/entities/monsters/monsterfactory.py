@@ -44,7 +44,9 @@ class MonsterFactory:
         CLOCK = ClockSingleton()
         time_stats_multiplier = CLOCK.get_time()/1000
         if monster_type == "zombie":
-
+            print(pos_x)
+            print(pos_y)
+         #   input("b")
             max_health = 200 + time_stats_multiplier
             speed = 1 + time_stats_multiplier/100
             damage_multiplier = 3  + time_stats_multiplier/100

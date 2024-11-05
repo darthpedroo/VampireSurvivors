@@ -13,6 +13,7 @@ class RotatingState(MovableEntityBaseState):
         movable_entity._health -= 1 / movable_entity._health 
         movable_entity._pos_y = movable_entity.direction_y
         movable_entity._sprite.update_pos(movable_entity._pos_x, movable_entity._pos_y)
+        
 
     def enter_state(self, movable_entity: "MovableEntity"):
         movable_entity.current_state = self

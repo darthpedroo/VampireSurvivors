@@ -2,11 +2,13 @@
 
 import logging
 import random
+from json import JSONDecodeError
 
 from business.world.interfaces import IGameWorld, IMonsterSpawner
 from business.entities.monsters.monsterfactory import MonsterFactory
 from business.handlers.cooldown_handler import CooldownHandler
 from business.clock.clock import ClockSingleton
+from persistence.monsters.monster_json import MonsterJson
 
 
 class MonsterSpawner(IMonsterSpawner):
@@ -18,7 +20,22 @@ class MonsterSpawner(IMonsterSpawner):
         self._max_monsters = 50
         self._monster_spawn_cooldown = self.__get_spawn_cooldown()
         self.__cooldown_handler = CooldownHandler(self._monster_spawn_cooldown)
-
+        
+    def load_monsters(self,world):
+        try:
+            monster_json_path = "./data/monsters.json"
+            monster_json = MonsterJson(monster_json_path).get_monsters()
+            
+            for monster in monster_json:
+                print("sorete")
+                monster_type = monster["name"]
+                pos_x = monster["pos_x"]
+                pos_y = monster["pos_y"]
+                new_monster = MonsterFactory().get_monster(monster_type, pos_x, pos_y)
+                world.add_monster(new_monster)
+        except JSONDecodeError:
+            print("No hay nada en el Json para cargar monstruos !")
+        
     def __get_spawn_cooldown(self):
         spawn_time = 500
         time_of_increase = 6000

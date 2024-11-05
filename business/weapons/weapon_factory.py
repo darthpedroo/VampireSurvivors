@@ -50,10 +50,11 @@ class WeaponFactory:
             return ManualGun(weapon_type, bullet_name,max_level,weapon_stats,level)
         if weapon_type =="Toilet_spinner":
             bullet_name = "Rotating_Bullet"
-            damage = 30
-            bullet_cooldown=2310
+            damage = 8
+            bullet_cooldown=0
             bullet_speed = 1
             max_level = 5
+
             weapon_stats = WeaponStats(damage, bullet_speed, bullet_cooldown)
             if p_weapon_stats is not None:
                 weapon_stats = p_weapon_stats

@@ -47,8 +47,8 @@ class ProjectileFactory:
         if item_name == "Rotating_Bullet" :
             asset = "./assets/bullets/Rotating_Bullet.png"
             health = 1.1
-            damage = 1 * damage
-            size = 100
-            item_speed = 1
+            damage = 0.5 * damage
+            size = 50
+            bullet_stats = BulletStats(movement_speed,damage,cooldown,size)
             current_state = RotatingState()
-            return RotatingBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, item_speed, health, damage, asset, size, current_state)
+            return RotatingBullet(entity_pos_x, entity_pos_y, dir_x, dir_y, health, bullet_stats, asset, current_state)

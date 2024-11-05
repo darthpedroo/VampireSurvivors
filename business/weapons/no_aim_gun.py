@@ -6,40 +6,36 @@ class NoAimGun(Weapon):
     def __init__(self, item_name, bullet_name, max_level, weapon_stats, level=1):
         super().__init__(item_name, bullet_name, max_level, weapon_stats, level)
         self.start_time = time.time()
-        self.rotation_speed = 10         
+        self.rotation_speed = 15
+        self._level = level
         self._upgrades = [{"NAME":"Level 0",
             "DESCRIPTION": "UNLOCKS THE WEAPON!",
             "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 1  
+            "VALUE": 1
             },{"NAME":"Level 1",
-            "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
-            "ATTRIBUTE": "cooldown",
+            "DESCRIPTION": "INCREASES DAMAGE BY 10%",
+            "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 0.9  
+            "VALUE": 1.1
             },
             {"NAME":"Level 2",
-            "DESCRIPTION": "INCREASES 10% OF GUN BASE_DAMAGE",
+            "DESCRIPTION": "INCREASES DAMAGE BY 10%",
             "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 1.1   
+            "VALUE": 1.1
             },{"NAME":"Level 3",
-            "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
+            "DESCRIPTION": "INCREASES DAMAGE BY 10%",
             "ATTRIBUTE": "cooldown",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 0.9  
+            "VALUE": 1.1  
             },{"NAME":"Level 4",
-            "DESCRIPTION": "INCREASES 5% OF GUN BASE_DAMAGE",
+            "DESCRIPTION": "INCREASES DAMAGE BY 20%",
             "ATTRIBUTE": "damage",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 1.05   
-            },{"NAME":"Level 5",
-            "DESCRIPTION": "INCREASES 20 % OF GUN BASE_DAMAGE",
-            "ATTRIBUTE": "damage",
-            "OPERATION":"MULTIPLICATION",
-            "VALUE": 1.2   
+            "VALUE": 1.2
             }]
-        self.load_upgrades(self.item_stats)
+        self.load_upgrades(self._upgrades, self.level, self.item_stats)
 
     def aim (self, world: IGameWorld, player_pos_x: int, player_pos_y: int):
         # Calcular el tiempo transcurrido desde el inicio

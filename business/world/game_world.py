@@ -29,16 +29,9 @@ class GameWorld(IGameWorld):
         self.random_weapons_to_choose = []
 
 
-        self.__list_of_items = [{"weapon":"Auto_Joker"},
-                                {"weapon":"Manual_Gun"},
-                                {"weapon":"Manual_Joker"},
-                                {"weapon":"The_Mega_Ice"},
-                                {"perk":"Speedy Boots"},
-                                {"perk":"Sacred Heart"},
-                                {"perk":"Pizzano's Blessing"},
-                                {"perk":"Gym Power"},
-                                {"perk":"Fast Hands"},
-                                {"perk":"Heal Heal Frog's Booty"}]
+        self.__list_of_items = [
+                                {"weapon": "Toilet_spinner"}]
+    
 
     def __initialize_clock(self):
         try:
@@ -47,10 +40,12 @@ class GameWorld(IGameWorld):
             ms = clock_json.get_clock()
             ClockSingleton(ms).set_ms(ms["ms"])
         except JSONDecodeError:
-            input("DOP")
             ms = 0
         return ClockSingleton(ms)
-            
+    
+    def load_monster_spawner_json(self):
+        self.__monster_spawner.load_monsters(self)
+        
     
     def add_random_items(self):
         items = self.__list_of_items.copy()
@@ -143,7 +138,10 @@ class GameWorld(IGameWorld):
         self.__bullets.append(bullet)
 
     def remove_bullet(self, bullet: IBullet):
-        self.__bullets.remove(bullet)
+        try:
+            self.__bullets.remove(bullet)
+        except ValueError:
+            print("No hay bullets :v")
 
     @property
     def player(self) -> IPlayer:

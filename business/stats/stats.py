@@ -23,6 +23,16 @@ class EntityStats(ABC):
         self.base_damage_multiplier = base_damage_multiplier
         self.base_attack_speed = base_attack_speed
         self.size = size
+    
+    def create_entity_stats_json_data(self):
+        monster_stats = {
+            "max_health": self.max_health,
+            "movement_speed": self.movement_speed,
+            "base_damage_multiplier": self.base_damage_multiplier,
+            "base_attack_speed": self.base_attack_speed,
+            "size": self.size
+        }
+        return monster_stats
 
 class PerkStats(BaseStats):
     """The stats of the perks
@@ -110,15 +120,3 @@ class PlayerStats(EntityStats):
         weapon_stats = {"max_health": self.max_health, "movement_speed": self.movement_speed, "base_damage_multiplier": self.base_damage_multiplier, "base_attack_speed": self.base_attack_speed, "size": self.size, "regeneration_rate": self.regeneration_rate, "regeneration_percentage": self.regeneration_percentage, "xp_multiplier": self.xp_multiplier, "luck": self.luck}
         return weapon_stats
 
-class MonsterStats(EntityStats):
-    """The stats of a monster
-
-    Args:
-        max_health (int): The maximum health of the monster.
-        movement_speed (int): The movement speed of the monster.
-        base_damage_multiplier (int): The base damage multiplier for the monster.
-        base_attack_speed (int): The base attack speed of the monster.
-        size (int): The size of the monster.
-    """
-    def __init__(self, max_health, movement_speed, base_damage_multiplier, base_attack_speed, size):
-        super().__init__(max_health, movement_speed, base_damage_multiplier, base_attack_speed, size) #pylint: disable=line-too-long

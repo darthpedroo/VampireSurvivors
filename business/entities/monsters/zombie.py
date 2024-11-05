@@ -8,20 +8,26 @@ from business.entities.experience_gem import ExperienceGem
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.interfaces import IGameWorld
 from presentation.sprite import Sprite
+from business.stats.stats import EntityStats
 
 
 
 class Zombie(MovableEntity, IMonster):
     """A monster entity in the game."""
 
-    def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats):
+    def __init__(self, src_x: int, src_y: int, sprite: Sprite, stats:EntityStats):
         super().__init__(src_x, src_y, stats, sprite)
+        self._name = "zombie"
         self.__health: int = self._stats.max_health
         self.__damage = 10 
         self.__attack_range = 50
         self.__attack_cooldown = CooldownHandler(1000)
         self.__can_attack = False
         self._logger.debug("Created %s", self)
+
+    def create_monster_json_data(self):
+        monster_data = {"pos_x": self.pos_x, "pos_y": self.pos_y, "name": self.name}
+        return monster_data
 
     @property
     def damage_amount(self):
@@ -99,9 +105,13 @@ class Zombie(MovableEntity, IMonster):
         self.sprite.take_damage()
 
     def drop_loot(self, luck: int):
-        starting_number = 1
-        true_luck = 100 - luck
-        drop_rate = random.randint(starting_number, true_luck)
+        try:
+            starting_number = 1
+            true_luck = 100 - luck
+            drop_rate = random.randint(starting_number, true_luck)
+        except ValueError:
+            drop_rate = 100
+        
         if drop_rate <= 40:
             # Esto habría que sacarlo de un json con los datos de cada Gema.
             amount_of_experience = 1
