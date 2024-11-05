@@ -1,4 +1,5 @@
 import unittest
+import pygame
 from unittest.mock import MagicMock
 from business.entities.player import Player
 from business.stats.stats import PlayerStats
@@ -6,9 +7,12 @@ from business.entities.weapon_handler import WeaponHandler
 from business.perks.perks_handler import PerksHandler
 from business.entities.experience_gem import ExperienceGem
 
+
 class TestPlayer(unittest.TestCase):
     def setUp(self):
         """Set up test variables."""
+        pygame.init()
+        pygame.display.set_mode((1, 1))
         self.player_stats = PlayerStats(max_health=100, base_damage_multiplier=10, xp_multiplier=1, luck=0, regeneration_rate=1, regeneration_percentage=10)
         self.weapon_handler = MagicMock(WeaponHandler)
         self.perks_handler = MagicMock(PerksHandler)
