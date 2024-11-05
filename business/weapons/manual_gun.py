@@ -17,7 +17,7 @@ class ManualGun(Weapon):
             "DESCRIPTION": "REDUCES BULLET_COOLDOWN BY 10%",
             "ATTRIBUTE": "cooldown",
             "OPERATION":"MULTIPLICATION",
-            "VALUE": 0.01  
+            "VALUE": 0.9  
             },
             {"NAME":"Level 2",
             "DESCRIPTION": "INCREASES 10% OF GUN BASE_DAMAGE",

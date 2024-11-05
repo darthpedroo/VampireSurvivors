@@ -10,7 +10,7 @@ from presentation.sprite import BulletSprite
 class IceBullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, pos_x: float, pos_y: float, dir_x: float, dir_y: float, health: int, stats: BulletStats, asset: str, current_state: MovableEntityMovingState = MovableEntityMovingState()): #pylint: disable=line-too-long
+    def __init__(self, name:str, pos_x: float, pos_y: float, dir_x: float, dir_y: float, health: int, stats: BulletStats, asset: str, current_state: MovableEntityMovingState = MovableEntityMovingState()): #pylint: disable=line-too-long
         """Initializes an IceBullet instance.
 
         Args:
@@ -24,7 +24,9 @@ class IceBullet(MovableEntity, IBullet):
             current_state (MovableEntityMovingState, optional): The initial state of the bullet's movement. Defaults to a new instance of MovableEntityMovingState.
         """
         super().__init__(pos_x, pos_y, stats, BulletSprite(pos_x, pos_y, asset, stats.size))
+        self.name = name
         self._logger.debug("Created %s", self)
+        self.__asset = asset
         self.__dir_x = dir_x
         self.__dir_y = dir_y
         self._health = health #HERE !
@@ -32,6 +34,10 @@ class IceBullet(MovableEntity, IBullet):
         self.set_direction(dir_x, dir_y)
         self.current_state = current_state
 
+    def create_bullet_json_data(self):
+        bullet_data = {"name": self.name, "pos_x": self.pos_x, "pos_y": self.pos_y, "dir_x": self.__dir_x, "dir_y": self.__dir_y, "health":self._health, "stats":self._stats.create_bullets_stats_json_data(), "asset":self.__asset}
+        return bullet_data
+    
     @property
     def health(self) -> int:
         """Gets the health of the bullet.

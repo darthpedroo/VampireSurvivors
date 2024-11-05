@@ -12,6 +12,8 @@ from business.perks.perk_factory import PerkFactory
 from business.clock.clock import ClockSingleton
 from persistence.clock.clock_json import ClockJson
 from persistence.gems.gems_json import GemsJson
+from persistence.bullets.bullets_json import BulletJson
+from business.entities.item_factory import BulletFactory
 
 class GameWorld(IGameWorld):
     """Represents the game world."""
@@ -43,6 +45,7 @@ class GameWorld(IGameWorld):
                                 {"weapon": "Toilet_spinner"}]
 
         self.load_gems_json()
+        self.load_bullets_json()
         
     def __initialize_clock(self):
         try:
@@ -64,7 +67,6 @@ class GameWorld(IGameWorld):
             all_gems = gems_json.get_gems()
 
             for gem in all_gems:
-                print(gem)
                 pos_x = gem["pos_x"]
                 pos_y = gem["pos_y"]
                 amount = gem["amount"]
@@ -72,6 +74,29 @@ class GameWorld(IGameWorld):
                 self.add_experience_gem(new_gem)
         except JSONDecodeError:
             print("Empty Json Gem file")
+    
+    def load_bullets_json(self):
+        try:
+            bullets_json_path = "./data/bullets.json"
+            bullets_json = BulletJson(bullets_json_path)
+            all_bullets = bullets_json.get_bullets()
+            
+            bullet_factory = BulletFactory()
+            
+            for bullet in all_bullets:
+                name = bullet["name"]
+                pos_x = bullet["pos_x"]
+                pos_y = bullet["pos_y"]
+                dir_x = bullet["dir_x"]
+                dir_y = bullet["dir_y"]
+                health = bullet["health"]
+                movement_speed = bullet["stats"]["movement_speed"]
+                damage = bullet["stats"]["damage"]
+                new_bullet =bullet_factory.create_item(name,pos_x,pos_y,dir_x,dir_y,health,movement_speed,damage)
+                self.add_bullet(new_bullet)
+
+        except JSONDecodeError:
+            print("No bullets to load from json")
             
                 
     def add_random_items(self):
@@ -168,7 +193,7 @@ class GameWorld(IGameWorld):
         try:
             self.__bullets.remove(bullet)
         except ValueError:
-            print("No hay bullets :v")
+            pass
 
     @property
     def player(self) -> IPlayer:

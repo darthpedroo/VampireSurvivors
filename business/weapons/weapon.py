@@ -4,7 +4,7 @@ import math
 from abc import abstractmethod
 from business.entities.interfaces import UpgradableItem
 from business.world.interfaces import IGameWorld
-from business.entities.item_factory import ProjectileFactory
+from business.entities.item_factory import BulletFactory
 from business.stats.stats import WeaponStats
 from business.handlers.cooldown_handler import CooldownHandler
 
@@ -23,7 +23,7 @@ class Weapon(UpgradableItem):
         return weapon_data
 
     def get_sprite(self):
-        current_bullet = ProjectileFactory().create_item(self._bullet_name)
+        current_bullet = BulletFactory().create_item(self._bullet_name)
         return current_bullet.sprite.asset
 
     def is_cooldown_over(self):
@@ -60,7 +60,7 @@ class Weapon(UpgradableItem):
             player_attack_speed (int): The player attack speed.
         """
         #ISSUE! PASAR TODAS LAS ESTADISTICAS
-        projectile_factory = ProjectileFactory()
+        projectile_factory = BulletFactory()
         try:
             bullet_direction_x, bullet_direction_y = self.aim(world, player_pos_x, player_pos_y)
 

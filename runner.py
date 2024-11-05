@@ -20,6 +20,7 @@ from business.perks.perk_factory import PerkFactory
 from business.perks.perks_handler import PerksHandler
 from persistence.monsters.monster_json import MonsterJson
 from persistence.gems.gems_json import GemsJson
+from persistence.bullets.bullets_json import BulletJson
 
 player_json_path = "./data/player.json"
 player_json = PlayerJson(player_json_path)
@@ -32,6 +33,9 @@ monster_json = MonsterJson(monster_json_path)
 
 gems_json_path = "./data/gems.json"
 gems_json = GemsJson(gems_json_path)
+
+bullets_json_path = "./data/bullets.json"
+bullets_json = BulletJson(bullets_json_path)
 
 def initialize_player():
     """Initializes and returns the player object with default stats and items."""
@@ -102,9 +106,10 @@ def initialize_player():
         weapon_handler = WeaponHandler()
         perks_handler = PerksHandler(player_stats)
         player = Player(x, y,  player_stats,weapon_handler, perks_handler)
-        player.add_item("Toilet_spinner")
-        player.add_item("Sacred Heart")
+        #player.add_item("Toilet_spinner")
+       # player.add_item("Sacred Heart")
         player.add_item("The_Mega_Ice")
+        player.add_item("Manual_Gun")
         
 
     return player
@@ -146,6 +151,7 @@ def main():
     clock_json.save_clock(world.clock)
     monster_json.save_monsters(world.monsters)
     gems_json.save_gems(world.experience_gems)
+    bullets_json.save_bullets(world.bullets)
     
 
     # Properly quit Pygame

@@ -339,6 +339,11 @@ class IBullet(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         Args:
             other_entity (MovableEntity): The entity affected by the bullet.
         """
+    
+    @abstractmethod
+    def create_bullet_json_data(self):
+        """Creates a parser for bullet json data 
+        """
 
 
 class IExperienceGem(IUpdatable, IHasPosition):

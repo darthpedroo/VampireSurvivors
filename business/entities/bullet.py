@@ -10,15 +10,21 @@ from presentation.sprite import BulletSprite
 class Bullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()): #pylint: disable=line-too-long
+    def __init__(self, name: str, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()): #pylint: disable=line-too-long
         super().__init__(pos_x, pos_y, stats, BulletSprite(pos_x, pos_y, asset, stats.size))
+        self.name = name
         self.__dir_x = dir_x
         self.__dir_y = dir_y
+        self.__asset = asset
         self._logger.debug("Created %s", self)
         self._health = health
         self._damage_amount = stats.damage
         self.set_direction(dir_x, dir_y)
         self.current_state = current_state
+    
+    def create_bullet_json_data(self):
+        bullet_data = {"name": self.name, "pos_x": self.pos_x, "pos_y": self.pos_y, "dir_x": self.__dir_x, "dir_y": self.__dir_y, "health":self._health, "stats":self._stats.create_bullets_stats_json_data(), "asset":self.__asset}
+        return bullet_data
 
     @property
     def health(self) -> int:  # Why does it have health ? :v

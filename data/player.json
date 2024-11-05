@@ -1,33 +1,22 @@
 {
-    "pos_x": 415,
-    "pos_y": 825,
+    "pos_x": 1470,
+    "pos_y": 1045,
     "player_stats": {
-        "max_health": 259.37424601000026,
+        "max_health": 100,
         "movement_speed": 55,
         "base_damage_multiplier": 1,
         "base_attack_speed": 1,
         "size": 1,
-        "regeneration_rate": 12000.0,
+        "regeneration_rate": 10000,
         "regeneration_percentage": 10,
         "xp_multiplier": 1,
         "luck": 0
     },
-    "health": 259.37424601000026,
+    "health": 100,
     "experience": 0,
-    "level": 21,
+    "level": 2,
     "weapon_handler": {
         "list_of_items": [
-            {
-                "item_name": "Toilet_spinner",
-                "bullet_name": "Rotating_Bullet",
-                "level": 5,
-                "max_level": 5,
-                "item_stats": {
-                    "damage": 13.939200000000001,
-                    "movement_speed": 1,
-                    "cooldown": 0.0
-                }
-            },
             {
                 "item_name": "The_Mega_Ice",
                 "bullet_name": "Ice_Bullet",
@@ -38,68 +27,34 @@
                     "movement_speed": 20,
                     "cooldown": 2705
                 }
+            },
+            {
+                "item_name": "Manual_Gun",
+                "bullet_name": "Bullet",
+                "level": 1,
+                "max_level": 5,
+                "item_stats": {
+                    "damage": 24.0,
+                    "movement_speed": 20,
+                    "cooldown": 500
+                }
             }
         ],
         "max_items": 5
     },
     "perks_handler": {
         "player_stats": {
-            "max_health": 259.37424601000026,
+            "max_health": 100,
             "movement_speed": 55,
             "base_damage_multiplier": 1,
             "base_attack_speed": 1,
             "size": 1,
-            "regeneration_rate": 12000.0,
+            "regeneration_rate": 10000,
             "regeneration_percentage": 10,
             "xp_multiplier": 1,
             "luck": 0
         },
         "list_of_items": [
-            {
-                "item_name": "Sacred Heart",
-                "upgrades": [
-                    {
-                        "NAME": "Level 0",
-                        "DESCRIPTION": "Increases Regeneration rate in 10%",
-                        "ATTRIBUTE": "max_health",
-                        "OPERATION": "MULTIPLICATION",
-                        "VALUE": 1.1
-                    },
-                    {
-                        "NAME": "Level 1",
-                        "DESCRIPTION": "Increases 20% of Max Health",
-                        "ATTRIBUTE": "regeneration_rate",
-                        "OPERATION": "MULTIPLICATION",
-                        "VALUE": 1.2
-                    },
-                    {
-                        "NAME": "Level 2",
-                        "DESCRIPTION": "Increases 20% of Max Health",
-                        "ATTRIBUTE": "max_health",
-                        "OPERATION": "MULTIPLICATION",
-                        "VALUE": 1.2
-                    },
-                    {
-                        "NAME": "Level 3",
-                        "DESCRIPTION": "Doubles your max Health",
-                        "ATTRIBUTE": "max_health",
-                        "OPERATION": "MULTIPLICATION",
-                        "VALUE": 2
-                    }
-                ],
-                "level": 2,
-                "perk_stats": {
-                    "max_health": 2.4200000000000004,
-                    "movement_speed": 1,
-                    "base_damage_multiplier": 1,
-                    "base_attack_speed": 1,
-                    "size": 1,
-                    "regeneration_rate": 1.2,
-                    "regeneration_percentage": 1,
-                    "xp_multiplier": 1,
-                    "luck": 1
-                }
-            },
             {
                 "item_name": "Speedy Boots",
                 "upgrades": [

@@ -94,6 +94,9 @@ class BulletStats(BaseStats):
         self.damage = damage
         self.cooldown = cooldown
         self.size = size
+    
+    def create_bullets_stats_json_data(self):
+        return {"movement_speed": self.movement_speed, "damage": self.damage, "cooldown": self.cooldown, "size": self.size}
 
 class PlayerStats(EntityStats):
     """The stats of the player

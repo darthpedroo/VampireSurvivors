@@ -48,7 +48,7 @@ class MonsterFactory:
             print(pos_y)
          #   input("b")
             max_health = 200 + time_stats_multiplier
-            speed = 1 + time_stats_multiplier/100
+            speed = 1 + time_stats_multiplier/10000
             damage_multiplier = 3  + time_stats_multiplier/100
             base_attack_speed = 10  + time_stats_multiplier
             size = 100
@@ -56,7 +56,7 @@ class MonsterFactory:
             return Zombie(pos_x, pos_y, ZombieSprite(pos_x, pos_y,size),stats)
         elif monster_type == "spider":
             max_health = 100  + time_stats_multiplier
-            speed = 1 + time_stats_multiplier/100
+            speed = 1 + time_stats_multiplier/10000
             damage_multiplier = 3  + time_stats_multiplier/100
             base_attack_speed = 10  + time_stats_multiplier
             size = 100
