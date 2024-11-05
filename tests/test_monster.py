@@ -1,51 +1,83 @@
-        initial_health = self.spider.health
-        damage_amount = 20
-        self.spider.take_damage(damage_amount)
-        
-        # Verificar que se reduce la salud al tomar daño
-        self.assertEqual(self.spider.health, initial_health - damage_amount)
-        self.sprite_mock.take_damage.assert_called_once()
+import unittest
+import random
+import pygame
+from unittest.mock import MagicMock
+from business.entities.state_machine.entity import MovableEntity
+from business.entities.interfaces import IDamageable, IMonster
+from business.handlers.cooldown_handler import CooldownHandler
+from presentation.sprite import Sprite
+from business.stats.stats import EntityStats
+from business.entities.monsters.spider import Spider
+from business.entities.monsters.zombie import Zombie
+from business.entities.experience_gem import ExperienceGem
 
-    def test_update_attacks_when_in_range(self):
-        world_mock = MagicMock()
-        world_mock.player = MagicMock()
-        self.spider._get_distance_to = MagicMock(return_value=50)  # Dentro del rango de ataque
-        self.spider.attack = MagicMock()
-        
-        self.spider.update(world_mock)
-        
-        # Verificar que se llama a `attack` cuando el jugador está dentro del rango de ataque
-        self.spider.attack.assert_called_once_with(world_mock.player)
+class TestZombieAndSpider(unittest.TestCase):
 
-    def test_update_moves_towards_player_when_out_of_range(self):
-        world_mock = MagicMock()
-        world_mock.player = MagicMock()
-        self.spider._get_distance_to = MagicMock(return_value=150)  # Fuera del rango de ataque
-        self.spider.set_direction = MagicMock()
-        self.spider.current_state.update_state = MagicMock()
+    def setUp(self):
+        pygame.init()
+        pygame.display.set_mode((1, 1))
+        self.mock_world = MagicMock()
+        self.mock_sprite = MagicMock(spec=Sprite)
+        self.mock_stats = MagicMock(spec=EntityStats)
+        self.mock_stats.max_health = 100
+        self.mock_stats.base_damage_multiplier = 1.5
+        self.mock_stats.movement_speed = 5
+        self.mock_target = MagicMock(spec=IDamageable)
 
-        # Dirección simulada hacia el jugador
-        direction_x, direction_y = 1, 0
-        self.spider.get_direction_towards_the_player = MagicMock(return_value=(direction_x, direction_y))
-        
-        self.spider.update(world_mock)
-        
-        # Verificar que la araña se mueve hacia el jugador
-        self.spider.set_direction.assert_called_once_with(direction_x, direction_y)
-        self.spider.current_state.update_state.assert_called_once_with(self.spider)
+        self.zombie = Zombie(0, 0, self.mock_sprite, self.mock_stats)
+        self.spider = Spider(0, 0, self.mock_sprite, self.mock_stats)
 
-    def test_update_avoids_collisions_with_other_monsters(self):
-        world_mock = MagicMock()
-        monster_mock = MagicMock()
-        world_mock.monsters = [monster_mock]
-        
-        # Definir valor de retorno para _get_distance_to y mockear colisiones
-        self.spider._get_distance_to = MagicMock(return_value=150)
-        self.spider.movement_collides_with_entities = MagicMock(return_value=[monster_mock])
-        self.spider.set_direction = MagicMock()
-        
-        self.spider.update(world_mock)
+    def test_zombie_attack_within_range(self):
+        self.zombie._get_distance_to = MagicMock(return_value=25)
+        self.zombie._Zombie__attack_cooldown = MagicMock()
+        self.zombie._Zombie__attack_cooldown.is_action_ready.return_value = True
 
-        # Aquí puedes agregar verificaciones específicas para las interacciones de colisión
-
+        self.zombie.attack(self.mock_target, 1, 1)
         
+        self.mock_target.take_damage.assert_called_once_with(self.zombie.damage_amount)
+        self.zombie._Zombie__attack_cooldown.put_on_cooldown.assert_called_once()
+
+    def test_spider_attack_within_range(self):
+        self.spider._get_distance_to = MagicMock(return_value=75)
+        self.spider._Spider__attack_cooldown = MagicMock()
+        self.spider._Spider__attack_cooldown.is_action_ready.return_value = True
+
+        self.spider.attack(self.mock_target)
+        
+        self.mock_target.take_damage.assert_called_once_with(self.spider.damage_amount)
+        self.spider._Spider__attack_cooldown.put_on_cooldown.assert_called_once()
+
+    def test_zombie_update_sets_direction(self):
+        self.mock_world.monsters = [self.spider]
+        self.zombie.get_direction_towards_the_player = MagicMock(return_value=(1, 0))
+        self.zombie.movement_collides_with_entities = MagicMock(return_value=None)
+        self.zombie.sprite.change_to_walk_sprite = MagicMock()
+        self.zombie.set_direction = MagicMock()
+
+        self.zombie.update(self.mock_world)
+
+        self.zombie.set_direction.assert_called_with(1, 0)
+        self.zombie.sprite.change_to_walk_sprite.assert_called_with("right")
+
+    def test_zombie_take_damage(self):
+        initial_health = self.zombie.health
+        self.zombie.take_damage(20)
+
+        self.assertEqual(self.zombie.health, initial_health - 20)
+        self.zombie.sprite.take_damage.assert_called_once()
+
+    def test_spider_drop_loot(self):
+        random.randint = MagicMock(return_value=30)
+        gem = self.spider.drop_loot(70)
+
+        self.assertIsNotNone(gem)
+        self.assertIsInstance(gem, ExperienceGem)
+
+    def test_spider_drop_no_loot(self):
+        random.randint = MagicMock(return_value=50)
+        gem = self.spider.drop_loot(30)
+
+        self.assertIsNone(gem)
+
+if __name__ == "__main__":
+    unittest.main()

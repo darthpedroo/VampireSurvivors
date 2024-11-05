@@ -29,12 +29,11 @@ class Game:
     def __process_game_events(self):
         """Process events like quit and key press."""
         for event in pygame.event.get():
-            # pygame.QUIT event means the user clicked X to close the window
-            if event.type == pygame.QUIT:  # pylint: disable=no-member
+            if event.type == pygame.QUIT:
                 self.__logger.debug("QUIT event detected")
                 self.__running = False
-            elif event.type == pygame.KEYDOWN: # pylint: disable=no-member
-                if event.key == pygame.K_p: # pylint: disable=no-member
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
                     if not self.__world.upgrading:
                         self.__world.change_paused_state()
 

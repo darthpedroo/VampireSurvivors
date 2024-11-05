@@ -123,13 +123,12 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
             drop_rate = 100
         
         if drop_rate <= 40:
-            # Esto habría que sacarlo de un json con los datos de cada Gema.
             amount_of_experience = 1
             gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
             return gem
         return None
 
-    def get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]: #pylint: disable=line-too-long
+    def get_nearest_enemy(self, monster_a: IHasSprite, monster_b: IHasSprite) -> tuple[IHasSprite, IHasSprite]:
         """Gets the nearest enemy in the map.
 
         Args:
@@ -162,14 +161,14 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         """
         extra_hitbox_x = 5
         extra_hitbox_y = 5
-        intended_position = self.sprite.rect.move(self._stats.movement_speed,self._stats.movement_speed).inflate(extra_hitbox_x, extra_hitbox_y) #pylint: disable=line-too-long
+        intended_position = self.sprite.rect.move(self._stats.movement_speed,self._stats.movement_speed).inflate(extra_hitbox_x, extra_hitbox_y)
         colliding_entities = [entity
                               for entity in entities
                               if entity.sprite.rect.colliderect(intended_position)]
 
         return colliding_entities if colliding_entities else None
 
-    def check_which_entity_is_nearest_to_the_player(self, other_entity: "ImvoableEntity", world: "IGameWorld"): #pylint: disable=line-too-long
+    def check_which_entity_is_nearest_to_the_player(self, other_entity: "ImvoableEntity", world: "IGameWorld"):
         """Checks which entity is nearest to the player.
 
         Args:
@@ -248,10 +247,8 @@ class UpgradableItem(ABC):
 
     def __init__(self, item_name: str, max_level: int,level:int = 0):
         self.item_name = item_name
-        #self._level = "NIGGER"
         self._upgrades = []
         self._max_level = max_level
-        #self.load_upgrades(self._level)
     
     @abstractmethod
     def get_sprite(self):
@@ -268,7 +265,7 @@ class UpgradableItem(ABC):
             level_info: The information of the upgrade on a specific level.
         """
         try:
-            level_info = self._upgrades[level]["DESCRIPTION"] #ojo
+            level_info = self._upgrades[level]["DESCRIPTION"]
         except IndexError as error:
             print("ERROR CON EL INDEX!", error)
         return level_info
@@ -287,7 +284,7 @@ class UpgradableItem(ABC):
             stats: The stats to modify based on the upgrade.
         """
         
-        current_upgrade = upgrades[level - 1]  # ojo
+        current_upgrade = upgrades[level - 1]
         attribute_to_modify = current_upgrade.get('ATTRIBUTE')
         new_value = current_upgrade.get('VALUE')
         if current_upgrade.get('OPERATION') == 'MULTIPLICATION':

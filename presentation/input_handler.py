@@ -15,28 +15,28 @@ class InputHandler(IInputHandler):
 
     def __example_method(self, keys):
         is_moving = False
-        if keys[pygame.K_w]: #pylint: disable=no-member
+        if keys[pygame.K_w]: 
             self.__direction = "up"
             x_dir = 0
             y_dir = -1
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
 
-        if keys[pygame.K_s]: #pylint: disable=no-member
+        if keys[pygame.K_s]: 
             self.__direction = "down"
             x_dir = 0
             y_dir = 1
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
 
-        if keys[pygame.K_a]: #pylint: disable=no-member
+        if keys[pygame.K_a]: 
             self.__direction = "left"
             x_dir = -1
             y_dir = 0
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
 
-        if keys[pygame.K_d]: #pylint: disable=no-member
+        if keys[pygame.K_d]: 
             self.__direction = "right"
             x_dir = 1
             y_dir = 0

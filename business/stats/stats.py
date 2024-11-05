@@ -17,7 +17,7 @@ class EntityStats(ABC):
         base_attack_speed (int): The base attack speed of the entity.
         size (int): The size of the entity.
     """
-    def __init__(self, max_health: int, movement_speed:int, base_damage_multiplier: int, base_attack_speed:int, size:int): #pylint: disable=line-too-long
+    def __init__(self, max_health: int, movement_speed:int, base_damage_multiplier: int, base_attack_speed:int, size:int):
         self.max_health = max_health
         self.movement_speed = movement_speed
         self.base_damage_multiplier = base_damage_multiplier
@@ -46,8 +46,8 @@ class PerkStats(BaseStats):
         regeneration_percentage_multiplier (float): The regeneration percentage multiplier of the perk.
         xp_multiplier (float): The experience points multiplier of the perk.
         luck_multiplier (float): The luck multiplier of the perk.
-    """ #pylint: disable=line-too-long
-    def __init__(self, max_health_multiplier: float=1, movement_speed_multiplier: float=1, base_damage_multiplier: float=1, attack_speed_multiplier: float=1, regeneration_rate_multiplier: float=1, regeneration_percentage_multiplier: float=1, xp_multiplier: float=1, luck_multiplier: float=1): #pylint: disable=line-too-long
+    """
+    def __init__(self, max_health_multiplier: float=1, movement_speed_multiplier: float=1, base_damage_multiplier: float=1, attack_speed_multiplier: float=1, regeneration_rate_multiplier: float=1, regeneration_percentage_multiplier: float=1, xp_multiplier: float=1, luck_multiplier: float=1):
         self.max_health_multiplier = max_health_multiplier
         self.movement_speed_multiplier = movement_speed_multiplier
         self.base_damage_multiplier = base_damage_multiplier
@@ -112,7 +112,7 @@ class PlayerStats(EntityStats):
         xp_multiplier (int): The experience points multiplier for the player.
         luck (int): The luck of the player.
     """
-    def __init__(self, max_health=1, movement_speed=1, base_damage_multiplier=1, base_attack_speed=1, size:int=1, regeneration_rate: int=1, regeneration_percentage:int=1, xp_multiplier:int=1, luck:int=1): #pylint: disable=line-too-long
+    def __init__(self, max_health=1, movement_speed=1, base_damage_multiplier=1, base_attack_speed=1, size:int=1, regeneration_rate: int=1, regeneration_percentage:int=1, xp_multiplier:int=1, luck:int=1):
         super().__init__(max_health, movement_speed, base_damage_multiplier, base_attack_speed,size)
         self.regeneration_rate = regeneration_rate
         self.regeneration_percentage = regeneration_percentage

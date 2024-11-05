@@ -30,7 +30,7 @@ class WeaponHandler(ItemHandler):
         else:
             raise ItemOverflow()
 
-    def use_every_weapon(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_base_damage_multiplier:int, player_base_attack_speed_multiplier:int): #pylint: disable=line-too-long
+    def use_every_weapon(self, player_pos_x: int, player_pos_y: int, world: IGameWorld, current_time, player_base_damage_multiplier:int, player_base_attack_speed_multiplier:int):
         """Uses all the weapon the player has.
         
         Args:
@@ -42,7 +42,7 @@ class WeaponHandler(ItemHandler):
             player_base_attack_speed_multiplier (int): The player base attack speed multiplier.
         """
         for weapon in self._list_of_items:
-            weapon.use(player_pos_x, #pylint: disable=no-member
+            weapon.use(player_pos_x, 
                        player_pos_y,
                        world,
                        current_time,

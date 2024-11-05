@@ -10,7 +10,7 @@ from presentation.sprite import BulletSprite
 class Bullet(MovableEntity, IBullet):
     """A bullet that moves towards a target direction."""
 
-    def __init__(self, name: str, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()): #pylint: disable=line-too-long
+    def __init__(self, name: str, pos_x, pos_y, dir_x, dir_y, health: int, stats:BulletStats, asset: str, current_state = MovableEntityMovingState()):
         super().__init__(pos_x, pos_y, stats, BulletSprite(pos_x, pos_y, asset, stats.size))
         self.name = name
         self.__dir_x = dir_x
@@ -27,7 +27,7 @@ class Bullet(MovableEntity, IBullet):
         return bullet_data
 
     @property
-    def health(self) -> int:  # Why does it have health ? :v
+    def health(self) -> int:
         return self._health
 
     def take_damage(self, amount):

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Module that runs the game."""
 
 from json import JSONDecodeError
@@ -131,26 +130,21 @@ def initialize_game_world(display):
 
 def main():
     """Main function to run the game."""
-    # Initialize pygame
-    pygame.init() # pylint: disable=no-member
+    pygame.init()
 
-    # Logging configuration
     logging.basicConfig(
-        level=logging.INFO,  # Change between INFO, WARNING, or DEBUG as needed
+        level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
-    # Initialize the game objects
     display = Display()
     world = initialize_game_world(display)
     world.load_monster_spawner_json()
     display.load_world(world)
     input_handler = InputHandler(world)
 
-    # Create a game instance and start it
     game = Game(display, world, input_handler)
     game.run()
-    
 
     player = world.player
     player_json.save_player(player)
@@ -158,10 +152,8 @@ def main():
     monster_json.save_monsters(world.monsters)
     gems_json.save_gems(world.experience_gems)
     bullets_json.save_bullets(world.bullets)
-    
 
-    # Properly quit Pygame
-    pygame.quit() # pylint: disable=no-member
+    pygame.quit()
 
 
 if __name__ == "__main__":

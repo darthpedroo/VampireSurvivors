@@ -64,7 +64,7 @@ class Entity(IHasPosition, IHasSprite):
 class MovableEntity(Entity, ICanMove):
     """Base class for all entities that can move."""
 
-    def __init__(self, pos_x: float, pos_y: float, stats: float, sprite: Sprite, current_state = MovableEntityMovingState()): #pylint: disable=line-too-long
+    def __init__(self, pos_x: float, pos_y: float, stats: float, sprite: Sprite, current_state = MovableEntityMovingState()):
         """Initialize a movable entity with position, stats, and sprite.
 
         Args:

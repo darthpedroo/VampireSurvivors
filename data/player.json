@@ -1,0 +1,111 @@
+{
+    "pos_x": 1215,
+    "pos_y": 610,
+    "player_stats": {
+        "max_health": 100,
+        "movement_speed": 5,
+        "base_damage_multiplier": 1,
+        "base_attack_speed": 1,
+        "size": 1,
+        "regeneration_rate": 15000,
+        "regeneration_percentage": 10,
+        "xp_multiplier": 1,
+        "luck": 0
+    },
+    "health": 100,
+    "experience": 3,
+    "level": 2,
+    "weapon_handler": {
+        "list_of_items": [
+            {
+                "item_name": "The_Mega_Ice",
+                "bullet_name": "Ice_Bullet",
+                "level": 1,
+                "max_level": 5,
+                "item_stats": {
+                    "damage": 24.0,
+                    "movement_speed": 20,
+                    "cooldown": 2705
+                }
+            },
+            {
+                "item_name": "Manual_Gun",
+                "bullet_name": "Bullet",
+                "level": 1,
+                "max_level": 5,
+                "item_stats": {
+                    "damage": 24.0,
+                    "movement_speed": 20,
+                    "cooldown": 500
+                }
+            },
+            {
+                "item_name": "Manual_Joker",
+                "bullet_name": "Joker_Bullet",
+                "level": 1,
+                "max_level": 5,
+                "item_stats": {
+                    "damage": 60.0,
+                    "movement_speed": 20,
+                    "cooldown": 1300
+                }
+            }
+        ],
+        "max_items": 5
+    },
+    "perks_handler": {
+        "player_stats": {
+            "max_health": 100,
+            "movement_speed": 5,
+            "base_damage_multiplier": 1,
+            "base_attack_speed": 1,
+            "size": 1,
+            "regeneration_rate": 15000,
+            "regeneration_percentage": 10,
+            "xp_multiplier": 1,
+            "luck": 0
+        },
+        "list_of_items": [
+            {
+                "item_name": "Heal Heal Frog's Booty",
+                "upgrades": [
+                    {
+                        "NAME": "Level 0",
+                        "DESCRIPTION": "Increases regeneration rate in 25%",
+                        "ATTRIBUTE": "regeneration_rate",
+                        "OPERATION": "SUM",
+                        "VALUE": 2500
+                    },
+                    {
+                        "NAME": "Level 1",
+                        "DESCRIPTION": "Increases regeneration rate in 25%",
+                        "ATTRIBUTE": "regeneration_rate",
+                        "OPERATION": "SUM",
+                        "VALUE": 2500
+                    },
+                    {
+                        "NAME": "Level 2",
+                        "DESCRIPTION": "Increases regeneration rate in 50%",
+                        "ATTRIBUTE": "regeneration_rate",
+                        "OPERATION": "SUM",
+                        "VALUE": 5000
+                    }
+                ],
+                "level": 1,
+                "perk_stats": {
+                    "max_health": 1,
+                    "movement_speed": 1,
+                    "base_damage_multiplier": 1,
+                    "base_attack_speed": 1,
+                    "size": 1,
+                    "regeneration_rate": 10001,
+                    "regeneration_percentage": 1,
+                    "xp_multiplier": 1,
+                    "luck": 1
+                }
+            }
+        ],
+        "max_items": 5
+    },
+    "upgrading": false
+}

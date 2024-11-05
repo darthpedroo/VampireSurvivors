@@ -57,8 +57,8 @@ class PerksHandler(ItemHandler):
             player_stats (PlayerStats): The stats of the player
         """
         for perk in self._list_of_items:
-            if perk.item_name == perk_name: #pylint: disable=no-member
-                perk.apply_perk_boosts_to_player(player_stats) #pylint: disable=no-member
+            if perk.item_name == perk_name: 
+                perk.apply_perk_boosts_to_player(player_stats) 
 
     def load_perks(self, player_stats):
         """Loads the perks of the player
@@ -67,4 +67,4 @@ class PerksHandler(ItemHandler):
             player_stats (PlayerStats): The stats of the player
         """
         for perk in self._list_of_items:
-            perk.use() #pylint: disable=no-member
+            perk.use() 

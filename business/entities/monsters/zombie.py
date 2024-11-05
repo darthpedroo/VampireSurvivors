@@ -49,7 +49,6 @@ class Zombie(MovableEntity, IMonster):
         direction_x, direction_y = self.get_direction_towards_the_player(world)
 
         monsters = [m for m in world.monsters if m != self]
-        #dx, dy = direction_x * self._stats.movement_speed, direction_y * self._stats.movement_speed
 
         if self.__can_attack is True:
             if direction_x > 0:
@@ -72,7 +71,6 @@ class Zombie(MovableEntity, IMonster):
                 elif direction_x < 0:
                     self.sprite.change_to_walk_sprite("left")
             else:
-                #ABSTRAER ESTA LOGICA A LA CLASE MONSTER :V
                 colliding_entities = self.movement_collides_with_entities(monsters)
                 if colliding_entities:
                     for entity in colliding_entities:
@@ -113,7 +111,6 @@ class Zombie(MovableEntity, IMonster):
             drop_rate = 100
         
         if drop_rate <= 40:
-            # Esto habría que sacarlo de un json con los datos de cada Gema.
             amount_of_experience = 1
             gem = ExperienceGem(self.pos_x, self.pos_y, amount_of_experience)
             return gem

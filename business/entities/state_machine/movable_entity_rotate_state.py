@@ -5,7 +5,7 @@ class RotatingState(MovableEntityBaseState):
     def __init__(self, rotation_speed: float = 10):
         super().__init__()
         self.start_time = time.time()
-        self.rotation_speed = rotation_speed  # e.g., radians per second
+        self.rotation_speed = rotation_speed
 
 
     def update_state(self, movable_entity: "MovableEntity"):
@@ -17,4 +17,4 @@ class RotatingState(MovableEntityBaseState):
 
     def enter_state(self, movable_entity: "MovableEntity"):
         movable_entity.current_state = self
-        movable_entity.set_moving(True)  # Stop regular movement if rotating
+        movable_entity.set_moving(True)
