@@ -1,9 +1,13 @@
+"""Module for player's persistence"""
+
 from abc import ABC
 
 class PlayerDao(ABC):
-    
+    """Represents player's persistence"""
     def get_player(self):
-        pass
+        """Gets the player from a persistency file
+        """
     
     def save_player(self):
-        pass
+        """Adds the player to a persistency file
+        """

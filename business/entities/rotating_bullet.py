@@ -1,5 +1,4 @@
-
-from business.entities.state_machine.movable_entity_moving_state import MovableEntityMovingState
+"""Module for a rotating bullet."""
 from business.stats.stats import BulletStats
 from business.entities.state_machine.entity import MovableEntity
 from business.entities.interfaces import IBullet

@@ -1,15 +1,13 @@
-import json
+"""Module for clock's persistence"""
 from abc import ABC
 from business.clock.clock import ClockSingleton
 
 class ClockDao(ABC):
-    
-
-
+    """Represents clock's persistence"""
     def get_clock(self):
-        pass
+        """Gets clock from persistency"""
     
     def save_clock(self, clock:ClockSingleton):
-        pass    
+        """Saves clock to persistency"""
 
     

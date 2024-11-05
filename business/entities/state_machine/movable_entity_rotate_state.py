@@ -1,7 +1,9 @@
+"""Module that contains the MovableEntityRotatingState class"""
 import time
 from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
 
 class RotatingState(MovableEntityBaseState):
+    """Represents the moving state of a rotating entity"""
     def __init__(self, rotation_speed: float = 10):
         super().__init__()
         self.start_time = time.time()
