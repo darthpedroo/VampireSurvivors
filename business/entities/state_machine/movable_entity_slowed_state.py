@@ -16,12 +16,14 @@ class MovableEntitySlowedState(MovableEntityBaseState):
             movable_entity.set_direction(10,10)
         else:
             movable_entity.sprite.freeze()
+            if movable_entity._moving:
+                movable_entity._pos_x += movable_entity.direction_x*movable_entity._stats.movement_speed
+                movable_entity._pos_y += movable_entity.direction_y*movable_entity._stats.movement_speed
+                movable_entity._sprite.update_pos(movable_entity._pos_x, movable_entity._pos_y)
 
     def enter_state(self, movable_entity):
-        print("entre al estado de dop")
         self.old_stats = movable_entity._stats.movement_speed
-        print("OLDY: ", self.old_stats)
-      #  input()
+      
         movable_entity._stats.movement_speed = movable_entity._stats.movement_speed /2 
         """Enter the frozen state for the movable entity.
 

@@ -12,18 +12,11 @@ class MovableEntityMovingState(MovableEntityBaseState):
             movable_entity (MovableEntity): The movable entity whose state is being updated.
         """
         if movable_entity._moving:
-            #movable_entity._stats.movement_speed = 2
             movable_entity._pos_x += movable_entity.direction_x*movable_entity._stats.movement_speed
             movable_entity._pos_y += movable_entity.direction_y*movable_entity._stats.movement_speed
 
             movable_entity._sprite.update_pos(movable_entity._pos_x, movable_entity._pos_y)
-            try:
-                if movable_entity.name == "shulker":
-                    print(f"el {movable_entity.name} se mueve megr")
-                    print("xD",movable_entity._pos_x)
-                    print("XDOP", movable_entity._stats.movement_speed)
-            except Exception as ex:
-                pass
+
             
 
     def enter_state(self, movable_entity: "MovableEntity"):
