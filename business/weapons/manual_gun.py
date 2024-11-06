@@ -2,7 +2,6 @@
 from business.weapons.weapon import Weapon
 from business.world.interfaces import IGameWorld
 
-
 class ManualGun(Weapon):
     """Represents the Manual Gun"""
     def __init__(self, item_name, bullet_name, max_level, weapon_stats, level=1):
