@@ -9,6 +9,7 @@ from business.world.interfaces import IGameWorld
 from business.entities.weapon_handler import WeaponHandler
 from business.perks.perks_handler import PerksHandler
 from business.entities.state_machine.movable_entity_base_state import MovableEntityBaseState
+from business.entities.state_machine.movable_entity_slowed_state import MovableEntitySlowedState
 from business.stats.stats import PlayerStats
 from presentation.sprite import Sprite
 from presentation.sprite import PlayerSprite
@@ -32,10 +33,20 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__experience = experience
         self.__level = level
         self.__last_regeneration_time = CooldownHandler(self._stats.regeneration_rate)
+        self.__ultimate_cooldown = CooldownHandler(5000)
         self._weapon_handler = weapon_handler
         self._perks_handler = perks_handler
         self.__upgrading = False
         self._perks_handler.apply_all_perks_to_player_stats(self._stats)
+
+    def ultimate(self, world):
+        
+        monsters = world.monsters
+
+        if self.__ultimate_cooldown.is_action_ready():
+            for monster in monsters:
+                monster.switch_state(MovableEntitySlowedState())
+            self.__ultimate_cooldown.put_on_cooldown()
 
 
     def create_player_json_data(self):

@@ -42,6 +42,9 @@ class InputHandler(IInputHandler):
             y_dir = 0
             self.__world.update_player(x_dir,y_dir)
             is_moving = True
+        
+        if keys[pygame.K_r]:
+            self.__world.player.ultimate(self.__world)
 
         if is_moving is False and self.__world.paused is False:
             new_state = MovableEntityIdleState()

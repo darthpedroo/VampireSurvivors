@@ -24,7 +24,7 @@ class Shulker(MovableEntity, IMonster):
         self._logger.debug("Created %s", self)
         self.__shield = shield_value
         
-        print(stats.precision)
+        #print(stats.precision)
 
     def create_monster_json_data(self):
         monster_data = {"pos_x": self.pos_x, "pos_y": self.pos_y, "name": self.name}

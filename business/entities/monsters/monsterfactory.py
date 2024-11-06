@@ -13,7 +13,7 @@ from business.clock.clock import ClockSingleton
 class MonsterFactory:
     """A monster entity in the game."""
 
-    ALL_MONSTERS = ["spider", "zombie", "shulker"]
+    ALL_MONSTERS = ["shulker"]
     CLOCK = ClockSingleton()
 
     @staticmethod
