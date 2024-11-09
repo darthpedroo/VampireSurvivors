@@ -25,7 +25,7 @@ We were encouraged to make the design as clean as possible and to follow SOLID p
 Install the dependencies
 
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 ## How to run it
