@@ -147,8 +147,8 @@ def main():
     game.run()
 
     pygame.quit()
-    world.delete_data()
-    print("chua")
+    #world.delete_data()
+    #print("chua")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 """Module used for settings"""
 
 # Display
-GAME_TITLE = "Skibidi Survivors"
+GAME_TITLE = "Vampire Survivors"
 FPS = 30
 
 # Tile dimensions

@@ -17,7 +17,7 @@ class MonsterSpawner(IMonsterSpawner):
     def __init__(self):
         self.__logger = logging.getLogger(__name__)
         self.__clock = ClockSingleton()
-        self._max_monsters = 10
+        self._max_monsters = 30
         self._monster_spawn_cooldown = self.__get_spawn_cooldown()
         self.__cooldown_handler = CooldownHandler(self._monster_spawn_cooldown)
         

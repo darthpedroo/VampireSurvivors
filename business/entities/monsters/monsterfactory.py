@@ -13,7 +13,7 @@ from business.clock.clock import ClockSingleton
 class MonsterFactory:
     """A monster entity in the game."""
 
-    ALL_MONSTERS = ["shulker"]
+    ALL_MONSTERS = ["shulker","zombie","spider"]
     CLOCK = ClockSingleton()
 
     @staticmethod
@@ -28,7 +28,6 @@ class MonsterFactory:
             Zombie | Spider: An instance of the monster depending on which monster was chosen.
         """
         random_monster = random.choice(MonsterFactory.ALL_MONSTERS)
-        print("random_monster: ", random_monster)
         return MonsterFactory.get_monster(random_monster, pos_x, pos_y)
 
     @staticmethod
