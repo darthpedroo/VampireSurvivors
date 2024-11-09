@@ -39,7 +39,7 @@ python runner.py
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
-Tests aren't required but they are welcomed!
+Tests aren't required but they are welcome!
 
 ## License
 
